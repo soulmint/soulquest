@@ -1,0 +1,6 @@
+.root {
+}
+
+.boxBody {
+    composes: boxBody from '../../Campaign/Details/detail.module.css';
+}

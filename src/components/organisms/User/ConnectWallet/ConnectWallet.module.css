@@ -1,0 +1,7 @@
+.btnLogin {
+  composes: root from '../../../atoms/Button/button.module.css';
+}
+
+.btnLogout{
+  composes: root from '../../../atoms/Button/button.module.css';
+}

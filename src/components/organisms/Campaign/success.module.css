@@ -1,0 +1,15 @@
+.root {
+}
+
+.root .actions {
+  @apply block;
+}
+
+.btnEdit {
+  composes: root_lowPriority from '../../atoms/Button/button.module.css';
+}
+
+.btnView {
+  composes: root_highPriority from '../../atoms/Button/button.module.css';
+}
+

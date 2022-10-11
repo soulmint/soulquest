@@ -1,0 +1,58 @@
+.root {
+  @apply bg-white shadow-sm rounded-xl mt-10 pb-6;
+}
+
+.rootDark {
+  @apply bg-gray-800 rounded-xl;
+}
+
+.questers {
+  @apply flex flex-wrap items-center justify-between px-6 gap-3;
+}
+
+.questers > div {
+  @apply w-full;
+}
+
+.questers > div > div {
+  @apply flex flex-wrap items-center gap-2.5;
+}
+
+.questerAvt {
+  @apply rounded-full flex flex-wrap items-center justify-center py-1 px-3 text-sm font-medium shadow-sm bg-gray-100 text-gray-600;
+}
+
+.loadMore {
+  @apply hover:bg-blue-600 hover:text-white inline-block border border-2 border-gray-200 hover:border-blue-600 rounded-md py-2 px-6 text-center w-52;
+}
+
+.rootDark .loadMore {
+  @apply border border-gray-700;
+}
+
+.loading {
+  padding: 10px;
+  text-align: center;
+}
+
+.noResult {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+.infiniteLoading {
+  @apply text-gray-800 col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center pt-3 pb-3;
+}
+
+.infiniteFinished {
+  @apply hidden text-gray-600 rounded-md col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center pt-3 pb-3;
+}
+
+.rootDark .infiniteFinished {
+  @apply bg-gray-800 text-gray-600;
+}
+
+.souldAvatar {
+  margin: 0px 10px 0px 0px;
+}

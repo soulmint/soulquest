@@ -1,0 +1,32 @@
+.root {
+  composes: Box from '../../Campaign/Details/detail.module.css';
+}
+
+.rootDark {
+  composes: root;
+}
+
+.boxTitle {
+  composes: boxTitle from '../../Campaign/Details/detail.module.css';
+}
+
+.boxBody {
+  composes: boxBody from '../../Campaign/Details/detail.module.css';
+}
+
+.campaignList {
+
+}
+
+.infiniteFinished {
+  composes: infiniteFinished from '../../Campaign/List/list.module.css';
+  @apply mt-4;
+}
+
+.infiniteLoading {
+  composes: infiniteLoading from '../../Campaign/List/list.module.css';
+}
+
+.rootDark .infiniteFinished {
+  @apply bg-gray-800 text-gray-600;
+}

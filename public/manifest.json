@@ -1,0 +1,27 @@
+{
+  "name": "SoulMint - The 1st SoulBound",
+  "short_name": "SoulMint",
+  "theme_color": "#6366F1",
+  "background_color": "#FFFFFF",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "https://cdn.rada.network/icons/rada32x32.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn.rada.network/icons/rada180x180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn.rada.network/icons/rada192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "splash_pages": null
+}

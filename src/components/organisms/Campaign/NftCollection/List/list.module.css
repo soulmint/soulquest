@@ -1,0 +1,57 @@
+.root {
+	@apply container mx-auto py-24 px-4 md:px-5 lg:px-0 mx-auto max-w-screen-xl relative;
+}
+.rootDark {
+	composes: root;
+}
+.headingWrap {
+	@apply mb-20;
+}
+
+.filter {
+	@apply flex items-center;
+}
+
+.filterForm {
+}
+
+.listWrap {
+	@apply grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8;
+}
+
+.item {
+	@apply text-sm px-5 py-2.5 mb-2 basis-6/12;
+}
+
+.noResult {
+	@apply text-sm text-center;
+}
+
+.actionWrap {
+	@apply mt-8 text-center;
+}
+
+.loadMore {
+	@apply hover:bg-violet-600 hover:text-white inline-block border border-2 border-gray-200 hover:border-violet-600 rounded-md py-2 px-6 text-center w-52;
+}
+
+.rootDark .loadMore {
+	@apply border border-gray-700;
+}
+
+.loading {
+	padding: 10px;
+	text-align: center;
+}
+
+.infiniteLoading {
+	@apply text-gray-800 col-start-1 col-end-4 text-center pt-3 pb-3;
+}
+
+.infiniteFinished {
+	@apply bg-gray-100 text-gray-800 rounded-md col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center pt-3 pb-3;
+}
+
+.rootDark .infiniteFinished {
+	@apply bg-gray-800 text-gray-600;
+}

@@ -1,0 +1,18 @@
+.root {
+}
+
+.couponItem {
+  composes: couponItem from '../../Campaign/Details/detail.module.css';
+}
+
+.itemMeta {
+  composes: itemMeta from '../../Campaign/Details/detail.module.css';
+}
+
+.btnGetCoupon {
+  @apply bg-blue-50 hover:bg-blue-600 hover:text-white ring-1 hover:ring-0 ring-blue-300 text-blue-600 text-sm py-1 px-1.5 rounded-md ml-auto cursor-pointer transition-all duration-300;
+}
+
+.btnEdit {
+
+}

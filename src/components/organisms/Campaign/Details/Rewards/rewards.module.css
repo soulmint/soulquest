@@ -1,0 +1,42 @@
+.root {
+}
+
+.bsc {
+  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-[url('/chains/bsc.svg')] bg-cover;
+}
+
+.ethereum {
+  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-[url('/chains/ethereum.svg')] bg-cover;
+}
+
+.polygon {
+  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-[url('/chains/polygon.svg')] bg-cover;
+}
+
+.solana {
+  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-[url('/chains/solana.svg')] bg-cover;
+}
+
+.nftCollectionWrap {
+  composes: nftCollectionWrap from '../../List/item.module.css';
+  @apply flex items-center;
+}
+
+.nftCollectionLink {
+}
+
+.collectionName {
+    composes: collectionName from '../../List/item.module.css';
+}
+
+.contractAdd {
+    composes: contractAdd from '../../List/item.module.css';
+}
+
+.rewardOverview p {
+  @apply my-0;
+}
+
+.rewardOverview p + p {
+    @apply mt-4;
+}

@@ -1,0 +1,7 @@
+.root{
+	@apply border border-gray-200 rounded-lg;
+}
+
+.infiniteFinished {
+	@apply text-gray-500 mt-6 text-center;
+}

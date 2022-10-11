@@ -1,0 +1,14 @@
+.root {
+}
+
+.boxHilite {
+    composes: boxHilite from '../../Campaign/Details/detail.module.css';
+}
+
+.boxTitle {
+    composes: boxTitle from '../../Campaign/Details/detail.module.css';
+}
+
+.boxBody {
+    composes: boxBody from '../../Campaign/Details/detail.module.css';
+}

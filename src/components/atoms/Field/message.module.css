@@ -1,0 +1,12 @@
+.root {
+  @apply m-0 text-sm;
+}
+
+.root:empty {
+  display: none;
+}
+
+.root_error {
+  composes: root;
+  @apply text-red-600;
+}

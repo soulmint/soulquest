@@ -1,0 +1,38 @@
+.root {
+  grid-template-areas: 'input label';
+  grid-template-columns: min-content 1fr;
+  @apply flex items-center;
+}
+
+.input {
+  grid-area: input;
+  @apply rounded;
+}
+
+.icon {
+  grid-area: input;
+}
+
+.icon svg {
+  @apply hidden;
+}
+
+.label {
+  grid-area: label;
+  @apply ml-2;
+}
+
+.input:disabled ~ .label {
+  cursor: default;
+}
+
+.input:checked:enabled + .icon {
+}
+
+.input:active:enabled,
+.input:focus:enabled {
+  outline: none;
+}
+
+.input_shimmer {
+}

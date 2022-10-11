@@ -1,0 +1,80 @@
+.root {
+}
+
+.headingWrap {
+	@apply mb-8 lg:mb-20;
+}
+
+.filter {
+	@apply flex items-center;
+}
+
+.filterForm {
+}
+
+.listWrap {
+	@apply grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8;
+	overflow: visible !important;
+}
+
+.item {
+	@apply text-sm px-5 py-2.5 mb-2 basis-6/12;
+}
+
+.noResult {
+	@apply p-4 text-sm text-gray-700 bg-gray-100 rounded-lg dark:bg-gray-700 dark:text-gray-300;
+}
+
+.actionWrap {
+	@apply mt-8 text-center;
+}
+
+.loadMore {
+	@apply hover:bg-blue-600 hover:text-white inline-block border border-2 border-gray-200 hover:border-blue-600 rounded-md py-2 px-6 text-center w-52;
+}
+
+.rootDark .loadMore {
+	@apply border border-gray-700;
+}
+
+.loading {
+	padding: 10px;
+	text-align: center;
+}
+
+.infiniteLoading {
+	@apply text-gray-800 col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center pt-3 pb-3;
+}
+
+.infiniteFinished {
+	@apply bg-violet-600 hover:bg-violet-700 cursor-pointer text-white lg:max-w-xs rounded-md col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center font-medium mt-4 py-3 px-8 lg:px-20 hover:px-24 mx-auto transition-all duration-300;
+}
+
+.rootDark .infiniteFinished {
+	@apply bg-violet-700 hover:bg-violet-600 text-violet-200 hover:text-white;
+}
+
+/* Filter bar */
+.toolbarWrap {
+	@apply flex items-center;
+}
+
+.toolbarWrap .searchField {
+}
+
+.searchInput {
+	/* composes: input from '../../../atoms/TextInput/textInput.module.css' */
+	@apply border border-2 border-gray-300 ring-0 focus:ring-0 rounded-lg mr-2;
+}
+
+.toolbarWrap .totalResults {
+	text-align: center;
+}
+
+.toolbarWrap .sortWrap {
+	@apply ml-auto;
+}
+
+.btnCreateQuest {
+
+}

@@ -1,0 +1,12 @@
+.heading {
+  @apply text-4xl lg:text-6xl font-bold text-gray-900 text-center mb-4 tracking-tight;
+}
+
+.headingDark {
+	composes: heading;
+	@apply text-gray-100;
+}
+
+.subHeading {
+  @apply text-gray-800 mx-auto text-center text-base md:text-xl font-medium;
+}

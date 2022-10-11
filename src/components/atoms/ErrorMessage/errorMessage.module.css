@@ -1,0 +1,7 @@
+.root {
+  @apply py-3 px-0;
+}
+
+.errorMessage {
+  @apply text-red-700;
+}

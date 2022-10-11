@@ -1,0 +1,15 @@
+.steps > div::before {
+  @apply bg-violet-400 content-[""] block w-0.5 lg:w-auto lg:h-0.5 absolute lg:right-1/2 top-0 lg:top-8 left-9 lg:left-0 bottom-1/2;
+}
+
+.steps > div:first-child::before {
+  @apply hidden;
+}
+
+.steps > div::after {
+  @apply bg-violet-400 content-[""] block w-0.5 lg:w-auto lg:h-0.5 absolute left-9 lg:left-1/2 top-1/2 bottom-0 lg:top-8 lg:right-0 z-0;
+}
+
+.steps div:last-child::after {
+  @apply hidden;
+}

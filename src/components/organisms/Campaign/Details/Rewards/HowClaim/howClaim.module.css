@@ -1,0 +1,21 @@
+.root {
+}
+
+.rootDark {
+}
+
+.howtoSteps {
+  @apply flex flex-col mb-8 relative
+}
+
+.howtoSteps::after {
+  @apply bg-blue-100 content-[''] block w-0.5 absolute top-4 bottom-10 left-5 ml-0.5;
+}
+
+.howToClaim p {
+  @apply my-0;
+}
+
+.howToClaim p + p {
+  @apply mt-3;
+}

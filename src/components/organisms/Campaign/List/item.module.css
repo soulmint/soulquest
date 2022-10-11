@@ -1,0 +1,160 @@
+.root {
+	@apply bg-white border-2 border-transparent shadow-sm hover:shadow-lg hover:border-violet-600 rounded-xl transition-shadow flex flex-col items-stretch relative transition-all duration-500;
+}
+
+.rootDark {
+  composes: root;
+	@apply bg-gray-800 border-gray-800;
+}
+
+.root:hover .getCoupon {
+	@apply bg-violet-600 text-white;
+}
+
+.couponAmoun {
+	@apply inline-block text-2xl font-bold text-gray-800 mr-4;
+}
+
+.rootDark .couponAmoun {
+	@apply text-white;
+}
+
+.couponLabel {
+	@apply bg-green-100 flex items-center text-green-600 text-xs rounded-xl py-1 pl-2 pr-3;
+}
+
+.couponLabel svg {
+	@apply fill-current mr-1;
+}
+
+.itemHead button {
+	@apply ml-auto border border-violet-600 hover:bg-violet-600 hover:text-white hover:border-opacity-0 cursor-pointer rounded-md py-0.5 px-2 transition-all;
+}
+
+/* Item cover */
+.itemCover {
+	min-height: 180px;
+}
+
+.itemCover img {
+}
+
+/*  */
+.itemDesc p {
+	@apply my-0;
+	font-size: 0.938rem;
+}
+
+/* All Chains */
+.nftCollectionWrap {
+	@apply bg-gray-100 rounded-full flex items-center pr-3 pl-1 py-0.5 mr-1 mb-1 relative overflow-hidden;
+	max-width: 33%;
+}
+
+.rootDark .nftCollectionWrap {
+	@apply bg-gray-800 border-0;
+}
+
+.nftCollectionWrap:hover {
+	@apply overflow-visible hover:border-gray-400;
+}
+
+.nftCollectionWrap a {
+	@apply flex-1 truncate;
+}
+
+.collectionName {
+	@apply text-gray-800 font-medium text-sm;
+}
+
+.rootDark .collectionName {
+	@apply text-white;
+}
+
+.contractAdd {
+	@apply bg-gray-800 text-white text-xs rounded-md absolute py-1.5 px-2 left-1/2 -translate-x-1/2 -top-8 transition-all duration-500 opacity-0;
+}
+
+.contractAdd::after {
+	border-top: 5px solid #1F2937;;
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	content: "";
+	display: block;
+	position: absolute;
+	left: 50%;
+	margin-left: -3px;
+	bottom: -5px;
+	height: 0;	
+	width: 0;
+}
+
+.nftCollectionWrap:hover .contractAdd {
+	@apply opacity-100 -top-9;
+}
+
+.chainWrap {
+	@apply border border-red-800 flex items-center mt-8;
+}
+
+/* All chains */
+.bsc {
+  @apply bg-gray-100 inline-block rounded-full mr-1 w-5 h-5 indent-96 overflow-hidden bg-[url('/chains/bsc.svg')] bg-cover;
+}
+
+.rootDark .bsc {
+	@apply bg-gray-800 ring-1 ring-gray-700;
+}
+
+.ethereum {
+  @apply bg-gray-100 inline-block rounded-full mr-1 w-5 h-5 indent-96 overflow-hidden bg-[url('/chains/ethereum.svg')] bg-cover;
+}
+
+.rootDark .ethereum {
+	@apply bg-gray-800 ring-1 ring-gray-700;
+}
+
+.polygon {
+  @apply bg-gray-100 inline-block rounded-full mr-1 w-5 h-5 indent-96 overflow-hidden bg-[url('/chains/polygon.svg')] bg-cover;
+}
+
+.rootDark .polygon {
+	@apply bg-gray-800 ring-1 ring-gray-700;
+}
+
+.solana {
+  @apply bg-gray-100 inline-block rounded-full mr-1 w-5 h-5 indent-96 overflow-hidden bg-[url('/chains/solana.svg')] bg-cover;
+}
+
+.rootDark .solana {
+	@apply bg-gray-800 ring-1 ring-gray-700;
+}
+
+/* Get coupon button */
+.getCoupon span {
+	@apply block text-center w-full;
+}
+
+.storeLogo {
+}
+
+.storeLink {
+	@apply flex w-full items-center justify-center;
+}
+
+.storeLink img {
+	position: relative;
+	height: auto;
+	max-width: 50%;
+}
+
+.storeName {
+}
+
+.dateStart:not(:empty)::before {
+	@apply bg-green-500 content-[''] inline-block h-1.5 w-1.5 mr-1.5 mb-0.5;
+}
+
+.dateEnd:not(:empty)::before {
+	@apply bg-red-500 content-[''] inline-block h-1.5 w-1.5 mr-1.5 mb-0.5;
+}

@@ -1,0 +1,61 @@
+.root {
+  @apply border-b border-b-gray-200 bg-white md:sticky top-0 px-4 lg:px-6 py-3.5 space-x-4 z-20 text-sm font-medium;
+}
+
+.rootDark {
+  composes: root;
+  @apply bg-gray-900 border-b-gray-800;
+}
+
+.logoContainer {
+  @apply w-16 absolute top-4 md:top-auto md:relative;
+}
+
+.logoContainer .logo {
+  @apply block w-24 h-16 border border-red-200;
+}
+
+.logoContainer a > span {
+  @apply block h-6 w-6;
+}
+
+.menuContainer {
+  @apply flex flex-wrap items-center space-x-4;
+  margin-left: auto !important;
+}
+
+/* Main Nav */
+.topMenu {
+  @apply flex flex-wrap justify-between items-center;
+}
+
+.linkGroup {
+  @apply border md:border-0 rounded-lg md:rounded-none mt-3 md:mt-0 flex flex-wrap flex-col md:flex-row ml-0;
+}
+
+.linkGroup li {
+  @apply flex flex-wrap md:justify-center align-middle px-4 py-2;
+}
+
+.linkGroup li a {
+  @apply hover:text-blue-700;
+}
+
+.rootDark .linkGroup li a {
+  @apply hover:text-white;
+}
+
+.offCanvasShow {
+  @apply md:block;
+}
+
+.offCanvasHide {
+  @apply hidden md:block;
+}
+
+.linkItem {
+}
+
+.active {
+  @apply text-blue-600 font-semibold;
+}

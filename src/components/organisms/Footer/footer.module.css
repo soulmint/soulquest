@@ -1,0 +1,30 @@
+.root {
+  @apply bg-gray-900;
+}
+
+.rootDark{
+  composes: root;
+}
+
+.root a {
+  @apply hover:text-blue-600;
+}
+
+.menuItems {
+  @apply flex-1;
+}
+
+.menuItems ul {
+	@apply flex space-x-4 list-none;
+}
+
+.menuItems ul a {
+  @apply inline-block border-b border-dotted border-gray-400 hover:border-violet-500 cursor-pointer hover:text-violet-600;
+}
+
+.social {
+}
+
+.social > div {
+  @apply flex space-x-4;
+}

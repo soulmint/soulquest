@@ -1,0 +1,47 @@
+.root {
+    @apply relative;
+}
+
+.rootDark {
+    composes: root;
+}
+
+.menu {
+    @apply absolute bg-clip-padding bg-white border border-solid list-none mb-0 min-w-[10rem] mt-0.5 mx-0 right-0 rounded text-left top-[110%];
+}
+
+.rootDark .menu {
+
+}
+
+.menuItem {
+    @apply border-b border-solid;
+    list-style: none;
+}
+
+.sortButton {
+    composes: root_lowPriority from '../../../atoms/Button/button.module.css';
+    @apply min-w-[6.26rem] border-2 border-gray-200 font-normal normal-case rounded-md;
+}
+
+.desktopText {
+    @apply hidden lg:inline-flex;
+}
+
+.sortText {
+    @apply leading-normal;
+}
+
+.desktopIconWrapper {
+    composes: root from '../../../atoms/Icon/icon.module.css';
+    transform: translateX(10px);
+}
+
+.desktopIcon {
+    composes: icon from '../../../atoms/Icon/icon.module.css';
+    @apply stroke-gray-500;
+}
+
+.mobileText {
+    @apply lg:hidden;
+}

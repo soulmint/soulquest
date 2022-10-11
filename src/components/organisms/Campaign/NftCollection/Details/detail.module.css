@@ -1,0 +1,186 @@
+.root {
+}
+
+.rootDark {
+}
+
+.pageWrap {
+}
+
+.coverWrap > span {
+  position: absolute !important;
+  @apply top-0 left-0 right-0 bottom-0;
+}
+
+.pageTitle {
+  @apply text-5xl font-semibold text-gray-800 mt-0 mb-8;
+}
+
+.pageContent {
+  @apply mx-auto max-w-screen-xl py-12 px-6;
+}
+
+.rootDark .pageContent {
+}
+
+.rootDark .pageTitle {
+  @apply text-white;
+}
+
+/* Campaign meta */
+.campaignMeta {
+  @apply flex items-start mb-6;
+}
+
+.dateStart {
+  @apply border-r border-gray-200 pr-4;
+}
+
+.rootDark .dateStart {
+  @apply border-gray-800;
+}
+
+.dateEnd {
+  @apply pl-4;
+}
+
+.dateLabel {
+  @apply text-gray-500 mr-2;
+}
+
+/* Binace */
+.bsc {
+  composes: bsc from "../../../Campaign/List/item.module.css";
+}
+
+/* Ethereum */
+.ethereum {
+  composes: ethereum from "../../../Campaign/List/item.module.css";
+}
+
+/* Polygon */
+.polygon {
+  composes: polygon from "../../../Campaign/List/item.module.css";
+}
+
+/* Solana */
+.solana {
+  composes: solana from "../../../Campaign/List/item.module.css";
+}
+
+.rootDark .btnGetCoupon {
+  @apply text-white;
+}
+
+.couponNotes {
+  @apply bg-red-100 text-red-700 text-sm flex items-center rounded-lg py-3 px-4;
+}
+
+.rootDark .couponNotes {
+  @apply bg-red-200 text-red-800;
+}
+
+.getCoupon {
+  @apply flex items-center;
+}
+
+.couponContainer {
+  @apply w-full;
+}
+
+.couponCodes {
+  @apply bg-orange-50 text-orange-600 rounded block py-2 px-4 w-full;
+}
+
+.root .title {
+  @apply font-semibold;
+}
+
+.rootDark .desc {
+  @apply text-gray-400;
+}
+
+/* Sidebar list coupon */
+.Box {
+  @apply bg-gray-50 border border-gray-200 rounded-lg;
+}
+
+.Box + .Box {
+  @apply mt-6;
+}
+
+.boxHilite {
+  @apply border border-2 border-violet-600 rounded-lg mb-5;
+}
+
+.rootDark .Box {
+  @apply bg-gray-800 border border-gray-700;
+}
+
+.boxTitle {
+  @apply border-b border-gray-200 font-medium text-gray-800 text-lg m-0 py-3 px-4;
+}
+
+.rootDark .boxTitle {
+  @apply border-b border-gray-700 text-white;
+}
+
+.boxHilite .boxTitle {
+}
+
+.boxBody {
+  @apply py-6 px-4;
+}
+
+.couponList {
+  @apply list-none m-0 p-0;
+}
+
+.couponList li {
+  @apply m-0 p-0;
+}
+
+.couponList li + li {
+  @apply mt-2;
+}
+
+.couponItem {
+  @apply bg-white border border-gray-200 hover:border-violet-600 hover:shadow-md rounded-md py-4 pr-28 px-3 relative transition-all duration-200;
+}
+
+.couponItem:hover .btnGetCoupon {
+  @apply bg-violet-600 text-white;
+}
+
+.rootDark .couponItem {
+  @apply bg-transparent border border-gray-700 hover:border-violet-600 transition-all duration-200;
+}
+
+.couponItem h4 {
+  @apply font-medium text-base mt-0 mb-1 p-0;
+}
+
+.rootDark .couponItem h4 {
+  @apply text-white;
+}
+
+.itemMeta {
+  @apply text-xs text-gray-500;
+}
+
+.rootDark .itemMeta {
+  @apply text-gray-300;
+}
+
+.btnGetCoupon {
+  @apply hover:bg-violet-600 border border-violet-600 hover:text-white hover:cursor-pointer text-sm font-normal rounded absolute top-0 right-3 py-1.5 px-2 translate-y-2/4;
+}
+
+.loading {
+  padding: 10px;
+  text-align: center;
+}
+
+.addCampaignBtn {
+  text-align: center;
+}

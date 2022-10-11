@@ -1,0 +1,117 @@
+.root {
+  @apply max-w-2xl mx-auto;  
+}
+
+.rootDark {
+  @apply max-w-2xl mx-auto;  
+}
+
+.root .form {
+  @apply block;
+}
+
+.root label {
+  @apply mb-1 text-base;
+}
+
+.root label {
+  @apply mb-1 text-base;
+}
+
+.rootDark label {
+  @apply mb-1 text-base;
+}
+
+.rootDark h2.pageTitle {
+  @apply text-white text-6xl font-medium leading-6 mt-0 mb-12;
+}
+
+.root .form .fields {
+  @apply mb-6;
+}
+
+.root .form .fields + .fields {
+  @apply border-t border-gray-200 mt-12 pt-12;
+}
+
+.rootDark .form .fields + .fields {
+  @apply border-t border-gray-800 mt-12 pt-12;
+}
+
+.fieldGroupTitle {
+  composes: pageTitle;
+  @apply text-xl leading-6 mt-0 mb-6;
+}
+
+.rootDark .fieldGroupTitle {
+  @apply text-white;
+}
+
+.tokenOwnership {
+  composes: fieldGroupTitle;
+}
+
+.twitterTasks{
+  composes: fieldGroupTitle;
+}
+
+.rewardGroupTitle {
+
+}
+
+.rootDark input {
+  @apply border border-2 border-gray-700;
+}
+
+.rootDark textarea {
+  @apply bg-transparent border border-2 border-gray-700;
+}
+
+.tip {
+  @apply block mt-1 text-xs;
+}
+
+.buttonsContainer {
+  @apply flex mb-4;
+}
+
+.createCampaignErrorRoot {
+  padding: 10px 0px;
+}
+
+.createCampaignErrorMessage {
+  @apply text-red-700 my-0;
+}
+
+.checkbox_root {
+  @apply border border-4 border-gray-800;
+}
+
+.fieldIcons_root {
+  @apply flex items-center;
+}
+
+/* Customize for the datepicker */
+.rdwDatepicker {
+  composes: root from '../../atoms/Field/field.module.css';
+}
+
+.rdwDatepicker :global(.react-datepicker-wrapper) {
+  @apply w-auto;
+}
+
+.rdwDatepicker :global(.react-datepicker-wrapper) input {
+  @apply bg-transparent border border-2 border-gray-200 rounded-md py-2 px-4;
+}
+
+.rootDark .rdwDatepicker :global(.react-datepicker-wrapper) input {
+  @apply border border-2 border-gray-700;
+}
+
+.rdwDatepicker :global(.react-datepicker-wrapper) input:focus {
+  @apply shadow-none;
+}
+.loading {
+  text-align: center;
+  padding: 10px;
+}

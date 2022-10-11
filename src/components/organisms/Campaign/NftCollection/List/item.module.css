@@ -1,0 +1,84 @@
+.root {
+	@apply bg-white ring-1 ring-gray-200 hover:ring-blue-600 rounded-lg hover:shadow-lg flex flex-col items-stretch hover:cursor-pointer hover:-mt-1 hover:mb-1 transition-all duration-200;
+}
+
+.rootDark {
+  composes: root;
+	@apply ring-gray-700 bg-gray-800 bg-opacity-60;
+}
+
+.itemHead {
+	@apply flex items-center;
+}
+
+.couponAmoun {
+	@apply inline-block text-2xl font-bold text-gray-800 mr-4;
+}
+
+.rootDark .couponAmoun {
+	@apply text-white;
+}
+
+.couponLabel {
+	@apply bg-green-100 flex items-center text-green-600 text-xs rounded-xl py-1 pl-2 pr-3;
+}
+
+.couponLabel svg {
+	@apply fill-current mr-1;
+}
+
+.itemHead button {
+	@apply ml-auto border border-violet-600 hover:bg-violet-600 hover:text-white hover:border-opacity-0 cursor-pointer rounded-md py-0.5 px-2 transition-all;
+}
+
+.coverWrap {
+	@apply bg-gray-100 h-52;
+}
+
+.nftCover {
+	height: 208px !important;
+	max-height: 208px !important;
+	left: 50% !important;
+	top: 0;
+	transform: translateX(-50%);
+	min-height: auto !important;
+	margin: 0 !important;
+	width: auto !important;
+	max-width: none !important;
+}
+
+.itemBody {
+	@apply py-6;
+}
+
+.itemBody p {
+	@apply my-0;
+}
+
+.itemFoot {
+	@apply flex items-center justify-between border-t border-gray-200 pt-4 mt-auto;
+}
+
+.rootDark .itemFoot {
+	@apply border-t border-gray-800;
+}
+
+.chainWrap {
+	@apply flex items-center;
+}
+
+.bsc {
+	composes: bsc from "../../../Campaign/List/item.module.css";
+}
+
+.ethereum {
+	composes: ethereum from "../../../Campaign/List/item.module.css";
+}
+
+.polygon {
+	composes: polygon from "../../../Campaign/List/item.module.css";
+}
+
+.solana {
+	composes: solana from "../../../Campaign/List/item.module.css";
+}

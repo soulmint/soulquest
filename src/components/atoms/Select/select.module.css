@@ -1,0 +1,17 @@
+.wrapper {
+    grid-template-areas: 'input icon';
+    grid-template-columns: auto 2.25rem;
+}
+
+.input,
+.input_error {
+    composes: input from '../Field/field.module.css';
+    grid-area: input-start / input-start / input-end / icon-end;
+    padding-right: calc(2.25rem - 1px);
+}
+
+.input {
+}
+
+.input_error {
+}

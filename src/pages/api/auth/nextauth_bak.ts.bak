@@ -1,0 +1,109 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { utils } from 'ethers';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { initializeApollo } from '../../../libs/SystemApolloClient.js';
+import { createUser } from '../../../functions/users/CreateUser.js';
+import { authLogin } from '../../../functions/users/Login.js';
+
+const getApolloClient = () => {
+  return initializeApollo();
+};
+// For more information on each option (and a full list of options) go to
+// https://next-auth.js.org/configuration/options
+export default async function auth(
+  req: NextApiRequest,
+  res: NextApiResponse<any>
+) {
+  const providers = [
+    CredentialsProvider({
+      name: 'Bsc',
+      credentials: {},
+      async authorize(credentials: any) {
+        try {
+          const nonce = '0x' + credentials?.csrfToken;
+          const address = utils.verifyMessage(
+            nonce,
+            credentials?.signedMessage
+          );
+          if (address.toLowerCase() != credentials?.address?.toLowerCase())
+            return null;
+          //  create newUser or return existent user
+          const createdUser = await createUser({
+            email: address,
+            password: process.env.SM_USER_PASSWORD,
+            role: {
+              id: process.env.SM_USER_ROLE_ID,
+              name: 'Rada works',
+              app_access: true,
+              icon: 'supervised_user_circle',
+              admin_access: false,
+              enforce_tfa: false
+            },
+            provider: 'default',
+            status: 'active'
+          });
+          const user = {
+            email: address,
+            name: address
+          };
+          //connect to directus create user & get access token
+
+          //lay access token vao session
+          return user;
+        } catch (e) {
+          return null;
+        }
+      }
+    })
+  ];
+
+  const isDefaultSigninPage =
+    req.method === 'GET' && req.query.nextauth.includes('signin');
+
+  // Hides Sign-In with Ethereum from default sign page
+  if (isDefaultSigninPage) {
+    providers.pop();
+  }
+
+  return await NextAuth(req, res, {
+    // See more at: https://next-auth.js.org/configuration/providers/oauth
+    providers,
+    // See more at: https://next-auth.js.org/configuration/options
+    session: {
+      strategy: 'jwt', //default
+      // Seconds - How long until an idle session expires and is no longer valid.
+      maxAge: 20 * 60 // 20 minutes
+    },
+    jwt: {
+      secret: process.env.JWT_SECRET
+    },
+    secret: process.env.NEXT_AUTH_SECRET,
+    callbacks: {
+      async signIn({ user, account, profile, email, credentials }) {
+        const directusToken = await authLogin({
+          email: user.email,
+          password: process.env.SM_USER_PASSWORD
+        });
+        console.log(directusToken);
+        user.access_token = directusToken.auth_login.access_token;
+        return true;
+      },
+      async redirect({ url, baseUrl }) {
+        return baseUrl;
+      },
+      async jwt({ token, user, account, profile, isNewUser }) {
+        if (user) {
+          token = user;
+        }
+        return token;
+      },
+      async session({ session, token, user }) {
+        session.access_token = token.access_token;
+        console.log(session);
+        return session;
+      }
+    }
+  });
+}

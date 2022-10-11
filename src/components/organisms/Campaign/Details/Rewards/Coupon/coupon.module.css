@@ -1,0 +1,62 @@
+.root {
+}
+
+.rootDark {
+
+}
+
+.rootDark .btnGetCoupon {
+    @apply text-white;
+}
+
+.couponNotes {
+    @apply bg-orange-100 text-orange-700 text-sm flex items-center rounded-lg py-3 px-4;
+}
+
+.rootDark .couponNotes {
+    @apply bg-orange-200 text-orange-800;
+}
+
+.getCoupon {
+    @apply flex items-center;
+}
+
+.couponContainer {
+    @apply w-full;
+}
+
+.couponCodes {
+    @apply bg-orange-50 text-orange-600 rounded block py-2 px-4 w-full;
+}
+
+.couponList {
+    @apply list-none m-0 p-0;
+}
+
+.couponList li {
+    @apply m-0 p-0;
+}
+
+.couponList li + li {
+    @apply mt-2;
+}
+
+.couponItem {
+    @apply bg-white border border-gray-200 hover:border-blue-600 hover:shadow-md rounded-md flex flex-col p-3 relative transition-all duration-200;
+}
+
+.rootDark .couponItem {
+    @apply bg-transparent border border-gray-700 hover:border-blue-600 transition-all duration-200;
+}
+
+.couponItem h4 {
+    @apply font-medium text-base mt-0 mb-2 p-0;
+}
+
+.rootDark .couponItem h4 {
+    @apply text-white;
+}
+
+.btnGetCoupon {
+    @apply hover:bg-violet-600 border border-violet-600 hover:text-white hover:cursor-pointer text-sm font-normal rounded absolute top-0 right-3 py-1.5 px-2 translate-y-2/4;
+}

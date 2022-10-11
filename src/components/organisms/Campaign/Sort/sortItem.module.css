@@ -1,0 +1,11 @@
+.root {
+    @apply flex items-center w-full;
+}
+
+.content {
+    @apply items-center grid grid-cols-[1fr] grid-flow-col gap-3 h-[2.5rem] px-3 py-0 w-full;
+}
+
+.text {
+    @apply text-left whitespace-nowrap;
+}

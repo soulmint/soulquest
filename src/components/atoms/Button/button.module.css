@@ -1,0 +1,41 @@
+.root {
+  @apply text-gray-700 bg-gray-200 hover:bg-gray-300 hover:text-gray-900 font-medium rounded-lg px-4 py-2;
+}
+
+.root:active {
+
+}
+
+.root:disabled {
+  pointer-events: none;
+}
+
+.root:hover:disabled {
+  pointer-events: none;
+}
+
+.root_lowPriority {
+  composes: root;
+}
+
+.root_normalPriority {
+  composes: root;
+}
+
+.root_highPriority {
+  composes: root;
+  @apply bg-violet-600 text-white hover:bg-violet-700 hover:text-white font-normal focus:outline-none;
+}
+
+.root_lowPriorityNegative,
+.root_normalPriorityNegative {
+  composes: root;
+}
+
+.root_highPriorityNegative {
+  composes: root;
+}
+
+.content {
+  @apply flex items-center;
+}
