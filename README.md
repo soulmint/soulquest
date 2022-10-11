@@ -1,4 +1,4 @@
-# Rada > SoulMint
+# SoulMint > SoulQuest
 
 ## Setting VS Code (Prerequisite)
 
