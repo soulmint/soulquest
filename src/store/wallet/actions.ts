@@ -1,18 +1,18 @@
 import Web3 from 'web3';
-import { WalletsActionType } from './wallets.types';
+import { WalletActionType } from './types';
 
 // common
 export const connectWalletAction = (
   provider: any,
   web3: Web3,
-  account: string
+  address: string
 ) => {
   return {
-    type: WalletsActionType.connectWallet,
+    type: WalletActionType.connectWallet,
     payload: {
       provider,
       web3,
-      account
+      address
     }
   };
 };

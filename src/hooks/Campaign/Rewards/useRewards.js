@@ -9,12 +9,14 @@ import API from './api.gql';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+// import { useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 import {
   saveSocialLink,
   checkExistsSocialLink
 } from 'src/hooks/User/useSocial';
 import BrowserPersistence from '../../../utils/simplePersistence';
+
 export default (props) => {
   const { campaign, classes } = props;
 
@@ -22,10 +24,12 @@ export default (props) => {
 
   const { t } = useTranslation('campaign_details');
 
+  /*const walletsSelector = useSelector((state) => state.wallet);
+  console.log("walletInfo:", walletsSelector.info);*/
+
   const { data: session } = useSession();
 
   const storage = new BrowserPersistence();
-
   const user = storage.getItem('user');
 
   const twSocialLinkTtl = 30 * 24 * 60 * 60; // 30 days
@@ -33,6 +37,7 @@ export default (props) => {
   const tasks = {};
   let taskTotal = 0;
   const add = user && user.email ? user.email : null;
+
   let doneTasks = storage.getItem(
     `user_${add}_campaign_${campaign.id}_doneTasks`
   );
@@ -113,7 +118,6 @@ export default (props) => {
     } else {
       //check local storage
       socialLink = storage.getItem('twSocialLink');
-
       if (socialLink && socialLink.uid) {
         tasks.ck_twitter_login.status = true;
         tasks.ck_twitter_login.uid = socialLink.uid;

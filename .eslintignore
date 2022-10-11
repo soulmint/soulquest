@@ -12,6 +12,7 @@ build-tinymce.js
 tus-server.js
 src/pages/_offline.js
 src/pages/_document.js
+src/utils/simplePersistence.js
 #Some files dev but have not using yet
 src/components/organisms/Campaign/Subcribe/subcribe.js
 src/components/organisms/Campaign/Subcribe/index.js

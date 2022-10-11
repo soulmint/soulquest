@@ -1,12 +1,12 @@
 import { useMemo } from 'react';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import WalletsReducer from '../ducks/wallets/wallets.reducers';
+import WalletReducer from '../store/wallet/reducers';
 
 let store: any;
 
 const reducer = combineReducers({
-  wallets: WalletsReducer
+  wallet: WalletReducer
 });
 
 function initStore(preloadedState: any) {

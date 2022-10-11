@@ -9,16 +9,16 @@ import { useStyle } from '../../../../../classify';
 import Button from '../../../../../atoms/Button';
 import TextLink from '../../../../../../components/atoms/TextLink';
 import BrowserPersistence from '../../../../../../utils/simplePersistence';
-import Cookie from 'js-cookie';
+// import Cookie from 'js-cookie';
 import {
   TwitterLogin,
-  getTwitterUserIdByUsermame,
+  // getTwitterUserIdByUsermame,
   getTweetsStatus,
   TwitterFollow
 } from '../../../../../../hooks/Campaign/Rewards/useTwitter';
 import ConnectWallet from '../../../../../../components/organisms/User/ConnectWallet';
 import {
-  TwitterIcon,
+  // TwitterIcon,
   TaskFailIcon,
   TaskSuccessIcon
 } from '../../../../Svg/SvgIcons';
@@ -56,7 +56,7 @@ const Quest = (props) => {
 
   const add = user && user.email ? user.email : null;
   const isWalletConnected =
-    !session || (session && add.includes('@')) ? false : true;
+    !session || (add && add.includes('@')) ? false : true;
 
   if (isWalletConnected) {
     tasks.ck_connect_wallet.status = true;
@@ -164,7 +164,7 @@ const Quest = (props) => {
     );
     let twFollowTaskClasses = [classes.twitterFollowTask];
     twFollowTaskClasses.push(
-      twitterFollowState == 'loading' ? classes.taskLoading : null
+      twitterFollowState === 'loading' ? classes.taskLoading : null
     );
     twitterFollowTask = (
       <div className={`${twFollowTaskClasses.join(' ')}`}>
@@ -261,7 +261,7 @@ const Quest = (props) => {
     );
     let twReTeetTaskClasses = [classes.twitterRetweetTask];
     twReTeetTaskClasses.push(
-      twitterReTweetState == 'loading' ? classes.taskLoading : null
+      twitterReTweetState === 'loading' ? classes.taskLoading : null
     );
     twitterReTweetTask = (
       <div className={`${twReTeetTaskClasses.join(' ')}`}>
@@ -356,7 +356,7 @@ const Quest = (props) => {
   );
   let nftTaskClasses = [classes.soulBoundTokenTask];
   nftTaskClasses.push(
-    nftOwnershipState == 'loading' ? classes.taskLoading : null
+    nftOwnershipState === 'loading' ? classes.taskLoading : null
   );
   const nftOwnershipTask = tasks.ck_nft_ownership ? (
     <div className={nftTaskClasses.join(' ')}>

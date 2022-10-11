@@ -22,10 +22,10 @@ const MyApp = function MyApp({
   Component,
   pageProps: { session: Session, ...pageProps }
 }: AppProps) {
-  // const store = useStore();
   const { data: session } = useSession();
   const [accessToken, setAccessToken] = useState(null);
   const localStorage = new BrowserPersistence();
+  // const store = useStore();
 
   useEffect(() => {
     if (session && session.access_token) {
@@ -70,9 +70,10 @@ const SoulMintApp = ({
     pageProps.initialApolloState ? pageProps.initialApolloState : null
   );
   const store = useStore();
+
   return (
-    <ThemeProvider attribute="class">
-      <ApolloProvider client={apolloClient}>
+    <ApolloProvider client={apolloClient}>
+      <ThemeProvider attribute="class">
         <Provider store={store}>
           <FullPageLoader />
           <SessionProvider session={session} refetchInterval={20 * 60}>
@@ -80,8 +81,8 @@ const SoulMintApp = ({
             <Toast />
           </SessionProvider>
         </Provider>
-      </ApolloProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </ApolloProvider>
   );
 };
 

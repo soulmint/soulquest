@@ -30,17 +30,27 @@ class NamespacedLocalStorage {
 }
 
 export default class BrowserPersistence {
-    static KEY = 'SOUL_MINT_BROWSER_PERSISTENCE';
+    static KEY = 'BROWSER_PERSISTENCE';
+
     /* istanbul ignore next: test injects localstorage mock */
     constructor(localStorage = globalThis.localStorage || storageMock) {
+
+        const keyName = (this.constructor.KEY)
+          ? `${process.env.LOCAL_STORAGE_KEY_PREFIX}_${this.constructor.KEY}`
+          : `${process.env.LOCAL_STORAGE_KEY_PREFIX}_${BrowserPersistence.KEY}`
+
         this.storage = new NamespacedLocalStorage(
             localStorage,
-            this.constructor.KEY || BrowserPersistence.KEY
+          keyName
         );
+
+        console.log(this.storage);
     }
+
     getRawItem(name) {
         return this.storage.getItem(name);
     }
+
     getItem(name) {
         const now = Date.now();
         const item = this.storage.getItem(name);
