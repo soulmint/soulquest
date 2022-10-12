@@ -15,7 +15,7 @@ const HomeTmpl = (props) => {
         schemaType="article"
         title={`Reward distribution platform based on SoulBound Token - SoulMint`}
         description={`Build your Web3 reputation through SoulBound Tokens. Discover, participate and earn the most exclusive rewards from SoulBound token based campaigns.`}
-        image={`${process.env.PUBLIC_URL}/hero.png`}
+        image={`${process.env.PUBLIC_URL}/soulmint-social.jpg`}
       />
       <MainTmpl>
         <Hero />
