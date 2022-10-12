@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
-import Head from 'next/head';
+// import Head from 'next/head';
 import TextLink from '../../../atoms/TextLink';
+import SEO from '../../SEO';
 // import Image from "../../../atoms/Image";
 import Rewards from './Rewards';
 import useThemes from '../../../../hooks/useThemes';
@@ -24,6 +25,7 @@ const Details = (props) => {
 
   let pageTitle = null;
   let child = null;
+  let SEOChild = null;
   if (!data) {
     if (error) {
       if (process.env.NODE_ENV !== 'production') {
@@ -136,7 +138,16 @@ const Details = (props) => {
           {storeInfo}
         </div>
       );
-
+      SEOChild = (
+        <SEO
+          url={`${process.env.PUBLIC_URL}/campaign/${slug}`}
+          openGraphType="website"
+          schemaType="article"
+          title={`${pageTitle} - SoulMint - The 1st SoulBound`}
+          description={`${campaign.short_desc}...`}
+          image={`${assetsBaseUrl}/${campaign.cover_image.id}?${coverOptions}`}
+        />
+      );
       child = (
         <div className={`${classes.pageWrapper} dark:bg-gray-900`}>
           <div className={`${classes.pageContainer}`}>
@@ -156,15 +167,21 @@ const Details = (props) => {
         </div>
       );
     } else {
+      SEOChild = (
+        <SEO
+          url={`${process.env.PUBLIC_URL}/campaign/${slug}`}
+          openGraphType="website"
+          schemaType="article"
+          title={`${pageTitle} - SoulMint - The 1st SoulBound`}
+        />
+      );
       child = <div className={classes.notFound}>{t('Not Found.')}</div>;
     }
   }
 
   return (
     <Fragment>
-      <Head>
-        <title>{pageTitle} - SoulMint - The 1st SoulBound</title>
-      </Head>
+      {SEOChild}
       <div className={`${classes[rootClassName]}`}>{child}</div>
     </Fragment>
   );
