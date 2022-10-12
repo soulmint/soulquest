@@ -5,7 +5,6 @@ import MainTmpl from './_mainTmpl';
 
 const HowItWorksTmp = (props: any) => {
   const { children } = props;
-  console.log(children);
   return (
     <Fragment>
       <MainTmpl>

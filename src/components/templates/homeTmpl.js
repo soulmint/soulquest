@@ -4,15 +4,12 @@ import MainTmpl from './_mainTmpl';
 import List from '../organisms/Campaign/List';
 import { Hero, HowItWork, Features, News } from '../organisms/HomePage';
 import Head from 'next/head';
-import SEO from '../organisms/Head';
+import HeadCustom from '../organisms/Head';
 
 const HomeTmpl = (props) => {
   return (
     <Fragment>
-      <Head>
-        <title>Home Page - SoulMint - The 1st SoulBound</title>
-      </Head>
-      <SEO
+      <HeadCustom
         url={`${process.env.PUBLIC_URL}`}
         openGraphType="website"
         schemaType="article"

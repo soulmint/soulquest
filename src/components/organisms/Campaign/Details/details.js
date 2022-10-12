@@ -3,7 +3,7 @@ import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
 // import Head from 'next/head';
 import TextLink from '../../../atoms/TextLink';
-import SEO from '../../Head';
+import HeadCustom from '../../Head';
 // import Image from "../../../atoms/Image";
 import Rewards from './Rewards';
 import useThemes from '../../../../hooks/useThemes';
@@ -139,7 +139,7 @@ const Details = (props) => {
         </div>
       );
       SEOChild = (
-        <SEO
+        <HeadCustom
           url={`${process.env.PUBLIC_URL}/campaign/${slug}`}
           openGraphType="website"
           schemaType="article"
@@ -168,7 +168,7 @@ const Details = (props) => {
       );
     } else {
       SEOChild = (
-        <SEO
+        <HeadCustom
           url={`${process.env.PUBLIC_URL}/campaign/${slug}`}
           openGraphType="website"
           schemaType="article"
