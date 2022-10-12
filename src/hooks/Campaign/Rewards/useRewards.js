@@ -24,8 +24,8 @@ export default (props) => {
 
   const { t } = useTranslation('campaign_details');
 
-  /*const walletsSelector = useSelector((state) => state.wallet);
-  console.log("walletInfo:", walletsSelector.info);*/
+  // const walletsSelector = useSelector((state) => state.wallet);
+  // console.log("walletInfo:", walletsSelector.info);
 
   const { data: session } = useSession();
 

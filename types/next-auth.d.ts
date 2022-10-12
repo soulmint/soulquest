@@ -6,9 +6,9 @@ declare module 'next-auth' {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session extends Record<string, unknown> {
-    id: string | unknown;
+    // id: string | unknown;
     access_token: string | unknown;
-    refresh_token: string | unknown;
+    // refresh_token: string | unknown;
     error: string;
     user: {
       id: string;
@@ -31,7 +31,7 @@ declare module 'next-auth/jwt' {
     /** OpenID ID Token */
     idToken?: string;
     error: string;
-    access_tooken: unknown;
+    access_token: unknown;
     refresh_token: unknown;
   }
 }
