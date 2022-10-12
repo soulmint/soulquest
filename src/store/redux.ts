@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import WalletReducer from '../store/wallet/reducers';
+import WalletReducer from './wallet/reducers';
 
 let store: any;
 

@@ -9,7 +9,7 @@ import { appWithTranslation } from 'next-i18next';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../libs/apolloClient';
 import { Provider } from 'react-redux';
-import { useStore } from 'src/libs/redux';
+import { useStore } from 'src/store/redux';
 import dynamic from 'next/dynamic';
 const FullPageLoader = dynamic(
   () => import('../components/organisms/FullPageLoader')
@@ -17,26 +17,37 @@ const FullPageLoader = dynamic(
 const Toast = dynamic(() => import('../components/organisms/Toast'));
 const Providers = dynamic(() => import('../utils/providers'));
 import BrowserPersistence from '../utils/simplePersistence';
+import { getTokenState } from '../hooks/User/useUser';
 
 const MyApp = function MyApp({
   Component,
   pageProps: { session: Session, ...pageProps }
 }: AppProps) {
+  const store = useStore();
+  const localStorage = new BrowserPersistence();
   const { data: session } = useSession();
   const [accessToken, setAccessToken] = useState(null);
-  const localStorage = new BrowserPersistence();
-  // const store = useStore();
 
-  useEffect(() => {
-    if (session && session.access_token) {
-      setAccessToken(session.access_token);
-    }
+  useEffect(async () => {
     if (session?.error === 'RefreshAccessTokenError') {
       localStorage.removeItem('user');
-      signOut();
+      return await signOut();
     }
+
+    if (session && session.access_token) {
+      const { needRefresh } = getTokenState(session.access_token);
+      if (needRefresh) {
+        //clean user data from local storage
+        localStorage.removeItem('user');
+        //trigger to re-login to refresh access_token
+        return await signOut();
+      } else {
+        setAccessToken(session.access_token);
+      }
+    }
+
     // return () => {};
-  }, [session /*, store*/]);
+  }, [session, store]);
 
   useEffect(() => {
     if (session) {
@@ -46,6 +57,7 @@ const MyApp = function MyApp({
         id: session.id,
         access_token: accessToken
       };
+      //save user data to local storage to use on other contexts
       localStorage.setItem('user', userData);
       // console.log('USER:', localStorage.getItem('user'));
     }
@@ -76,7 +88,7 @@ const SoulMintApp = ({
       <ThemeProvider attribute="class">
         <Provider store={store}>
           <FullPageLoader />
-          <SessionProvider session={session} refetchInterval={20 * 60}>
+          <SessionProvider session={session}>
             <MyApp Component={Component} pageProps={pageProps} router={null} />
             <Toast />
           </SessionProvider>

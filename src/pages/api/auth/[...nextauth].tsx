@@ -75,7 +75,7 @@ export default async function auth(
     providers,
     session: {
       strategy: 'jwt', // Seconds - How long until an idle session expires and is no longer valid.
-      maxAge: 24 * 60 * 60 // 1day
+      maxAge: 20 * 60 // Todo: get correct lifetime from JWT token lifetime config in the backend
     },
     secret: process.env.NEXTAUTH_SECRET,
 
@@ -130,10 +130,14 @@ export default async function auth(
         if (account?.provider === 'twitter') {
           if (profile) {
             token['twUserProfile'] = {
-              followersCount: profile.followers_count,
-              screenName: profile.screen_name,
-              followingCount: profile.friends_count,
-              userId: profile.id
+              userId: profile.id ? profile.id : null,
+              followersCount: profile.followers_count
+                ? profile.followers_count
+                : null,
+              screenName: profile.screen_name ? profile.screen_name : null,
+              followingCount: profile.friends_count
+                ? profile.friends_count
+                : null
             };
           }
           if (account) {
@@ -146,9 +150,9 @@ export default async function auth(
 
         // Persist the OAuth access_token to the token right after signin
         if (account && user) {
+          token.id = user.id;
           token.access_token = user.access_token;
           token.refresh_token = user.refresh_token;
-          token.id = user.id;
           token.provider = account.provider;
         } else {
           if (token.access_token) {
@@ -168,12 +172,15 @@ export default async function auth(
       },
       async session({ session, token }) {
         // Send properties to the client, like an access_token from a provider.
-        session.id = token.id;
-        session.access_token = token.access_token;
+        /*session.id = token.id;
         session.provider = token.provider;
-        session.twUserProfile = token.twUserProfile;
-        session.credentials = token.credentials;
+        session.credentials = token.credentials;*/
+        session.access_token = token.access_token;
+        if (token.twUserProfile) {
+          session.twUserProfile = token.twUserProfile;
+        }
         session.error = token.error;
+
         return session;
       }
     }

@@ -43,8 +43,6 @@ export default class BrowserPersistence {
             localStorage,
           keyName
         );
-
-        console.log(this.storage);
     }
 
     getRawItem(name) {
