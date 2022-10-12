@@ -4,6 +4,7 @@ import MainTmpl from './_mainTmpl';
 import List from '../organisms/Campaign/List';
 import { Hero, HowItWork, Features, News } from '../organisms/HomePage';
 import Head from 'next/head';
+import SEO from '../organisms/SEO';
 
 const HomeTmpl = (props) => {
   return (
@@ -11,6 +12,14 @@ const HomeTmpl = (props) => {
       <Head>
         <title>Home Page - SoulMint - The 1st SoulBound</title>
       </Head>
+      <SEO
+        url={`${process.env.PUBLIC_URL}`}
+        openGraphType="website"
+        schemaType="article"
+        title={`Reward distribution platform based on SoulBound Token - SoulMint`}
+        description={`Build your Web3 reputation through SoulBound Tokens. Discover, participate and earn the most exclusive rewards from SoulBound token based campaigns.`}
+        image={`${process.env.PUBLIC_URL}/hero.png`}
+      />
       <MainTmpl>
         <Hero />
         <div className="bg-white">
