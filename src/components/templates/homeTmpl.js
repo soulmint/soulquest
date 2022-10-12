@@ -4,7 +4,7 @@ import MainTmpl from './_mainTmpl';
 import List from '../organisms/Campaign/List';
 import { Hero, HowItWork, Features, News } from '../organisms/HomePage';
 import Head from 'next/head';
-import SEO from '../organisms/SEO';
+import SEO from '../organisms/Head';
 
 const HomeTmpl = (props) => {
   return (

@@ -3,7 +3,7 @@ import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
 // import Head from 'next/head';
 import TextLink from '../../../atoms/TextLink';
-import SEO from '../../SEO';
+import SEO from '../../Head';
 // import Image from "../../../atoms/Image";
 import Rewards from './Rewards';
 import useThemes from '../../../../hooks/useThemes';

@@ -55,10 +55,10 @@ const socialTags = ({
   return metaTags;
 };
 
-const SEO = (props) => {
+const HeadCustom = (props) => {
   const { title, description, image } = props;
-  const schemaType = props.schemaType || SEO.defaultProps.schemaType;
-  const url = props.url || SEO.defaultProps.url;
+  const schemaType = props.schemaType || HeadCustom.defaultProps.schemaType;
+  const url = props.url || HeadCustom.defaultProps.url;
   return (
     <Head>
       <title>{title}</title>
@@ -86,7 +86,7 @@ const SEO = (props) => {
   );
 };
 
-SEO.defaultProps = {
+HeadCustom.defaultProps = {
   url: '/',
   openGraphType: 'website',
   schemaType: 'Article',
@@ -100,7 +100,7 @@ SEO.defaultProps = {
     settings.meta.social.graphic
 };
 
-SEO.propTypes = {
+HeadCustom.propTypes = {
   url: PropTypes.string,
   type: PropTypes.string,
   title: PropTypes.string,
@@ -108,4 +108,4 @@ SEO.propTypes = {
   image: PropTypes.string
 };
 
-export default SEO;
+export default HeadCustom;
