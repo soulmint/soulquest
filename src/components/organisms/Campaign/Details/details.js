@@ -145,7 +145,7 @@ const Details = (props) => {
           schemaType="article"
           title={`${pageTitle} - SoulMint - The 1st SoulBound`}
           description={`${campaign.short_desc}...`}
-          image={`${assetsBaseUrl}/${campaign.cover_image.id}?${coverOptions}`}
+          image={`${assetsBaseUrl}/${campaign.cover_image.id}?dowload/sharing.png`}
         />
       );
       child = (
