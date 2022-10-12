@@ -2,7 +2,7 @@ import React, { FunctionComponent, Fragment } from 'react';
 import Web3 from 'web3';
 import Web3Modal from 'web3modal';
 import { useDispatch } from 'react-redux';
-import { connectWallet } from 'src/store/wallet/operations';
+import { setInfo } from 'src/store/user/operations';
 import { useSession, getCsrfToken, signIn } from 'next-auth/react';
 import { ethers } from 'ethers';
 import { ellipsify } from '../../../../utils/strUtils';
@@ -50,9 +50,8 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
       // }
 
       const signer = pp.getSigner();
-      /*signer.getBalance().then(function (rs) {
-        console.log(ethers.utils.formatEther(rs));
-      });*/
+      /* let balance = await signer.getBalance();
+      const balanceText = ethers.utils.formatEther(balance);*/
 
       const callbackUrl = '/';
       const nonce = '0x' + (await getCsrfToken()) || '';
@@ -66,7 +65,9 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
         signedMessage,
         callbackUrl
       });
-      connectWallet(dispatch, provider, web3, accounts[0]);
+
+      //set user info
+      setInfo(dispatch, accounts[0], accounts[0], accounts[0]);
     } catch (e) {
       if (process.env.NODE_ENV !== 'production') {
         console.error(e);

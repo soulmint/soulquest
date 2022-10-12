@@ -9,7 +9,7 @@ import API from './api.gql';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 import {
   saveSocialLink,
@@ -24,8 +24,8 @@ export default (props) => {
 
   const { t } = useTranslation('campaign_details');
 
-  // const walletsSelector = useSelector((state) => state.wallet);
-  // console.log("walletInfo:", walletsSelector.info);
+  const userSelector = useSelector((state) => state.user);
+  console.log('user:', userSelector.token);
 
   const { data: session } = useSession();
 

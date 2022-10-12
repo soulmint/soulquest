@@ -13,8 +13,8 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const localStorage = new BrowserPersistence();
-  const user = localStorage.getItem('user');
-  const token = user && user.access_token ? user.access_token : null;
+  const access_token = localStorage.getItem('access_token');
+  const token = access_token ? access_token : null;
   if (token) {
     headers = {
       ...headers,

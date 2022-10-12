@@ -1,11 +1,11 @@
 import React, { Fragment, FunctionComponent /*, useState*/ } from 'react';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'next-i18next';
 import { useStyle } from '../../../classify';
 import useThemes from '../../../../hooks/useThemes';
 import defaultClasses from './dropDownMenu.module.css';
-import { signOut } from 'next-auth/react';
+import { logOut } from 'src/store/user/operations';
 import Link from 'src/components/atoms/Link';
-import BrowserPersistence from '../../../../utils/simplePersistence';
 interface DropDownMenuProps {
   name?: string;
   classes?: object;
@@ -20,10 +20,9 @@ const DropDownMenu: FunctionComponent<DropDownMenuProps> = (props) => {
   // const handleDropDownMenu = () => {
   //   setExpanded(!expanded);
   // };
+  const dispatch = useDispatch();
   const disConnect = async () => {
-    const localStorage = new BrowserPersistence();
-    localStorage.removeItem('user');
-    await signOut();
+    await logOut(dispatch);
   };
 
   return (

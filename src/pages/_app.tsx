@@ -2,7 +2,7 @@ import '../../styles/globals.css';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
-import { SessionProvider, signOut, useSession } from 'next-auth/react';
+import { SessionProvider, useSession } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
 import { appWithTranslation } from 'next-i18next';
@@ -16,53 +16,43 @@ const FullPageLoader = dynamic(
 );
 const Toast = dynamic(() => import('../components/organisms/Toast'));
 const Providers = dynamic(() => import('../utils/providers'));
-import BrowserPersistence from '../utils/simplePersistence';
 import { getTokenState } from '../hooks/User/useUser';
+import { useDispatch } from 'react-redux';
+import { setToken, logOut } from 'src/store/user/operations';
 
 const MyApp = function MyApp({
   Component,
   pageProps: { session: Session, ...pageProps }
 }: AppProps) {
   const store = useStore();
-  const localStorage = new BrowserPersistence();
   const { data: session } = useSession();
   const [accessToken, setAccessToken] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(async () => {
-    if (session?.error === 'RefreshAccessTokenError') {
-      localStorage.removeItem('user');
-      return await signOut();
-    }
-
-    if (session && session.access_token) {
-      const { needRefresh } = getTokenState(session.access_token);
-      if (needRefresh) {
-        //clean user data from local storage
-        localStorage.removeItem('user');
-        //trigger to re-login to refresh access_token
-        return await signOut();
-      } else {
-        setAccessToken(session.access_token);
+    try {
+      if (session?.error === 'RefreshAccessTokenError') {
+        await logOut(dispatch);
+      }
+      if (session && session.access_token) {
+        const { needRefresh } = getTokenState(session.access_token);
+        if (needRefresh) {
+          await logOut(dispatch);
+        } else {
+          //set access_token for user state
+          setToken(dispatch, accessToken);
+          //trigger to refresh page
+          setAccessToken(session.access_token);
+        }
+      }
+    } catch (e) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(e);
       }
     }
 
     // return () => {};
   }, [session, store]);
-
-  useEffect(() => {
-    if (session) {
-      //saving for other contexts
-      const userData = {
-        ...session.user,
-        id: session.id,
-        access_token: accessToken
-      };
-      //save user data to local storage to use on other contexts
-      localStorage.setItem('user', userData);
-      // console.log('USER:', localStorage.getItem('user'));
-    }
-    // return () => {};
-  }, [accessToken, session]);
 
   return (
     <Providers>
