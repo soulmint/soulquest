@@ -3,15 +3,24 @@ import BrowserPersistence from '../../utils/simplePersistence';
 
 const storage = new BrowserPersistence();
 
+const userId = storage.getRawItem('user_id');
 const accessToken = storage.getRawItem('access_token');
-const currentUserInfo = storage.getRawItem('current_user_info');
+const walletAddress = storage.getRawItem('wallet_address');
 
-const getCurrentUserInfo = () => {
-  if (!currentUserInfo) {
-    return {};
+const getId = () => {
+  if (!userId) {
+    return undefined;
   }
+  const { value } = JSON.parse(userId);
 
-  const { value } = JSON.parse(currentUserInfo);
+  return value;
+};
+
+const getWalletAddress = () => {
+  if (!walletAddress) {
+    return undefined;
+  }
+  const { value } = JSON.parse(walletAddress);
 
   return value;
 };
@@ -26,8 +35,9 @@ const getToken = () => {
 };
 
 export const initialState: UserState = {
+  id: getId(),
   token: getToken(),
-  info: getCurrentUserInfo()
+  wallet_address: getWalletAddress()
 };
 
 const reducer = (
@@ -35,15 +45,20 @@ const reducer = (
   action: UserAction
 ): UserState => {
   switch (action.type) {
+    case UserActionType.setId:
+      return {
+        ...state,
+        id: action.payload
+      };
     case UserActionType.setToken:
       return {
         ...state,
         token: action.payload
       };
-    case UserActionType.setInfo:
+    case UserActionType.setWalletAddress:
       return {
         ...state,
-        info: action.payload
+        wallet_address: action.payload
       };
     case UserActionType.logOut:
       return {

@@ -3,7 +3,7 @@ import {
   USER_EXISTS_GQL,
   LOGIN_GQL,
   AUTH_REFRESH_GQL,
-  UPDATE_USER_GQL,
+  // UPDATE_USER_GQL,
   CREATE_USER_GQL
 } from './api.gql';
 
@@ -25,21 +25,23 @@ export const authRefresh = async (auth: any) => {
     variables: { refresh_token }
   });
 
-  console.log('authRefresh: ', data);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('authRefresh: ', data);
+  }
 
   return data.auth_refresh;
 };
 export const isExistsUser = async (email: string) => {
-  let checkUsser = { id: '', email: '' };
+  let checkUser = { id: '', email: '' };
   const client = initializeApollo();
   const { data } = await client.query({
     query: USER_EXISTS_GQL,
     variables: { email: { _eq: email } }
   });
   if (data.users.length > 0) {
-    checkUsser = data.users[0];
+    checkUser = data.users[0];
   }
-  return checkUsser;
+  return checkUser;
 };
 
 export const createUser = async (data: any) => {
@@ -51,29 +53,32 @@ export const createUser = async (data: any) => {
     });
     return res.data.create_users_item;
   } catch (error) {
-    console.log(error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(error);
+    }
     return error;
   }
 };
 
-export const updateUser = async (data: any) => {
-  const client = initializeApollo();
-  try {
-    const res = await client.mutate({
-      mutation: UPDATE_USER_GQL,
-      variables: { data }
-    });
-    console.log(res);
-    return res;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
-};
+// export const updateUser = async (data: any) => {
+//   const client = initializeApollo();
+//   try {
+//     const res = await client.mutate({
+//       mutation: UPDATE_USER_GQL,
+//       variables: { data }
+//     });
+//     // console.log(res);
+//     return res;
+//   } catch (error) {
+//     console.log(error);
+//     return error;
+//   }
+// };
 
 function parseJwt(token: string) {
   const base64Payload = token.split('.')[1];
   const payload = Buffer.from(base64Payload, 'base64');
+
   return JSON.parse(payload.toString());
 }
 
@@ -108,7 +113,9 @@ export async function refreshAccessToken(token: any) {
       refresh_token: refreshedTokens.refresh_token ?? token.refresh_token // Fall back to old refresh token
     };
   } catch (error) {
-    console.log(error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(error);
+    }
     return {
       ...token,
       error: 'RefreshAccessTokenError'

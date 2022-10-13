@@ -18,16 +18,16 @@ const Toast = dynamic(() => import('../components/organisms/Toast'));
 const Providers = dynamic(() => import('../utils/providers'));
 import { getTokenState } from '../hooks/User/useUser';
 import { useDispatch } from 'react-redux';
-import { setToken, logOut } from 'src/store/user/operations';
+import { setId, setToken, logOut } from 'src/store/user/operations';
 
 const MyApp = function MyApp({
   Component,
   pageProps: { session: Session, ...pageProps }
 }: AppProps) {
   const store = useStore();
+  const dispatch = useDispatch();
   const { data: session } = useSession();
   const [accessToken, setAccessToken] = useState(null);
-  const dispatch = useDispatch();
 
   useEffect(async () => {
     try {
@@ -39,8 +39,12 @@ const MyApp = function MyApp({
         if (needRefresh) {
           await logOut(dispatch);
         } else {
+          //set user id for user state
+          setId(dispatch, session.user_id);
+
           //set access_token for user state
-          setToken(dispatch, accessToken);
+          setToken(dispatch, session.access_token);
+
           //trigger to refresh page
           setAccessToken(session.access_token);
         }
@@ -56,9 +60,6 @@ const MyApp = function MyApp({
 
   return (
     <Providers>
-      <Head>
-        <title>SoulMint - The 1st SoulBound</title>
-      </Head>
       <Component {...pageProps} />
     </Providers>
   );

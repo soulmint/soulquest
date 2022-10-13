@@ -1,17 +1,15 @@
 import { Dispatch } from 'react';
 
 export type UserState = {
-  info?: {
-    email?: string;
-    name?: string;
-    wallet_address?: string;
-  };
-  token: any;
+  id?: any;
+  token?: any;
+  wallet_address?: any;
 };
 
 export const UserActionType = {
+  setId: 'setId',
   setToken: 'setToken',
-  setInfo: 'setInfo',
+  setWalletAddress: 'setWalletAddress',
   logOut: 'logOut'
 };
 

@@ -6,7 +6,7 @@ declare module 'next-auth' {
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
    */
   interface Session extends Record<string, unknown> {
-    // id: string | unknown;
+    user_id: string | unknown;
     access_token: string | unknown;
     // refresh_token: string | unknown;
     error: string;
