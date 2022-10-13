@@ -40,8 +40,12 @@
 }
 
 /*  */
+.itemTitle {
+	@apply line-clamp-2 text-lg text-slate-800 my-0;
+}
+
 .itemDesc {
-	@apply line-clamp-3 text-sm;
+	@apply line-clamp-3 text-base mb-4 text-slate-500;
 }
 
 .itemDesc p {

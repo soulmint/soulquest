@@ -6,14 +6,14 @@ const Hero = () => {
       <div className={`${classes.root} bg-teal-400 relative`}>
         <div className="container max-w-screen-xl mx-auto px-4 lg:px-4 z-10">
           <div className="flex flex-wrap items-center py-10 md:py-16 lg:py-16">
-            <div className="basis-full lg:basis-7/12 text-center lg:text-left lg:pr-4">
-              <h1 className="text-4xl lg:text-7xl font-extrabold text-gray-900 tracking-tight mt-0 mb-4 lg:mb-6">
+            <div className="basis-full lg:basis-7/12 text-center lg:text-left lg:pr-16">
+              <h1 className="text-4xl lg:text-7xl font-bold text-slate-800 !leading-tight mt-0 mb-4 lg:mb-6">
                 <span className="block">
                   Reward distribution platform for{' '}
                   <span className="font-light">Soul</span>Bound Tokens
                 </span>
               </h1>
-              <p className="text-lg lg:text-2xl font-normal my-0 text-gray-900">
+              <p className="text-lg lg:text-2xl font-normal my-0 text-slate-800">
                 Build your Web3 reputation through SoulBound Tokens. Explore and
                 earn.
               </p>
@@ -23,7 +23,7 @@ const Hero = () => {
                   href="https://soulmint.notion.site/SoulMint-e036b079a12b41ee8bf150689ff4af22"
                   title=""
                   target="_blank"
-                  className="bg-teal-500 hover:bg-teal-600 text-lg text-white font-medium rounded-xl py-3 px-6 tracking-wide transition-all duration-300"
+                  className="text-lg text-slate-800 font-medium rounded-xl py-3 px-6 tracking-wide transition-all duration-300 border-2 border-slate-800"
                   rel="noreferrer"
                 >
                   Campaigns

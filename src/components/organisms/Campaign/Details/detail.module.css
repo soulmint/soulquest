@@ -35,19 +35,16 @@
 }
 
 .pageContentInner {
-  @apply bg-white rounded-lg shadow-sm py-4 px-6 pt-0
+  @apply bg-white rounded-lg shadow-sm py-6 px-6;
 }
 
-.rootDark .pageContentInner {
-  @apply bg-gray-800;
-}
 
 .shortDesc {
-  @apply font-semibold mb-8;
+  @apply mb-8 font-semibold leading-relaxed;
 }
 
 .coverImage {
-  @apply rounded-t-lg overflow-hidden mb-8 -mx-6;
+  @apply rounded-lg overflow-hidden mb-8;
 }
 
 .campaignMeta {
@@ -135,7 +132,4 @@
 
 .campaignThumb {
 
-}
-
-.shortDesc {
 }

@@ -12,10 +12,10 @@ module.exports = {
   theme: {
     // Add Font to Sans Font Array
     fontFamily: {
-      sans: ['"PT Root UI"', '-apple-system', 'BlinkMacSystemFont', 'ui-sans-serif', 'system-ui', "Helvetica Neue", 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"'],
+      sans: ['"Outfit"', '-apple-system', 'BlinkMacSystemFont', 'ui-sans-serif', 'system-ui', "Helvetica Neue", 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"'],
       serif: ['"Literata"', ...defaultTheme.fontFamily.serif],
       mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', '"Liberation Mono"', '"Courier New"', 'monospace'],
-      altsans: ['"Poppins"', '-apple-system', 'BlinkMacSystemFont', 'ui-sans-serif', 'system-ui', "Helvetica Neue", 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"'],
+      altsans: ['"Outfit"', '-apple-system', 'BlinkMacSystemFont', 'ui-sans-serif', 'system-ui', "Helvetica Neue", 'sans-serif', '"Apple Color Emoji"', '"Segoe UI Emoji"', '"Segoe UI Symbol"', '"Noto Color Emoji"'],
     },
   },
 
