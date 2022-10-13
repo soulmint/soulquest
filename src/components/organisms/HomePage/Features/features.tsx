@@ -17,8 +17,8 @@ const Features = () => {
 
           <div className="flex flex-wrap lg:flex-nowrap items-start lg:gap-8">
             <div className="basis-full md:basis-1/4 text-center mb-12 md:mb-0">
-              <div className="lg:mb-4">
-                <img src="/samples/SoulBound.jpg" alt="Sample feature" />
+              <div className="mb-6 mx-6">
+                <img src="/features/soulbound_token_curator.png" alt="SoulBound Token curator" />
               </div>
               <h3 className="my-0 text-xl font-bold text-gray-800 mb-4 dark:text-white">
                 SoulBound Token curator
@@ -29,8 +29,8 @@ const Features = () => {
             </div>
 
             <div className="basis-full md:basis-1/4 text-center mb-12 md:mb-0">
-              <div className="lg:mb-4">
-                <img src="/samples/cross-chains.png" alt="Sample feature" />
+              <div className="mb-6 mx-6">
+                <img src="/features/chain_agnostic.png" alt="Chain agnostic" />
               </div>
               <h3 className="my-0 text-xl text-gray-800 mb-4 font-bold dark:text-white">
                 Chain agnostic
@@ -42,10 +42,10 @@ const Features = () => {
             </div>
 
             <div className="basis-full md:basis-1/4 text-center mb-12 md:mb-0">
-              <div className="lg:mb-4">
+              <div className="mb-6 mx-6">
                 <img
-                  src="/samples/No-code-campaign-creator.png"
-                  alt="Sample feature"
+                  src="/features/nocode_campaign_creator.png"
+                  alt="No-code campaign creator"
                 />
               </div>
               <h3 className="my-0 text-lg lg:text-xl font-bold text-gray-800 mb-4 dark:text-white">
@@ -57,10 +57,10 @@ const Features = () => {
             </div>
 
             <div className="basis-full md:basis-1/4 text-center">
-              <div className="lg:mb-4">
+              <div className="mb-6 mx-6">
                 <img
-                  src="/samples/On-chain-reward-distribution.png"
-                  alt="Sample feature"
+                  src="/features/on_chain_reward_distribution.png"
+                  alt="On-chain reward distribution"
                 />
               </div>
               <h3 className="my-0 text-lg lg:text-xl font-bold text-gray-800 mb-4 dark:text-white">

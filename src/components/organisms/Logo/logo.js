@@ -19,7 +19,7 @@ const Logo = (props) => {
       className={classes.logo}
       height={height}
       // layout="fill"
-      src={'/soulmint.svg'}
+      src={'/soulmint-logo.svg'}
       title={'SoulMint'}
       width={width}
     />
@@ -36,7 +36,7 @@ Logo.propTypes = {
 
 Logo.defaultProps = {
   height: 32,
-  width: 32
+  width: 100
 };
 
 export default Logo;

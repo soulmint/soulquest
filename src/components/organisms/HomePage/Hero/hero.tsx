@@ -8,9 +8,6 @@ const Hero = () => {
           <div className="flex flex-wrap items-center py-10 md:py-16 lg:py-16">
             <div className="basis-full lg:basis-7/12 text-center lg:text-left lg:pr-4">
               <h1 className="text-4xl lg:text-7xl font-extrabold text-gray-900 tracking-tight mt-0 mb-4 lg:mb-6">
-                <span className="text-violet-600">
-                  <span className="font-light">Soul</span>Mint
-                </span>
                 <span className="block">
                   Reward distribution platform for{' '}
                   <span className="font-light">Soul</span>Bound Tokens
