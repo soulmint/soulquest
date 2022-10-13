@@ -1,2 +1,3 @@
-.heroMask {  
+.root {
+  @apply bg-[url('/hero/hero-bg-2.jpg')] bg-no-repeat bg-cover;
 }
