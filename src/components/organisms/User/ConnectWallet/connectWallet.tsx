@@ -100,6 +100,11 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
             type="button"
             data-modal-toggle="crypto-modal"
           >
+            <img
+              src="/icons/wallet-ico.svg"
+              alt="Connect wallet"
+              className="w-4 h-4 mr-4"
+            />
             {t('Connect wallet')}
           </Button>
         </>
