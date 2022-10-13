@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import Moment from 'moment';
-import { useSession } from 'next-auth/react';
 import Router from 'next/router';
 import { useTranslation } from 'next-i18next';
 import useThemes from '../../../../../hooks/useThemes';
@@ -12,13 +11,14 @@ import { capitalize, ellipsify, toHTML } from '../../../../../utils/strUtils';
 import List from '../../List';
 import BrowserPersistence from '../../../../../utils/simplePersistence';
 import Head from 'next/head';
+import { useSelector } from 'react-redux';
 
 const Details = (props) => {
   const { slug } = props;
 
   const { t } = useTranslation('nft_collection_details');
 
-  const { data: session } = useSession();
+  const userState = useSelector((state) => state.user);
 
   Moment.locale('en');
 
@@ -62,7 +62,7 @@ const Details = (props) => {
 
         Router.push(`/create-campaign`);
       };
-      const addCampaignButton = session ? (
+      const addCampaignButton = userState.id ? (
         <div className={classes.addCampaignBtn}>
           <Button priority="high" type="button" onPress={handleAddCampaign}>
             {t('Submit a deal')}

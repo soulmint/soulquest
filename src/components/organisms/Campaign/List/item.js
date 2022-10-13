@@ -2,7 +2,7 @@ import React from 'react';
 import Router from 'next/router';
 import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 import Moment from 'moment';
 import { toHTML, subStrWords, ellipsify } from '../../../../utils/strUtils';
 import Button from '../../../atoms/Button';
@@ -15,7 +15,7 @@ const DESC_MAX_LENGTH = 200;
 const Item = (props) => {
   const { data } = props;
 
-  const { data: session } = useSession();
+  const userState = useSelector((state) => state.user);
 
   const { rootClassName } = useThemes();
 
@@ -33,9 +33,8 @@ const Item = (props) => {
     Router.push(path);
   };
 
-  const currentUserId = session && session.id ? session.id : null;
   const editButton =
-    data.user_created.id === currentUserId ? (
+    userState.id && userState.id === data.user_created.id ? (
       <Button priority="normal" type="button" onPress={handleEdit}>
         {t('Edit')}
       </Button>
