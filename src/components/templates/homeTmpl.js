@@ -29,7 +29,7 @@ const HomeTmpl = (props) => {
         <HowItWork />
         {/* // SoulMint How it work */}
         {/* SoulMint News */}
-        <News />
+        {/* <News /> */}
         {/* // SoulMint News */}
       </MainTmpl>
     </Fragment>
