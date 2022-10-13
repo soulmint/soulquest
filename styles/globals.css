@@ -1,8 +1,4 @@
-/*@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css');*/
-/* @import url('//fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700&display=swap'); */
-/* @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@100;200;300;400;500;600;700;800&display=swap'); */
-@import url('//fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
-@import url('//fonts.cdnfonts.com/css/pt-root-ui');
+@import url('https://fonts.cdnfonts.com/css/pt-root-ui');
 
 
 @tailwind base;
@@ -11,14 +7,11 @@
 
 @layer base {
   html {
-    font-family: 'Inter', sans-serif;
   }
 }
 
 html {
   height: 100%;
-  font-feature-settings: "cv02","cv03","cv04","cv11";
-
   /* Better Font Rendering =========== */
   -moz-font-smoothing: antialiased;
   -moz-font-smoothing: grayscale;
@@ -27,11 +20,10 @@ html {
 }
 
 body {
-  @apply antialiased text-gray-700 dark:text-gray-400 bg-white dark:bg-gray-900;
+  @apply antialiased text-slate-600 bg-slate-100;
 }
 
-h1, h2 {
-  font-family: 'PT Root UI', sans-serif;
+h1, h2, h3 {
 }
 
 h1 {

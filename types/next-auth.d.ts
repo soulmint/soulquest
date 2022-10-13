@@ -19,7 +19,7 @@ declare module 'next-auth' {
     } & DefaultSession['user'];
   }
 
-  interface User extends Record<string, unknown>, DefaultUser {
+  export interface User extends Record<string, unknown>, DefaultUser {
     /** The user's postal address. */
     access_token: string | unknown;
     refresh_token: string | unknown;

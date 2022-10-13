@@ -3,7 +3,6 @@ import {
   USER_EXISTS_GQL,
   LOGIN_GQL,
   AUTH_REFRESH_GQL,
-  // UPDATE_USER_GQL,
   CREATE_USER_GQL
 } from './api.gql';
 
@@ -60,21 +59,6 @@ export const createUser = async (data: any) => {
   }
 };
 
-// export const updateUser = async (data: any) => {
-//   const client = initializeApollo();
-//   try {
-//     const res = await client.mutate({
-//       mutation: UPDATE_USER_GQL,
-//       variables: { data }
-//     });
-//     // console.log(res);
-//     return res;
-//   } catch (error) {
-//     console.log(error);
-//     return error;
-//   }
-// };
-
 function parseJwt(token: string) {
   const base64Payload = token.split('.')[1];
   const payload = Buffer.from(base64Payload, 'base64');
@@ -101,10 +85,10 @@ export const getTokenState = (token: any) => {
  * returns the old token and an error property
  */
 export async function refreshAccessToken(token: any) {
-  if (!token) return null;
+  if (!token.refresh_token) return null;
   try {
     const refreshedTokens = await authRefresh({
-      refresh_token: token
+      refresh_token: token.refresh_token
     });
 
     return {

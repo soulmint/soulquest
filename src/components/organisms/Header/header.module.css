@@ -1,5 +1,6 @@
 .root {
-  @apply border-b border-b-gray-200 bg-white md:sticky top-0 px-4 lg:px-6 py-3.5 space-x-4 z-20 text-sm font-medium;
+  @apply border-b border-b-gray-200 md:sticky top-0 px-4 lg:px-6 py-4 space-x-4 z-20 text-base font-medium;
+  @apply bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg;
 }
 
 .rootDark {

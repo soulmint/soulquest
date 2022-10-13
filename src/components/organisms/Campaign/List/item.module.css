@@ -40,9 +40,12 @@
 }
 
 /*  */
+.itemDesc {
+	@apply line-clamp-3 text-sm;
+}
+
 .itemDesc p {
 	@apply my-0;
-	font-size: 0.938rem;
 }
 
 /* All Chains */
