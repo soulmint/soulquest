@@ -15,6 +15,10 @@
   @apply block w-24 h-16 border border-red-200;
 }
 
+.link {
+  @apply block w-32;
+}
+
 .logoContainer a > span {
   @apply block h-6 w-6;
 }
