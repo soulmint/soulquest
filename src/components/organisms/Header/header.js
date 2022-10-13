@@ -72,7 +72,7 @@ const Header = (props) => {
       <header className={`${classes[rootClassName]}`}>
         <div className="container max-w-screen-xl mx-auto flex justify-between items-center px-4">
           <div className={`${classes.logoContainer}`}>
-            <TextLink className={classes.link} href={`/`}>
+            <TextLink className={`${classes.link}`} href={`/`}>
               <Logo classes={{ logo: classes.logo }} />
             </TextLink>
           </div>
@@ -83,7 +83,7 @@ const Header = (props) => {
             >
               {menuItems}
             </div>
-            <ToggleTheme />
+            {/* <ToggleTheme /> */}
             <ConnectWallet />
 
             <button
