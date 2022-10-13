@@ -1,5 +1,5 @@
 .root {
-  @apply bg-white border-2 border-violet-500 shadow-sm rounded-xl mb-6
+  @apply bg-white shadow-lg rounded-xl mb-8;
 }
 
 .rootDark {

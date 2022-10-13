@@ -162,9 +162,7 @@ const Item = (props) => {
       </div>
 
       <div className="mb-4">
-        <h3 className="text-[22px] lg:text-xl text-gray-800 dark:text-white font-semibold leading-7 my-0">
-          {data.title}
-        </h3>
+        <h3 className="text-lg text-slate-800 font-bold my-0">{data.title}</h3>
       </div>
 
       <div className="flex flex-wrap items-center text-sm justify-between mb-4 -mt-2">

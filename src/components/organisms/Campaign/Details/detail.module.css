@@ -20,7 +20,7 @@
 }
 
 .pageWrapper {
-  @apply bg-gray-50;
+  @apply bg-slate-100;
 }
 
 .pageContainer {

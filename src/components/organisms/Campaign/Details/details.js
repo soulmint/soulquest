@@ -159,17 +159,17 @@ const Details = (props) => {
 
             <div className={`flex ${classes.pageContent}`}>
               <div className={`${classes.pageContent}`}>
+                <Rewards
+                  campaign={campaign}
+                  enabled={{
+                    rewardOverview: false,
+                    how_to_claim: false,
+                    questers: false,
+                    quest: true,
+                    coupon: false
+                  }}
+                />
                 <div className={`${classes.pageContentInner}`}>
-                  <Rewards
-                    campaign={campaign}
-                    enabled={{
-                      rewardOverview: false,
-                      how_to_claim: false,
-                      questers: false,
-                      quest: true,
-                      coupon: false
-                    }}
-                  />
                   <div className={`${classes.coverImage}`}>{coverImage}</div>
                   {shortDesc}
                   {description}
