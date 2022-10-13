@@ -1,6 +1,6 @@
 import '../../styles/globals.css';
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SessionProvider, useSession } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
@@ -20,11 +20,8 @@ import { useDispatch } from 'react-redux';
 import { setId, setToken, logOut } from 'src/store/user/operations';
 
 const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
-  const store = useStore();
   const dispatch = useDispatch();
   const { data: session } = useSession();
-  const [accessToken, setAccessToken] = useState(null);
-
   useEffect(() => {
     try {
       if (session?.error === 'RefreshAccessTokenError') {
@@ -35,11 +32,10 @@ const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
         if (needRefresh) {
           logOut(dispatch);
         } else {
-          //set user id for user state
+          //set user id for user's state
           setId(dispatch, session.user_id);
-
-          //trigger to refresh page
-          setAccessToken(session.access_token);
+          //set user token for user's state
+          setToken(dispatch, session.access_token);
         }
       }
     } catch (e) {
@@ -49,12 +45,7 @@ const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
     }
 
     // return () => {};
-  }, [session, store]);
-
-  useEffect(() => {
-    //set access_token for user state
-    setToken(dispatch, accessToken);
-  }, [accessToken]);
+  }, [session]);
 
   return (
     <Providers>
