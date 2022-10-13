@@ -75,7 +75,7 @@ export default async function auth(
     providers,
     session: {
       strategy: 'jwt', // Seconds - How long until an idle session expires and is no longer valid.
-      maxAge: 20 * 60 // Todo: get correct lifetime from JWT token lifetime config in the backend
+      maxAge: process.env.JWT_ACCESS_TOKEN_TTL
     },
     secret: process.env.NEXTAUTH_SECRET,
 
