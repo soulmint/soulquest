@@ -41,3 +41,4 @@ public/uploads/*
 public/sw.js
 public/workbox-946f13af.js
 public/fallback-AF3w1AarOTkFSQWkmy2-g.js
+env.development.local

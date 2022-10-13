@@ -24,7 +24,7 @@
 }
 
 .pageContainer {
-  @apply container mx-auto max-w-screen-xl flex flex-wrap lg:flex-nowrap items-stretch py-12 px-4;
+  @apply container mx-auto max-w-screen-xl py-12 px-4;
 }
 
 .pageContent {
