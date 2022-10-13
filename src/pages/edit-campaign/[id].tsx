@@ -2,23 +2,20 @@ import React, { Fragment, useEffect } from 'react';
 import Router, { useRouter } from 'next/router';
 import { GetStaticPaths, NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 import CreateCampaignTmpl from '../../components/templates/createCampaignTmpl';
 
 const EditCampaignPage: NextPage = () => {
-  const { status } = useSession();
-
+  const userState = useSelector((state) => state.user);
   const router = useRouter();
   const id = router.query.id as string;
-
-  const child =
-    status === 'authenticated' ? <CreateCampaignTmpl campaignId={id} /> : null;
+  const child = userState.id ? <CreateCampaignTmpl campaignId={id} /> : null;
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (userState.id === '') {
       Router.push('/');
     }
-  }, [status]);
+  }, [userState]);
 
   return <Fragment>{child}</Fragment>;
 };

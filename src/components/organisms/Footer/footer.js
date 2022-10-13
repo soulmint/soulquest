@@ -4,14 +4,14 @@ import TextLink from '../../atoms/TextLink';
 import { useTranslation } from 'next-i18next';
 import classes from './footer.module.css';
 import useThemes from 'src/hooks/useThemes';
-import { DEFAULT_LINKS, socialData, menuItemsData } from './menuItems';
+import { DEFAULT_LINKS, socialData /* , menuItemsData */ } from './menuItems';
 
 const Footer = (_props) => {
   const { isDark, rootClassName } = useThemes();
   const { t } = useTranslation('common');
   const date = new Date();
   const year = date.getFullYear();
-  function buildLink(data, type, htmlTag) {
+  /*  function buildLink(data, type, htmlTag) {
     return Array.from(data, ([text, pathInfo]) => {
       let path = pathInfo;
       let Component = Fragment;
@@ -35,8 +35,8 @@ const Footer = (_props) => {
       );
       return <Component key={itemKey}>{elem}</Component>;
     });
-  }
-  const menuItem = buildLink(menuItemsData, 'menu', 'li');
+  } */
+  // const menuItem = buildLink(menuItemsData, 'menu', 'li');
   const socialElements = socialData.map((data, idx) => {
     return (
       <div key={idx} className={classes.linkItem}>
@@ -52,7 +52,7 @@ const Footer = (_props) => {
     );
   });
   const socialItem = <div className={classes.linkGroup}>{socialElements}</div>;
-  const menuItems = <ul className={classes.linkGroup}>{menuItem}</ul>;
+  // const menuItems = <ul className={classes.linkGroup}>{menuItem}</ul>;
   return (
     <Fragment>
       <footer
