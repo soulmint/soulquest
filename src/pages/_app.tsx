@@ -19,30 +19,24 @@ import { getTokenState } from '../hooks/User/useUser';
 import { useDispatch } from 'react-redux';
 import { setId, setToken, logOut } from 'src/store/user/operations';
 
-const MyApp = function MyApp({
-  Component,
-  pageProps: { session: Session, ...pageProps }
-}: AppProps) {
+const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
   const store = useStore();
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const [accessToken, setAccessToken] = useState(null);
 
-  useEffect(async () => {
+  useEffect(() => {
     try {
       if (session?.error === 'RefreshAccessTokenError') {
-        await logOut(dispatch);
+        logOut(dispatch);
       }
       if (session && session.access_token) {
         const { needRefresh } = getTokenState(session.access_token);
         if (needRefresh) {
-          await logOut(dispatch);
+          logOut(dispatch);
         } else {
           //set user id for user state
           setId(dispatch, session.user_id);
-
-          //set access_token for user state
-          setToken(dispatch, session.access_token);
 
           //trigger to refresh page
           setAccessToken(session.access_token);
@@ -56,6 +50,11 @@ const MyApp = function MyApp({
 
     // return () => {};
   }, [session, store]);
+
+  useEffect(() => {
+    //set access_token for user state
+    setToken(dispatch, accessToken);
+  }, [accessToken]);
 
   return (
     <Providers>
