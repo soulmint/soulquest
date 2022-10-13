@@ -148,6 +148,7 @@ const Details = (props) => {
           image={`${assetsBaseUrl}/${campaign.thumb_image.id}?fit=cover&width=400&height=400&quality=80`}
         />
       );
+
       child = (
         <div className={`${classes.pageWrapper} dark:bg-gray-900`}>
           <div className={`${classes.pageContainer}`}>
@@ -159,6 +160,16 @@ const Details = (props) => {
             <div className={`flex ${classes.pageContent}`}>
               <div className={`${classes.pageContent}`}>
                 <div className={`${classes.pageContentInner}`}>
+                  <Rewards
+                    campaign={campaign}
+                    enabled={{
+                      rewardOverview: false,
+                      how_to_claim: false,
+                      questers: false,
+                      quest: true,
+                      coupon: false
+                    }}
+                  />
                   <div className={`${classes.coverImage}`}>{coverImage}</div>
                   {shortDesc}
                   {description}
@@ -166,7 +177,16 @@ const Details = (props) => {
               </div>
 
               <div className={`${classes.pageSidebar}`}>
-                <Rewards campaign={campaign} />
+                <Rewards
+                  campaign={campaign}
+                  enabled={{
+                    rewardOverview: true,
+                    how_to_claim: true,
+                    questers: true,
+                    quest: false,
+                    coupon: true
+                  }}
+                />
               </div>
             </div>
           </div>
