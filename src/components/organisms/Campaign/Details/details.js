@@ -151,17 +151,23 @@ const Details = (props) => {
       child = (
         <div className={`${classes.pageWrapper} dark:bg-gray-900`}>
           <div className={`${classes.pageContainer}`}>
-            <div className={`${classes.pageContent}`}>
-              <div className={`${classes.pageContentInner}`}>
-                <div className={`${classes.coverImage}`}>{coverImage}</div>
-                <h1 className={`${classes.pageTitle}`}> {campaign.title} </h1>
-                {metaInfo}
-                {shortDesc}
-                {description}
-              </div>
+            <div className={`${classes.pageHeader}`}>
+              <h1 className={`${classes.pageTitle}`}>{campaign.title}</h1>
+              {metaInfo}
             </div>
-            <div className={`${classes.pageSidebar}`}>
-              <Rewards campaign={campaign} />
+
+            <div className={`flex ${classes.pageContent}`}>
+              <div className={`${classes.pageContent}`}>
+                <div className={`${classes.pageContentInner}`}>
+                  <div className={`${classes.coverImage}`}>{coverImage}</div>
+                  {shortDesc}
+                  {description}
+                </div>
+              </div>
+
+              <div className={`${classes.pageSidebar}`}>
+                <Rewards campaign={campaign} />
+              </div>
             </div>
           </div>
         </div>
