@@ -9,7 +9,10 @@ const storage = new BrowserPersistence();
 export const setToken = (dispatch: Dispatch<UserAction>, token: any) => {
   try {
     //Note: ttl equals ttl of the access_token from backend (directus)
-    storage.setItem('access_token', token, process.env.JWT_ACCESS_TOKEN_TTL);
+    const ttl = process.env.JWT_ACCESS_TOKEN_TTL
+      ? parseInt(process.env.JWT_ACCESS_TOKEN_TTL)
+      : 15 * 60 * 60;
+    storage.setItem('access_token', token, ttl);
     setTimeout(function () {
       dispatch(actions.setTokenAction(token));
     }, 500);

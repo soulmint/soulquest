@@ -76,6 +76,8 @@ export default async function auth(
     session: {
       strategy: 'jwt', // Seconds - How long until an idle session expires and is no longer valid.
       maxAge: process.env.JWT_ACCESS_TOKEN_TTL
+        ? parseInt(process.env.JWT_ACCESS_TOKEN_TTL)
+        : 15 * 60 * 60
     },
     secret: process.env.NEXTAUTH_SECRET,
 
