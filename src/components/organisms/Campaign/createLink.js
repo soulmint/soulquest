@@ -1,15 +1,12 @@
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { useSelector } from 'react-redux';
 
 const CreateLink = (props) => {
   const { children } = props;
-  const { status } = useSession();
 
-  if (status !== 'authenticated') {
-    return null;
-  }
+  const userState = useSelector((state) => state.user);
 
-  return children;
+  return userState.id === undefined ? null : children;
 };
 
 export default CreateLink;

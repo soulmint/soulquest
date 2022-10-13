@@ -2,9 +2,9 @@ import React from 'react';
 import Router from 'next/router';
 import slugify from 'slugify';
 import Moment from 'moment';
+import {useSelector} from "react-redux";
 import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
-import { useSession } from 'next-auth/react';
 import Button from '../../../atoms/Button';
 import classes from './item.module.css';
 import { useTheme } from 'next-themes';
@@ -12,7 +12,8 @@ import { useTheme } from 'next-themes';
 const Item = (props) => {
   const { data } = props;
 
-  const { data: session } = useSession();
+  const userState = useSelector((state) => state.user);
+
   const { resolvedTheme } = useTheme();
   const [isDark, setIsDark] = React.useState(resolvedTheme === 'dark');
   React.useEffect(() => {
@@ -31,9 +32,8 @@ const Item = (props) => {
     Router.push(path);
   };
 
-  const currentUserId = session && session.id ? session.id : null;
   const editButton =
-    data.user_created.id === currentUserId ? (
+    (userState.id  && (userState.id === data.user_created.id)) ? (
       <Button priority="normal" type="button" onPress={handleEdit}>
         {t('Edit')}
       </Button>

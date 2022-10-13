@@ -10,7 +10,7 @@ const providerOptions = {
   coinbasewallet: {
     package: CoinbaseWalletSDK, // Required
     options: {
-      appName: 'rada.works App', // Required
+      appName: 'Soulmint App', // Required
       infuraId: `${process.env.APP_INFURA_ID}` // Required
     }
   }

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Router from 'next/router';
+import { useSelector } from 'react-redux';
 import { shape, string } from 'prop-types';
-import { useSession } from 'next-auth/react';
 import { useTranslation } from 'next-i18next';
 import defaultClasses from './success.module.css';
 import { useStyle } from '../../classify';
@@ -14,7 +14,7 @@ const Success = (props) => {
 
   const { t } = useTranslation('common');
 
-  const { status } = useSession();
+  const userState = useSelector((state) => state.user);
 
   const handleEdit = () => {
     Router.push(`/edit-campaign/${id}`);
@@ -25,7 +25,7 @@ const Success = (props) => {
   };
 
   const child =
-    status === 'authenticated' ? (
+    userState.wallet_address !== undefined ? (
       <div className={`${classes.root}`}>
         <h1> {t('Done')} </h1>
         <div className={`${classes.note}`}>
