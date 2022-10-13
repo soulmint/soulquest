@@ -2,7 +2,6 @@ import React, { Fragment } from 'react';
 import Router from 'next/router';
 import { useSelector } from 'react-redux';
 import { shape, string } from 'prop-types';
-import { useSession } from 'next-auth/react';
 import { useTranslation } from 'next-i18next';
 import defaultClasses from './success.module.css';
 import { useStyle } from '../../classify';

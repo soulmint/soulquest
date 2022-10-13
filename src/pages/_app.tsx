@@ -1,7 +1,6 @@
 import '../../styles/globals.css';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import Head from 'next/head';
 import { SessionProvider, useSession } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import { ThemeProvider } from 'next-themes';
