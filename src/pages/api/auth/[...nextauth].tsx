@@ -152,7 +152,7 @@ export default async function auth(
 
         // Persist the OAuth access_token to the token right after signin
         if (account && user) {
-          token.id = user.id;
+          token.user_id = user.id;
           token.access_token = user.access_token;
           token.refresh_token = user.refresh_token;
           token.provider = account.provider;
@@ -174,9 +174,10 @@ export default async function auth(
       },
       async session({ session, token }) {
         // Send properties to the client, like an access_token from a provider.
-        /*session.id = token.id;
+        /*
         session.provider = token.provider;
         session.credentials = token.credentials;*/
+        session.user_id = token.user_id;
         session.access_token = token.access_token;
         if (token.twUserProfile) {
           session.twUserProfile = token.twUserProfile;

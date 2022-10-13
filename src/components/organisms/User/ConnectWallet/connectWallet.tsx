@@ -2,8 +2,8 @@ import React, { FunctionComponent, Fragment } from 'react';
 import Web3 from 'web3';
 import Web3Modal from 'web3modal';
 import { useDispatch } from 'react-redux';
-import { setInfo } from 'src/store/user/operations';
-import { useSession, getCsrfToken, signIn } from 'next-auth/react';
+import { setWalletAddress } from 'src/store/user/operations';
+import { getCsrfToken, signIn } from 'next-auth/react';
 import { ethers } from 'ethers';
 import { ellipsify } from '../../../../utils/strUtils';
 import { useTranslation } from 'next-i18next';
@@ -12,6 +12,7 @@ import providerOptions from './providers';
 import DropDownMenu from './../DropdownMenu';
 import Button from 'src/components/atoms/Button';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 export type ConnectWalletProps = {
   name?: string;
@@ -19,9 +20,10 @@ export type ConnectWalletProps = {
 
 const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
   const dispatch = useDispatch();
-  const { data: session, status } = useSession();
 
   const { t } = useTranslation('common');
+
+  const userState = useSelector((state) => state.user);
 
   const connect = async () => {
     try {
@@ -66,8 +68,8 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
         callbackUrl
       });
 
-      //set user info
-      setInfo(dispatch, accounts[0], accounts[0], accounts[0]);
+      //set user's wallet address
+      setWalletAddress(dispatch, accounts[0]);
     } catch (e) {
       if (process.env.NODE_ENV !== 'production') {
         console.error(e);
@@ -76,40 +78,34 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
     }
   };
 
-  let child = null;
-  if (status === 'loading') {
-    child = t('Loading...'); //coming soon with Skeleton loading.
-  } else {
-    child =
-      status === 'authenticated' ? (
-        <div>
-          <DropDownMenu
-            name={ellipsify({
-              str: session?.user?.name,
-              start: 4,
-              end: 4
-            })}
-          />
-        </div>
-      ) : (
-        <>
-          {/* <Modal connect={connect} /> */}
-          <Button
-            onPress={() => connect()}
-            priority="high"
-            type="button"
-            data-modal-toggle="crypto-modal"
-          >
-            <img
-              src="/icons/wallet-ico.svg"
-              alt="Connect wallet"
-              className="w-4 h-4 mr-4"
-            />
-            {t('Connect wallet')}
-          </Button>
-        </>
-      );
-  }
+  const child = userState.wallet_address ? (
+    <div>
+      <DropDownMenu
+        name={ellipsify({
+          str: userState.wallet_address,
+          start: 4,
+          end: 4
+        })}
+      />
+    </div>
+  ) : (
+    <>
+      {/* <Modal connect={connect} /> */}
+      <Button
+        onPress={() => connect()}
+        priority="high"
+        type="button"
+        data-modal-toggle="crypto-modal"
+      >
+        <img
+          src="/icons/wallet-ico.svg"
+          alt="Connect wallet"
+          className="w-4 h-4 mr-4"
+        />
+        {t('Connect wallet')}
+      </Button>
+    </>
+  );
 
   return <Fragment>{child}</Fragment>;
 };

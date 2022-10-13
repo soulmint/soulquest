@@ -3,7 +3,7 @@ import TextLink from '../../../components/atoms/TextLink';
 import { ellipsify } from '../../../utils/strUtils';
 import { EvmChain } from '@moralisweb3/evm-utils';
 import Moralis from 'moralis';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { useMutation } from '@apollo/client';
 import API from './api.gql';
 import { toast } from 'react-toastify';
@@ -24,19 +24,15 @@ export default (props) => {
 
   const { t } = useTranslation('campaign_details');
 
-  const userSelector = useSelector((state) => state.user);
-  console.log('user:', userSelector.token);
-
-  const { data: session } = useSession();
-
   const storage = new BrowserPersistence();
-  const user = storage.getItem('user');
+
+  const userState = useSelector((state) => state.user);
 
   const twSocialLinkTtl = 30 * 24 * 60 * 60; // 30 days
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const tasks = {};
   let taskTotal = 0;
-  const add = user && user.email ? user.email : null;
+  const add = userState.wallet_address ? userState.wallet_address : null;
 
   let doneTasks = storage.getItem(
     `user_${add}_campaign_${campaign.id}_doneTasks`
@@ -52,18 +48,17 @@ export default (props) => {
   const [submitted, setSubmitted] = useState(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(async () => {
-    const userAddress = user && user.email ? user.email : null;
-    if (userAddress) {
+    if (add) {
       tasks.ck_connect_wallet.status = true;
       const found = await isQuesterExistsFunc(
         { _eq: campaign.id },
-        { email: { _eq: userAddress } }
+        { email: { _eq: add } }
       );
       if (found) {
         setSubmitted(true);
       }
     }
-  }, [campaign, isQuesterExistsFunc, user, tasks]);
+  }, [add, campaign, tasks, isQuesterExistsFunc]);
 
   let twSocialLink = storage.getItem('twSocialLink');
   if (campaign.twitter_tweet || campaign.twitter_username) {
@@ -90,6 +85,7 @@ export default (props) => {
         });
       }
       // Checking and saving to social link
+      //Todo: make function in user redux then call here
       getSession().then(async () => {
         //check exits and saving to social link
         const found = await checkExistsSocialLink(
@@ -241,10 +237,12 @@ export default (props) => {
 
   const handleVerifyNftOwnership = useCallback(async () => {
     const isCampaignOwner =
-      session && session.id === campaign.user_created.id ? true : false;
+      useState.id && useState.id === campaign.user_created.id ? true : false;
     let isNFTOwnership = isCampaignOwner ? true : false;
     const nftCollections = campaign.nft_collection_ids;
-    const accountAdd = session && session.user ? session.user.email : null;
+    const accountAdd = userState.wallet_address
+      ? userState.wallet_address
+      : null;
     if (accountAdd && accountAdd.includes('0x') && nftCollections.length) {
       for (let i = 0; i < nftCollections.length; i++) {
         const nftCollection = nftCollections[i].nft_collection_id;
@@ -262,7 +260,7 @@ export default (props) => {
     }
 
     return isNFTOwnership;
-  }, [campaign, session]);
+  }, [campaign, userState]);
 
   const [
     saveQuester,

@@ -1,21 +1,10 @@
 import { Dispatch } from 'react';
 import * as actions from './actions';
 import { UserAction } from './types';
-import BrowserPersistence from '../../utils/simplePersistence';
-import { signOut } from 'next-auth/react';
 
-const storage = new BrowserPersistence();
-
-export const setToken = (dispatch: Dispatch<UserAction>, token: any) => {
+export const setId = (dispatch: Dispatch<UserAction>, userId: any) => {
   try {
-    //Note: ttl equals ttl of the access_token from backend (directus)
-    const ttl = process.env.JWT_ACCESS_TOKEN_TTL
-      ? parseInt(process.env.JWT_ACCESS_TOKEN_TTL)
-      : 15 * 60 * 60;
-    storage.setItem('access_token', token, ttl);
-    setTimeout(function () {
-      dispatch(actions.setTokenAction(token));
-    }, 500);
+    dispatch(actions.setId(userId));
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.log(e);
@@ -23,24 +12,19 @@ export const setToken = (dispatch: Dispatch<UserAction>, token: any) => {
   }
 };
 
-export const setInfo = (
-  dispatch: Dispatch<UserAction>,
-  email: string,
-  name: string,
-  wallet_address: string
-) => {
+export const setWalletAddress = (dispatch: Dispatch<UserAction>, add: any) => {
   try {
-    const userInfo = {
-      email,
-      name,
-      wallet_address
-    };
-    //saving to local storage for init state later
-    storage.setItem('current_user_info', userInfo);
+    dispatch(actions.setWalletAddress(add));
+  } catch (e) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(e);
+    }
+  }
+};
 
-    setTimeout(function () {
-      dispatch(actions.setInfoAction(email, name, wallet_address));
-    }, 500);
+export const setToken = (dispatch: Dispatch<UserAction>, token: any) => {
+  try {
+    dispatch(actions.setTokenAction(token));
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.log(e);
@@ -50,10 +34,6 @@ export const setInfo = (
 
 export const logOut = async (dispatch: Dispatch<UserAction>) => {
   try {
-    //clean related local storage vars
-    storage.removeItem('access_token');
-    storage.removeItem('current_user_info');
-    await signOut();
     dispatch(actions.logOut());
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
