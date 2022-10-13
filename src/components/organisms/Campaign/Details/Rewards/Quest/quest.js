@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { shape, string, object, func, bool } from 'prop-types';
 import { useTranslation } from 'next-i18next';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import defaultClasses from './quest.module.css';
@@ -27,6 +26,7 @@ const Quest = (props) => {
   const {
     classes: propClasses,
     campaignId,
+    userState,
     tasks,
     doneTasks,
     submitted,
@@ -37,7 +37,6 @@ const Quest = (props) => {
   const classes = useStyle(defaultClasses, propClasses);
   const router = useRouter();
   const { t } = useTranslation('campaign_details');
-  const { data: session } = useSession();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const taskLogTtl = 30 * 24 * 60 * 60;
@@ -52,16 +51,11 @@ const Quest = (props) => {
   );
 
   const storage = new BrowserPersistence();
-  const user = storage.getItem('user');
 
-  const add = user && user.email ? user.email : null;
-  const isWalletConnected =
-    !session || (add && add.includes('@')) ? false : true;
-
-  if (isWalletConnected) {
+  if (userState.wallet_address) {
     tasks.ck_connect_wallet.status = true;
   }
-  let walletConnect = isWalletConnected ? (
+  let walletConnect = userState.wallet_address ? (
     <span>{TaskSuccessIcon}</span>
   ) : (
     <ConnectWallet />
@@ -77,10 +71,10 @@ const Quest = (props) => {
         <div className="flex-1">
           <span
             className={`${classes.taskIndex} ${
-              isWalletConnected ? classes.taskSuccess : ''
+              userState.wallet_address ? classes.taskSuccess : ''
             }`}
           >
-            Task {tasks.ck_connect_wallet.id}
+            {t('Task')} {tasks.ck_connect_wallet.id}
           </span>
           {t('Connect Wallet')}
         </div>
@@ -131,7 +125,7 @@ const Quest = (props) => {
   const handleTwitterLogin = async () => {
     console.log('twitterLogin()');
 
-    if (!isWalletConnected) {
+    if (userState.wallet_address == undefined) {
       return toast.warning(
         t('You must connect your wallet before do this task!')
       );
@@ -179,7 +173,7 @@ const Quest = (props) => {
               tasks.ck_twitter_follow.status ? classes.taskSuccess : ''
             }`}
           >
-            Task {tasks.ck_twitter_follow.id}
+            t{'Task'} {tasks.ck_twitter_follow.id}
           </span>
           {t('Follow')}&nbsp;
           <TextLink
@@ -200,7 +194,7 @@ const Quest = (props) => {
     );
   }
   const handleCheckTwitterFollow = async () => {
-    if (!isWalletConnected) {
+    if (userState.wallet_address === undefined) {
       return toast.warning(
         t('You must connect your wallet before do this task!')
       );
@@ -223,7 +217,7 @@ const Quest = (props) => {
       //saving for resume later
       doneTasks.ck_twitter_follow = true;
       storage.setItem(
-        `user_${add}_campaign_${campaignId}_doneTasks`,
+        `user_${userState.wallet_address}_campaign_${campaignId}_doneTasks`,
         doneTasks,
         taskLogTtl
       );
@@ -276,7 +270,7 @@ const Quest = (props) => {
               tasks.ck_twitter_retweet.status ? classes.taskSuccess : ''
             }`}
           >
-            Task {tasks.ck_twitter_retweet.id}
+            {t('Task')} {tasks.ck_twitter_retweet.id}
           </span>
           {t('Must')}&nbsp;{t('Retweet')}&nbsp;
           <TextLink
@@ -296,7 +290,7 @@ const Quest = (props) => {
   const handleCheckTwitterReTweet = async () => {
     console.log('handleCheckTwitterReTweet()');
 
-    if (!isWalletConnected) {
+    if (userState.wallet_address === undefined) {
       return toast.warning(
         t('You must connect your wallet before do this task!')
       );
@@ -319,7 +313,7 @@ const Quest = (props) => {
       //saving for resume later
       doneTasks.ck_twitter_retweet = true;
       storage.setItem(
-        `user_${add}_campaign_${campaignId}_doneTasks`,
+        `user_${userState.wallet_address}_campaign_${campaignId}_doneTasks`,
         doneTasks,
         taskLogTtl
       );
@@ -368,7 +362,7 @@ const Quest = (props) => {
               tasks.ck_nft_ownership.status ? classes.taskSuccess : ''
             }`}
           >
-            Task {tasks.ck_nft_ownership.id}
+            {t('Task')} {tasks.ck_nft_ownership.id}
           </span>
           <h4 className="mt-0 mb-0 leading-normal text-sm font-semibold text-gray-800">
             {t('SoulBound Token Ownership')}
@@ -389,7 +383,7 @@ const Quest = (props) => {
   const handleCheckNftOwnership = async () => {
     console.log('handleCheckNftOwnership()');
 
-    if (!isWalletConnected) {
+    if (userState.wallet_address === undefined) {
       return toast.warning(
         t('You must connect your wallet before do this task!')
       );
@@ -403,6 +397,7 @@ const Quest = (props) => {
 
     // update state
     tasks.ck_nft_ownership.status = status;
+
     //trigger to re-render
     setNftOwnershipState(tasks.ck_nft_ownership.status);
     if (!tasks.ck_nft_ownership.status) {
@@ -411,7 +406,7 @@ const Quest = (props) => {
       //saving for resume later
       doneTasks.ck_nft_ownership = true;
       storage.setItem(
-        `user_${add}_campaign_${campaignId}_doneTasks`,
+        `user_${userState.wallet_address}_campaign_${campaignId}_doneTasks`,
         doneTasks,
         taskLogTtl
       );
@@ -419,7 +414,7 @@ const Quest = (props) => {
   };
 
   const canSubmit =
-    isWalletConnected && isFinishedTasks() && submitted === false
+    userState.wallet_address && isFinishedTasks() && submitted === false
       ? true
       : false;
   const btnClaimReward = (
@@ -471,6 +466,7 @@ Quest.propTypes = {
   classes: shape({
     root: string
   }),
+  useState: object,
   tasks: object,
   doneTasks: object,
   isFinishedTasks: func,

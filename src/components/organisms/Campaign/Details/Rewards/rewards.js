@@ -15,6 +15,7 @@ const Rewards = (props) => {
   // const { t } = useTranslation('campaign_details');
 
   const {
+    userState,
     tasks,
     doneTasks,
     isFinishedTasks,
@@ -54,6 +55,7 @@ const Rewards = (props) => {
   ) : null;
   const quest = enabled.quest ? (
     <Quest
+      userState={userState}
       campaignId={parseInt(campaign.id)}
       tasks={tasks}
       doneTasks={doneTasks}

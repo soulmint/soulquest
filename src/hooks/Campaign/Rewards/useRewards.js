@@ -289,26 +289,6 @@ export default (props) => {
       }
       return;
     }
-
-    //Check required tasks
-    /*if (!isFinishedTasks()) {
-      return toast.warning(t('You must finish all required tasks!'));
-    } else {
-      try {
-        // All require tasks done
-        await saveQuester({
-          variables: {
-            campaign_id: campaign.id,
-            status: 'approved'
-          }
-        });
-      } catch (error) {
-        if (process.env.NODE_ENV !== 'production') {
-          console.error(error);
-        }
-        return;
-      }
-    }*/
   }, [campaign, saveQuester]);
 
   // Handle saving quest result
@@ -326,6 +306,7 @@ export default (props) => {
   }, [saveQuestResult, saveQuesterError, t]);
 
   return {
+    userState,
     tasks,
     doneTasks,
     isFinishedTasks,

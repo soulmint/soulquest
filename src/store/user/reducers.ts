@@ -2,36 +2,32 @@ import { UserAction, UserActionType, UserState } from './types';
 import BrowserPersistence from '../../utils/simplePersistence';
 
 const storage = new BrowserPersistence();
-
-const userId = storage.getRawItem('user_id');
-const accessToken = storage.getRawItem('access_token');
-const walletAddress = storage.getRawItem('wallet_address');
+const userId = storage.getItem('user_id');
+const walletAddress = storage.getItem('wallet_address');
+const accessToken = storage.getItem('access_token');
 
 const getId = () => {
   if (!userId) {
     return undefined;
   }
-  const { value } = JSON.parse(userId);
 
-  return value;
+  return userId;
 };
 
 const getWalletAddress = () => {
   if (!walletAddress) {
     return undefined;
   }
-  const { value } = JSON.parse(walletAddress);
 
-  return value;
+  return walletAddress;
 };
 
 const getToken = () => {
   if (!accessToken) {
     return undefined;
   }
-  const { value } = JSON.parse(accessToken);
 
-  return value;
+  return accessToken;
 };
 
 export const initialState: UserState = {
