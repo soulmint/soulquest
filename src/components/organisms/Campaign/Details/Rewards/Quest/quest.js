@@ -8,9 +8,13 @@ import { useStyle } from '../../../../../classify';
 import Button from '../../../../../atoms/Button';
 import TextLink from '../../../../../../components/atoms/TextLink';
 import BrowserPersistence from '../../../../../../utils/simplePersistence';
-
-import { FaWallet, FaTwitter, FaUserPlus, FaCheck, FaLongArrowAltRight, FaAngleRight } from 'react-icons/fa';
-
+import {
+  FaWallet,
+  FaTwitter,
+  FaUserPlus,
+  FaCheck,
+  FaAngleRight
+} from 'react-icons/fa';
 // import Cookie from 'js-cookie';
 import {
   TwitterLogin,
@@ -24,6 +28,8 @@ import {
   TaskFailIcon,
   TaskSuccessIcon
 } from '../../../../Svg/SvgIcons';
+import { ellipsify } from '../../../../../../utils/strUtils';
+import Avatar from 'boring-avatars';
 
 const Quest = (props) => {
   const {
@@ -61,10 +67,22 @@ const Quest = (props) => {
 
   let walletConnect = userState.wallet_address ? (
     <span className="flex items-center flex-row text-base font-medium text-gray-500">
-      {t('Connected')}
+      <span className={`${classes.soulAvatar}`}>
+        <Avatar
+          size={24}
+          name={userState.wallet_address}
+          variant="beam" //oneOf: marble (default), beam, pixel,sunset, ring, bauhaus
+          colors={['#F97316', '#EAB308', '#4ADE80', '#6d28d9', '#475569']}
+        />
+      </span>
+      {ellipsify({
+        str: userState.wallet_address,
+        start: 4,
+        end: 4
+      })}
     </span>
   ) : (
-    <ConnectWallet />
+    <ConnectWallet classes={{ root_highPriority: classes.btnConnectWallet }} />
   );
 
   const connectWalletStatus = userState.wallet_address ? (
@@ -79,7 +97,6 @@ const Quest = (props) => {
 
   const connectWalletTask = (
     <div className={`${classes.questItem} ${classes.connectWalletTask}`}>
-
       {connectWalletStatus}
 
       <div className="flex items-center justify-between flex-1">
@@ -95,24 +112,25 @@ const Quest = (props) => {
         </div>
 
         {walletConnect}
-        
       </div>
     </div>
   );
   let twitterLoginTask = null;
   if (tasks.ck_twitter_login) {
     const twitterLoginStatus = !tasks.ck_twitter_login.status ? (
-      <><Button
-        id={`btn-twitter-login`}
-        priority="high"
-        classes={{ root_highPriority: classes.btnTwitterLogin }}
-        type="button"
-        onPress={() => handleTwitterLogin()}
-      >
-      </Button><span className="flex items-center flex-row text-normal font-normal text-gray-600 ml-auto">
+      <>
+        <Button
+          id={`btn-twitter-login`}
+          priority="high"
+          classes={{ root_highPriority: classes.btnTwitterLogin }}
+          type="button"
+          onPress={() => handleTwitterLogin()}
+        />
+        <span className="flex items-center flex-row text-normal font-normal text-gray-600 ml-auto">
           {t('Login')}&nbsp;
           <FaAngleRight />
-        </span></>
+        </span>
+      </>
     ) : (
       <span className={`ml-auto text-sky-600`}>
         @{tasks.ck_twitter_login.screen_name}
@@ -127,12 +145,12 @@ const Quest = (props) => {
       <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
         <FaTwitter />
       </div>
-    )
-
+    );
 
     twitterLoginTask = (
-      <div className={`${classes.questItem} ${classes.twitterLoginTask} relative`}>
-
+      <div
+        className={`${classes.questItem} ${classes.twitterLoginTask} relative`}
+      >
         {twitterLoginIconStatus}
 
         <div className="flex items-center flex-1">
@@ -146,7 +164,6 @@ const Quest = (props) => {
             </span>
             {t('Login Twitter')}
           </div>
-          
         </div>
 
         {twitterLoginStatus}
@@ -174,8 +191,7 @@ const Quest = (props) => {
         classes={{ root_highPriority: classes.btnVerifyTwitter }}
         type="button"
         onPress={() => handleCheckTwitterFollow()}
-      >        
-      </Button>
+      />
     ) : null;
     const twitterFollowStatus = (
       <span className={`ml-auto mr-2`}>
@@ -195,15 +211,18 @@ const Quest = (props) => {
       <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
         <FaUserPlus />
       </div>
-    )
+    );
 
     let twFollowTaskClasses = [classes.twitterFollowTask];
     twFollowTaskClasses.push(
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
     twitterFollowTask = (
-      <div className={`${classes.questItem} ${twFollowTaskClasses.join(' ')} relative`}>
-        
+      <div
+        className={`${classes.questItem} ${twFollowTaskClasses.join(
+          ' '
+        )} relative`}
+      >
         {twitterFollowIconStatus}
 
         <div className="z-20">
@@ -384,8 +403,7 @@ const Quest = (props) => {
         classes={{ root_highPriority: classes.btnVerifyTwitter }}
         type="button"
         onPress={() => handleCheckNftOwnership()}
-      >
-      </Button>
+      />
     ) : null;
   const nftOwnershipStatus = (
     <span className={`ml-auto`}>
@@ -433,7 +451,6 @@ const Quest = (props) => {
           {t('Verify')}&nbsp;
           <FaAngleRight />
         </span>
-
       </div>
     </div>
   ) : null;

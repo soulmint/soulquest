@@ -16,10 +16,17 @@ import { useSelector } from 'react-redux';
 
 export type ConnectWalletProps = {
   name?: string;
+  classes?: {
+    root_highPriority?: any;
+  };
 };
 
-const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
+const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
+  props: ConnectWalletProps
+) => {
   const dispatch = useDispatch();
+
+  const { classes } = props;
 
   const { t } = useTranslation('common');
 
@@ -91,7 +98,16 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
   ) : (
     <>
       {/* <Modal connect={connect} /> */}
-      <Button onPress={() => connect()} priority="high" type="button">
+      <Button
+        type="button"
+        priority="high"
+        classes={
+          classes && classes.root_highPriority
+            ? { root_highPriority: classes.root_highPriority }
+            : null
+        }
+        onPress={() => connect()}
+      >
         <img
           src="/icons/wallet-ico.svg"
           alt={t('Connect wallet')}
