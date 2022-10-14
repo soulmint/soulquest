@@ -82,7 +82,7 @@ const Rewards = (props) => {
     campaign.cover_image && campaign.cover_image.id ? (
       <Image
         layout="fill"
-        className={`${classes.campaignCover}`}
+        className={`${classes.campaignCover} relative`}
         placeholder="blur"
         src={`${assetsBaseUrl}/${campaign.cover_image.id}?${coverOptions}`}
         alt={`cover_${campaign.title}`}

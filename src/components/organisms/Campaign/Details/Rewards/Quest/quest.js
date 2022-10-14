@@ -195,13 +195,13 @@ const Quest = (props) => {
         <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
           <FaUserPlus />
         </div>
-        <div className="flex-1">
+        <div className="z-20">
           <span
             className={`${classes.taskIndex} ${
               tasks.ck_twitter_follow.status ? classes.taskSuccess : ''
             }`}
           >
-            t{'Task'} {tasks.ck_twitter_follow.id}
+            {t('Task')} {tasks.ck_twitter_follow.id}
           </span>
           {t('Follow')}&nbsp;
           <TextLink
@@ -217,7 +217,7 @@ const Quest = (props) => {
           {twitterFollowStatus}
         </div>
 
-        <span className="flex items-center flex-row text-normal font-normal text-gray-600">
+        <span className="flex items-center flex-row text-normal font-normal text-gray-600 ml-auto">
           {t('Verify')}&nbsp;
           <FaAngleRight />
         </span>
