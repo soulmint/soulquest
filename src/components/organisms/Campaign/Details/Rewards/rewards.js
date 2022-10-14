@@ -29,9 +29,7 @@ const Rewards = (props) => {
 
   const rewardOverview =
     campaign.reward_overview && enabled.how_to_claim ? (
-      <div
-        className={`card ${classes.rewardOverview} bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-6`}
-      >
+      <div className={`card ${classes.rewardOverview}`}>
         <div className="card-header">
           <h3 className="">Reward Overview</h3>
         </div>

@@ -11,7 +11,7 @@ const HowClaim = (props) => {
   const { t } = useTranslation('campaign_details');
 
   return (
-    <div className="card">
+    <div className="card mt-6">
       <div className="card-header">
         <h3 className="">{t('How to claim?')}</h3>
         {/*<p className="text-sm text-gray-500 font-normal mt-0 mb-0">

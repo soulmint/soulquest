@@ -121,7 +121,7 @@ const Questers = (props) => {
 
   return (
     <Fragment>
-      <div className={`card ${classes[rootClassName]}`}>
+      <div className={`card mt-6 ${classes[rootClassName]}`}>
         <div className="card-header">{blockHeading}</div>
         <div className={`card-body ${classes.questers}`}>{child}</div>
       </div>

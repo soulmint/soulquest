@@ -8,6 +8,9 @@ import { useStyle } from '../../../../../classify';
 import Button from '../../../../../atoms/Button';
 import TextLink from '../../../../../../components/atoms/TextLink';
 import BrowserPersistence from '../../../../../../utils/simplePersistence';
+
+import { FaWallet, FaTwitter, FaUserPlus } from 'react-icons/fa';
+
 // import Cookie from 'js-cookie';
 import {
   TwitterLogin,
@@ -61,12 +64,11 @@ const Quest = (props) => {
     <ConnectWallet />
   );
   const connectWalletTask = (
-    <div className={classes.connectWalletTask}>
-      <img
-        src="/icons/wallet-ico.svg"
-        alt="Connect wallet"
-        className="w-6 h-6 mr-4"
-      />
+    <div className={`${classes.questItem} ${classes.connectWalletTask}`}>
+      <div className={`${classes.questItemIcon}`}>
+        <FaWallet className="text-white" />
+      </div>
+
       <div className="flex items-center justify-between flex-1">
         <div className="flex-1">
           <span
@@ -100,12 +102,10 @@ const Quest = (props) => {
       </span>
     );
     twitterLoginTask = (
-      <div className={classes.twitterLoginTask}>
-        <img
-          src="/icons/twitter-ico.svg"
-          alt="Login Twitter"
-          className="w-6 h-6 mr-4"
-        />
+      <div className={`${classes.questItem} ${classes.twitterLoginTask}`}>
+        <div className={`${classes.questItemIcon}`}>
+          <FaTwitter className="text-white" />
+        </div>
         <div className="flex items-center flex-1">
           <div className="flex-1">
             <span
@@ -161,12 +161,10 @@ const Quest = (props) => {
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
     twitterFollowTask = (
-      <div className={`${twFollowTaskClasses.join(' ')}`}>
-        <img
-          src="/icons/user-plus.svg"
-          alt="Follow Twitter"
-          className="w-6 h-6 mr-4"
-        />
+      <div className={`${classes.questItem} ${twFollowTaskClasses.join(' ')}`}>
+        <div className={`${classes.questItemIcon}`}>
+          <FaUserPlus className="text-white" />
+        </div>
         <div className="flex-1">
           <span
             className={`${classes.taskIndex} ${
@@ -353,10 +351,13 @@ const Quest = (props) => {
     nftOwnershipState === 'loading' ? classes.taskLoading : null
   );
   const nftOwnershipTask = tasks.ck_nft_ownership ? (
-    <div className={nftTaskClasses.join(' ')}>
-      <div className="flex-1 flex">
-        <span className={`${classes.bsc} absolute left-0 top-4`} />
-        <div className="pr-4 pl-10 relative">
+    <div className={`${classes.questItem} ${nftTaskClasses.join(' ')}`}>
+      <div className={`relative ${classes.questItemIcon}`}>
+        <span className={`${classes.bsc}`} />
+      </div>
+
+      <div className="flex-1">
+        <div className="relative">
           <span
             className={`${classes.taskIndex} ${
               tasks.ck_nft_ownership.status ? classes.taskSuccess : ''
@@ -364,19 +365,17 @@ const Quest = (props) => {
           >
             {t('Task')} {tasks.ck_nft_ownership.id}
           </span>
-          <h4 className="mt-0 mb-0 leading-normal text-sm font-semibold text-gray-800">
-            {t('SoulBound Token Ownership')}
-          </h4>
+          <h4 className="mt-0 mb-0 ">{t('SoulBound Token Ownership')}</h4>
           <p className="text-sm text-gray-500 font-normal mt-0 mb-0">
             {t('Must hold Binance Account Bound Token in wallet.')}{' '}
           </p>
         </div>
+      </div>
 
-        <div className="">
-          {/*{tasks.ck_nft_ownership.nftCollectionInfo}*/}
-          {nftOwnershipStatus}
-          {verifyNftOwnershipBtn}
-        </div>
+      <div className="">
+        {/*{tasks.ck_nft_ownership.nftCollectionInfo}*/}
+        {nftOwnershipStatus}
+        {verifyNftOwnershipBtn}
       </div>
     </div>
   ) : null;
@@ -439,16 +438,14 @@ const Quest = (props) => {
 
   const child = Object.keys(tasks).length ? (
     <Fragment>
-      <div className="border-b border-b-gray-200 border-opacity-60 py-3 px-6 mb-4">
-        <h3 className="mt-0 mb-1 text-lg lg:text-xl font-semibold text-gray-800 tracking-tight">
-          {t('Require tasks')}
-        </h3>
+      <div className="card-header text-center">
+        <h3 className="">{t('Require tasks')}</h3>
         <p className="text-sm text-gray-600 font-normal mt-0 mb-0">
           {t('Complete all task below to be eligible.')}
         </p>
       </div>
 
-      <div className="py-4 px-6">
+      <div className="card-body">
         {connectWalletTask}
         {twitterLoginTask}
         {twitterFollowTask}
@@ -459,7 +456,7 @@ const Quest = (props) => {
     </Fragment>
   ) : null;
 
-  return <div className={`${classes.root}`}>{child}</div>;
+  return <div className={`card ${classes.root}`}>{child}</div>;
 };
 
 Quest.propTypes = {
