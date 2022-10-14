@@ -6,6 +6,7 @@ import useThemes from '../../../../hooks/useThemes';
 import defaultClasses from './dropDownMenu.module.css';
 import { logOut } from 'src/store/user/operations';
 import Link from 'src/components/atoms/Link';
+import Avatar from 'boring-avatars';
 interface DropDownMenuProps {
   name?: string;
   classes?: object;
@@ -45,7 +46,15 @@ const DropDownMenu: FunctionComponent<DropDownMenuProps> = (props) => {
         <div
           className={`${classes.userInfo} bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-nowrap items-center shadow-none rounded-full py-1 pl-3 pr-1`}
         >
-          <span className="mr-2">Hi: {t(name)}</span>
+          <span className={`${classes.souldAvatar}`}>
+            <Avatar
+              size={24}
+              name={t(name)}
+              variant="beam" //oneOf: marble (default), beam, pixel,sunset, ring, bauhaus
+              colors={['#F97316', '#EAB308', '#4ADE80', '#6d28d9', '#475569']}
+            />
+          </span>
+          <span className="mr-2"> {t(name)}</span>
           <Link href="#" onClick={disConnect}>
             {t('Sign out')}
           </Link>
