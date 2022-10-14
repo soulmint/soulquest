@@ -66,7 +66,7 @@ const Quest = (props) => {
   const connectWalletTask = (
     <div className={`${classes.questItem} ${classes.connectWalletTask}`}>
       <div className={`${classes.questItemIcon}`}>
-        <FaWallet className="text-white" />
+        <FaWallet />
       </div>
 
       <div className="flex items-center justify-between flex-1">
@@ -104,7 +104,7 @@ const Quest = (props) => {
     twitterLoginTask = (
       <div className={`${classes.questItem} ${classes.twitterLoginTask}`}>
         <div className={`${classes.questItemIcon}`}>
-          <FaTwitter className="text-white" />
+          <FaTwitter />
         </div>
         <div className="flex items-center flex-1">
           <div className="flex-1">
@@ -163,7 +163,7 @@ const Quest = (props) => {
     twitterFollowTask = (
       <div className={`${classes.questItem} ${twFollowTaskClasses.join(' ')}`}>
         <div className={`${classes.questItemIcon}`}>
-          <FaUserPlus className="text-white" />
+          <FaUserPlus />
         </div>
         <div className="flex-1">
           <span
@@ -438,7 +438,7 @@ const Quest = (props) => {
 
   const child = Object.keys(tasks).length ? (
     <Fragment>
-      <div className="card-header text-center">
+      <div className="card-header md:flex items-center md:justify-between">
         <h3 className="">{t('Require tasks')}</h3>
         <p className="text-sm text-gray-600 font-normal mt-0 mb-0">
           {t('Complete all task below to be eligible.')}
