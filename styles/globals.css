@@ -93,3 +93,31 @@ Cards
 .card-body {
   @apply pb-6 px-6;
 }
+
+/* 
+List pair
+-------------------------*/
+.list-pair {
+
+}
+
+.list-pair--item {
+  @apply flex justify-between items-center py-1;
+}
+
+.pair-title {
+  @apply font-bold text-sm text-slate-400;
+}
+
+.pair-value {
+  @apply flex items-center font-bold text-base;
+}
+
+.pair-value--logo {
+  @apply w-6 h-6 bg-slate-700 rounded mr-2;
+  padding: 3px 6px 6px 6px;
+}
+
+.pair-value--logo img {
+  @apply !w-full !h-auto;
+}

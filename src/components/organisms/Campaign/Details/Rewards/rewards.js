@@ -113,7 +113,50 @@ const Rewards = (props) => {
           {description}
         </div>
       </div>
+
       <div className={`${classes.pageSidebar}`}>
+        {/* #Concept #Quest Info */}
+        <div className={`card mb-6 ${classes.rewardOverview}`}>
+          <div className="card-header">
+            <h3 className="">Quest Info</h3>
+          </div>
+          <div className="card-body">
+            <div className="list-pair">
+              <div className="list-pair--item">
+                <div className="pair-title">Provider</div>
+                <div className="pair-value">
+                  <span className="pair-value--logo">
+                    <img
+                      // className="pair-value--logo"
+                      // layout="fill"
+                      src={'/logos/sidedfinance.png'}
+                      title={'SoulMint'}
+                    />
+                  </span>
+                  SidedFinance
+                </div>
+              </div>
+              <div className="list-pair--item">
+                <div className="pair-title">Rewards</div>
+                <div className="pair-value">500 USDC</div>
+              </div>
+              <div className="list-pair--item">
+                <div className="pair-title">Chain</div>
+                <div className="pair-value">
+                  {/* <img
+                    className="w-6 h-6 mr-2 bg-slate-800 rounded-full"
+                    // layout="fill"
+                    src={'/chains/bsc.svg'}
+                    title={'BSC'}
+                  /> */}
+                  Binance Smart Chain
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* END: #Concept #Quest Info */}
+
         {rewardOverview}
         {howToClaim}
         <Questers campaignId={campaign.id} />
