@@ -18,7 +18,7 @@ export const setTokenAction = (token: any) => {
   };
 };
 
-export const setId = (userId: any) => {
+export const setIdAction = (userId: any) => {
   //saving to local for init state
   storage.setItem('user_id', userId);
 
@@ -28,7 +28,7 @@ export const setId = (userId: any) => {
   };
 };
 
-export const setWalletAddress = (add: any) => {
+export const setWalletAddressAction = (add: any) => {
   //saving to local for init state
   storage.setItem('wallet_address', add);
 

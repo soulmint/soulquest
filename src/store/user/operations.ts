@@ -4,7 +4,7 @@ import { UserAction } from './types';
 
 export const setId = (dispatch: Dispatch<UserAction>, userId: any) => {
   try {
-    dispatch(actions.setId(userId));
+    dispatch(actions.setIdAction(userId));
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.log(e);
@@ -14,7 +14,7 @@ export const setId = (dispatch: Dispatch<UserAction>, userId: any) => {
 
 export const setWalletAddress = (dispatch: Dispatch<UserAction>, add: any) => {
   try {
-    dispatch(actions.setWalletAddress(add));
+    dispatch(actions.setWalletAddressAction(add));
   } catch (e) {
     if (process.env.NODE_ENV !== 'production') {
       console.log(e);
