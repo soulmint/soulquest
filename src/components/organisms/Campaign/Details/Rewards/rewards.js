@@ -1,17 +1,20 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { shape, string } from 'prop-types';
 // import { useTranslation } from 'next-i18next';
-import defaultClasses from './rewards.module.css';
-import { useStyle } from '../../../../classify';
+import classes from './rewards.module.css';
 import Coupon from './Coupon';
 import Quest from './Quest';
 import Questers from './Questers';
 import HowClaim from './HowClaim';
 import { useRewards } from '../../../../../hooks/Campaign/Rewards';
+import useThemes from '../../../../../hooks/useThemes';
+import Image from '../../../../atoms/Image';
 
 const Rewards = (props) => {
-  const { classes: propClasses, campaign, enabled } = props;
-  const classes = useStyle(defaultClasses, propClasses);
+  const { campaign } = props;
+
+  const { rootClassName } = useThemes();
+
   // const { t } = useTranslation('campaign_details');
 
   const {
@@ -27,29 +30,39 @@ const Rewards = (props) => {
     classes
   });
 
-  const rewardOverview =
-    campaign.reward_overview && enabled.how_to_claim ? (
-      <div className={`card ${classes.rewardOverview}`}>
-        <div className="card-header">
-          <h3 className="">Reward Overview</h3>
-        </div>
-        <div className="card-body">
-          <div
-            className={classes.rewardOverview}
-            dangerouslySetInnerHTML={{ __html: campaign.reward_overview }}
-          />
-        </div>
-      </div>
-    ) : null;
-
-  const howToClaim =
-    campaign.how_to_claim && enabled.how_to_claim ? (
-      <HowClaim content={campaign.how_to_claim} />
-    ) : null;
-  const questers = enabled.questers ? (
-    <Questers campaignId={campaign.id} />
+  const shortDesc = campaign.short_desc ? (
+    <div
+      className={classes.shortDesc}
+      dangerouslySetInnerHTML={{ __html: campaign.short_desc }}
+    />
   ) : null;
-  const quest = enabled.quest ? (
+
+  const description = campaign.description ? (
+    <div
+      className={classes.desc}
+      dangerouslySetInnerHTML={{ __html: campaign.description }}
+    />
+  ) : null;
+
+  const rewardOverview = campaign.reward_overview ? (
+    <div className={`card ${classes.rewardOverview}`}>
+      <div className="card-header">
+        <h3 className="">Reward Overview</h3>
+      </div>
+      <div className="card-body">
+        <div
+          className={classes.rewardOverview}
+          dangerouslySetInnerHTML={{ __html: campaign.reward_overview }}
+        />
+      </div>
+    </div>
+  ) : null;
+
+  const howToClaim = campaign.how_to_claim ? (
+    <HowClaim content={campaign.how_to_claim} />
+  ) : null;
+
+  const quest = (
     <Quest
       userState={userState}
       campaignId={parseInt(campaign.id)}
@@ -60,16 +73,53 @@ const Rewards = (props) => {
       onClaimReward={handleClaimReward}
       verifyNftOwnership={handleVerifyNftOwnership}
     />
-  ) : null;
+  );
+
+  // Build cover and thumb images
+  const assetsBaseUrl = process.env.MEDIA_BASE_URL;
+  const coverOptions = 'fit=cover';
+  const coverImage =
+    campaign.cover_image && campaign.cover_image.id ? (
+      <Image
+        layout="fill"
+        className={`${classes.campaignCover}`}
+        placeholder="blur"
+        src={`${assetsBaseUrl}/${campaign.cover_image.id}?${coverOptions}`}
+        alt={`cover_${campaign.title}`}
+      />
+    ) : null;
+  /*
+  const thumbOptions = 'fit=cover';
+  const thumbImage =
+    campaign.thumb_image && campaign.thumb_image.id ? (
+      <Image
+        layout="fill"
+        className={`${classes.campaignThumb}`}
+        placeholder="blur"
+        src={`${assetsBaseUrl}/${campaign.thumb_image.id}?${thumbOptions}`}
+        alt={`cover_${campaign.title}`}
+      />
+    ) : null;*/
+
   const coupon = campaign.coupon ? <Coupon campaign={campaign} /> : null;
+
   return (
-    <Fragment>
-      {rewardOverview}
-      {howToClaim}
-      {quest}
-      {coupon}
-      {questers}
-    </Fragment>
+    <div className={`${classes[rootClassName]}`}>
+      <div className={`${classes.pageContent}`}>
+        {quest}
+        <div className={`${classes.pageContentInner}`}>
+          <div className={`${classes.coverImage}`}>{coverImage}</div>
+          {shortDesc}
+          {description}
+        </div>
+      </div>
+      <div className={`${classes.pageSidebar}`}>
+        {rewardOverview}
+        {howToClaim}
+        <Questers campaignId={campaign.id} />
+        {coupon}
+      </div>
+    </div>
   );
 };
 

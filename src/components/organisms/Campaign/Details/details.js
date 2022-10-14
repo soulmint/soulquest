@@ -1,15 +1,12 @@
 import React, { Fragment } from 'react';
 import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
-// import Head from 'next/head';
 import TextLink from '../../../atoms/TextLink';
 import HeadCustom from '../../Head';
-// import Image from "../../../atoms/Image";
 import Rewards from './Rewards';
 import useThemes from '../../../../hooks/useThemes';
 import { useDetails } from '../../../../hooks/Campaign';
 import classes from './detail.module.css';
-import Image from '../../../atoms/Image';
 
 const Details = (props) => {
   const { slug } = props;
@@ -62,46 +59,6 @@ const Details = (props) => {
         <span className={classes.storeName}> {campaign.store_name} </span>
       );
 
-      // Build cover and thumb images
-      const assetsBaseUrl = process.env.MEDIA_BASE_URL;
-      const coverOptions = 'fit=cover';
-      const coverImage =
-        campaign.cover_image && campaign.cover_image.id ? (
-          <Image
-            layout="fill"
-            className={`${classes.campaignCover}`}
-            placeholder="blur"
-            src={`${assetsBaseUrl}/${campaign.cover_image.id}?${coverOptions}`}
-            alt={`cover_${campaign.title}`}
-          />
-        ) : null;
-      /*
-      const thumbOptions = 'fit=cover';
-      const thumbImage =
-        campaign.thumb_image && campaign.thumb_image.id ? (
-          <Image
-            layout="fill"
-            className={`${classes.campaignThumb}`}
-            placeholder="blur"
-            src={`${assetsBaseUrl}/${campaign.thumb_image.id}?${thumbOptions}`}
-            alt={`cover_${campaign.title}`}
-          />
-        ) : null;*/
-
-      const shortDesc = campaign.short_desc ? (
-        <div
-          className={classes.shortDesc}
-          dangerouslySetInnerHTML={{ __html: campaign.short_desc }}
-        />
-      ) : null;
-
-      const description = campaign.description ? (
-        <div
-          className={classes.desc}
-          dangerouslySetInnerHTML={{ __html: campaign.description }}
-        />
-      ) : null;
-
       const startDate = Moment(campaign.date_start);
       const endDate = Moment(campaign.date_end);
       const now = Moment();
@@ -127,6 +84,11 @@ const Details = (props) => {
             </span>
           </div>
         ) : null;
+
+      const pageTitleInfo = pageTitle ? (
+        <h1 className={`${classes.pageTitle}`}>{campaign.title}</h1>
+      ) : null;
+
       const metaInfo = (
         <div className={`${classes.campaignMeta}`}>
           {stateInfo}
@@ -142,7 +104,7 @@ const Details = (props) => {
           schemaType="article"
           title={`${pageTitle} - SoulMint - The 1st SoulBound`}
           description={`${campaign.short_desc}...`}
-          image={`${assetsBaseUrl}/${campaign.thumb_image.id}?format=webp&width=500`}
+          image={`${process.env.MEDIA_BASE_URL}/${campaign.thumb_image.id}?format=webp&width=500`}
         />
       );
 
@@ -150,41 +112,11 @@ const Details = (props) => {
         <div className={`${classes.pageWrapper} dark:bg-gray-900`}>
           <div className={`${classes.pageContainer}`}>
             <div className={`${classes.pageHeader}`}>
-              <h1 className={`${classes.pageTitle}`}>{campaign.title}</h1>
+              {pageTitleInfo}
               {metaInfo}
             </div>
-
-            <div className={`flex ${classes.pageContent}`}>
-              <div className={`${classes.pageContent}`}>
-                <Rewards
-                  campaign={campaign}
-                  enabled={{
-                    rewardOverview: false,
-                    how_to_claim: false,
-                    questers: false,
-                    quest: true,
-                    coupon: false
-                  }}
-                />
-                <div className={`${classes.pageContentInner}`}>
-                  <div className={`${classes.coverImage}`}>{coverImage}</div>
-                  {shortDesc}
-                  {description}
-                </div>
-              </div>
-
-              <div className={`${classes.pageSidebar}`}>
-                <Rewards
-                  campaign={campaign}
-                  enabled={{
-                    rewardOverview: true,
-                    how_to_claim: true,
-                    questers: true,
-                    quest: false,
-                    coupon: true
-                  }}
-                />
-              </div>
+            <div className={`flex`}>
+              <Rewards campaign={campaign} />
             </div>
           </div>
         </div>
@@ -203,10 +135,10 @@ const Details = (props) => {
   }
 
   return (
-    <Fragment>
+    <div className={`${classes[rootClassName]}`}>
       {SEOChild}
-      <div className={`${classes[rootClassName]}`}>{child}</div>
-    </Fragment>
+      {child}
+    </div>
   );
 };
 

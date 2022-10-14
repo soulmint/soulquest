@@ -19,6 +19,13 @@
   @apply text-white;
 }
 
+.pageContent {
+  @apply lg:pr-4 basis-full md:basis-2/3 mb-4 lg:mb-0;
+}
+
+.rootDark .pageContent {
+}
+
 .pageWrapper {
   @apply bg-slate-100;
 }
@@ -27,32 +34,8 @@
   @apply container mx-auto max-w-screen-xl py-12 px-4;
 }
 
-.pageContent {
-  @apply lg:pr-4 basis-full md:basis-2/3 mb-4 lg:mb-0;
-}
-
-.rootDark .pageContent {
-}
-
-.pageContentInner {
-  @apply bg-white rounded-lg shadow-sm py-6 px-6;
-}
-
-
-.shortDesc {
-  @apply mb-8 font-semibold leading-relaxed;
-}
-
-.coverImage {
-  @apply rounded-lg overflow-hidden mb-8;
-}
-
 .campaignMeta {
   @apply flex flex-wrap items-center justify-start mb-6 text-sm;
-}
-
-.pageSidebar {
-  @apply basis-full md:basis-1/3 lg:pl-4 max-w-full;
 }
 
 .loading {
@@ -71,10 +54,6 @@
 
 .dateEnd {
   @apply pl-4;
-}
-
-.rootDark .desc {
-  @apply text-gray-400;
 }
 
 /* Sidebar list coupon */
@@ -123,13 +102,5 @@
 }
 
 .storeInfo {
-
 }
 
-.campaignCover {
-
-}
-
-.campaignThumb {
-
-}
