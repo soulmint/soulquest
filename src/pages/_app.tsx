@@ -61,7 +61,9 @@ const SoulMintApp = ({
   const apolloClient = useApollo(
     pageProps.initialApolloState ? pageProps.initialApolloState : null
   );
-  const store = useStore();
+  const store = useStore(
+    pageProps.initialStoreState ? pageProps.initialStoreState : {}
+  );
 
   return (
     <ApolloProvider client={apolloClient}>

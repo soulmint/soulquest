@@ -99,7 +99,7 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
       >
         <img
           src="/icons/wallet-ico.svg"
-          alt="Connect wallet"
+          alt={t('Connect wallet')}
           className="w-4 h-4 mr-4"
         />
         {t('Connect wallet')}

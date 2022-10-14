@@ -9,6 +9,7 @@ import Rewards from './Rewards';
 import useThemes from '../../../../hooks/useThemes';
 import { useDetails } from '../../../../hooks/Campaign';
 import classes from './detail.module.css';
+import Image from '../../../atoms/Image';
 
 const Details = (props) => {
   const { slug } = props;
@@ -66,29 +67,24 @@ const Details = (props) => {
       const coverOptions = 'fit=cover';
       const coverImage =
         campaign.cover_image && campaign.cover_image.id ? (
-          //Todo: Switching to use NextImage later
-          // <Image
-          //   className={`${classes.campaignCover}`}
-          //   layout="responsive"
-          //   width="100%"
-          //   height="100%"
-          //   src={`${assetBaseUrl}/${campaign.cover_image.id}`}
-          //   alt={`cover_${campaign.slug}`}
-          // />
-          <img
+          <Image
+            layout="fill"
             className={`${classes.campaignCover}`}
+            placeholder="blur"
             src={`${assetsBaseUrl}/${campaign.cover_image.id}?${coverOptions}`}
-            alt={`${campaign.cover_image.title}`}
+            alt={`cover_${campaign.title}`}
           />
         ) : null;
       /*
       const thumbOptions = 'fit=cover';
       const thumbImage =
         campaign.thumb_image && campaign.thumb_image.id ? (
-          <img
+          <Image
+            layout="fill"
             className={`${classes.campaignThumb}`}
+            placeholder="blur"
             src={`${assetsBaseUrl}/${campaign.thumb_image.id}?${thumbOptions}`}
-            alt={`${campaign.thumb_image.title}`}
+            alt={`cover_${campaign.title}`}
           />
         ) : null;*/
 
@@ -138,6 +134,7 @@ const Details = (props) => {
           {storeInfo}
         </div>
       );
+
       SEOChild = (
         <HeadCustom
           url={`${process.env.PUBLIC_URL}/campaign/${slug}`}

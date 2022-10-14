@@ -4,11 +4,12 @@ import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import { useSelector } from 'react-redux';
 import Moment from 'moment';
-import { toHTML, subStrWords, ellipsify } from '../../../../utils/strUtils';
 import Button from '../../../atoms/Button';
+import Image from '../../../atoms/Image';
 import classes from './item.module.css';
 import useThemes from '../../../../hooks/useThemes';
 import TextLink from '../../../atoms/TextLink';
+import { toHTML, subStrWords, ellipsify } from '../../../../utils/strUtils';
 
 const DESC_MAX_LENGTH = 200;
 
@@ -62,7 +63,7 @@ const Item = (props) => {
               (
               {ellipsify({
                 str: nftCollection.nft_collection_id.contract_address,
-                start: 6,
+                start: 4,
                 end: 4
               })}
               )
@@ -73,50 +74,55 @@ const Item = (props) => {
     : null;
 
   // Build store info
-  const storeLogo = data.store_logo_url ? (
+  /*const storeLogo = data.store_logo_url ? (
     <img
       className={`${classes.storeLogo}`}
       src={data.store_logo_url}
       alt={`cover_${data.store_name}`}
     />
-  ) : null;
-  const storeInfo = data.store_url ? (
+  ) : null;*/
+
+  /*const storeInfo = data.store_url ? (
     <TextLink
       className={classes.storeLink}
       target={`_blank`}
       href={data.store_url}
     >
       {storeLogo}
-      {/* <span className={classes.storeName}> {data.store_name} </span> */}
+      {/!* <span className={classes.storeName}> {data.store_name} </span> *!/}
     </TextLink>
   ) : (
     <span className={classes.storeName}> {data.store_name} </span>
-  );
+  );*/
 
-  const discountAmountInfo = data.discount_value ? (
+  /*const discountAmountInfo = data.discount_value ? (
     <span className={classes.couponAmoun}>
       {data.discount_value}% {t('Off')}
     </span>
-  ) : null;
+  ) : null;*/
 
   // Build cover and thumb images
   const assetsBaseUrl = process.env.MEDIA_BASE_URL;
   const coverOptions = 'fit=cover';
-  const thumbOptions = 'fit=cover';
+  // const thumbOptions = 'fit=cover';
   const coverImage =
     data.cover_image && data.cover_image.id ? (
-      <img
+      <Image
+        layout="fill"
         className={`${classes.campaignCover}`}
+        placeholder="blur"
         src={`${assetsBaseUrl}/${data.cover_image.id}?${coverOptions}`}
-        alt={`${data.cover_image.title}`}
+        alt={`cover_${data.slug}`}
       />
     ) : null;
   /*const thumbImage =
     data.thumb_image && data.thumb_image.id ? (
-      <img
+      <Image
+        layout="fill"
         className={`${classes.campaignThumb}`}
+        placeholder="blur"
         src={`${assetsBaseUrl}/${data.thumb_image.id}?${thumbOptions}`}
-        alt={`${data.thumb_image.title}`}
+        alt={`cover_${data.slug}`}
       />
     ) : null;*/
 
@@ -171,7 +177,6 @@ const Item = (props) => {
 
       <div className={`${classes.itemDesc}`}>
         {/* {thumbImage} */}
-
         {shortDesc}
       </div>
 
