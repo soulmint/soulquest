@@ -31,7 +31,6 @@ import {
   TaskSuccessIcon
 } from '../../../../Svg/SvgIcons';
 import { ellipsify } from '../../../../../../utils/strUtils';
-import Avatar from 'boring-avatars';
 
 const Quest = (props) => {
   const {
@@ -69,14 +68,6 @@ const Quest = (props) => {
 
   let walletConnect = userState.wallet_address ? (
     <span className="flex items-center flex-row text-base font-medium text-gray-500">
-      <span className={`${classes.soulAvatar}`}>
-        <Avatar
-          size={24}
-          name={userState.wallet_address}
-          variant="beam" //oneOf: marble (default), beam, pixel,sunset, ring, bauhaus
-          colors={['#F97316', '#EAB308', '#4ADE80', '#6d28d9', '#475569']}
-        />
-      </span>
       {ellipsify({
         str: userState.wallet_address,
         start: 4,

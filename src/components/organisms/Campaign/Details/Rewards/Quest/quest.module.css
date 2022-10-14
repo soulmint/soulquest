@@ -104,6 +104,5 @@
   margin: 0px 5px 0px 0px;
 }
 .btnConnectWallet {
-  composes: root_highPriority from '../../../../../atoms/Button/button.module.css';
   border: 3px  red solid;
 }
