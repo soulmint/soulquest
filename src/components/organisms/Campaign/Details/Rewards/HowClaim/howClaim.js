@@ -11,17 +11,15 @@ const HowClaim = (props) => {
   const { t } = useTranslation('campaign_details');
 
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg mb-6">
-      <div className="border-b border-gray-200 dark:border-gray-700 border-opacity-60 py-3 px-6">
-        <h3 className="mt-0 mb-0 text-lg lg:text-lg font-semibold text-gray-800 dark:text-gray-300">
-          {t('How to claim?')}
-        </h3>
+    <div className="card">
+      <div className="card-header">
+        <h3 className="">{t('How to claim?')}</h3>
         {/*<p className="text-sm text-gray-500 font-normal mt-0 mb-0">
           {t('Follow the steps below to claim your rewards.')}
         </p>*/}
       </div>
 
-      <div className="p-6">
+      <div className="card-body">
         <div
           className={classes.howToClaim}
           dangerouslySetInnerHTML={{ __html: content }}

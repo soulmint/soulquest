@@ -40,7 +40,7 @@ const Questers = (props) => {
   }, [data, setInfiniteItems]);
 
   const blockHeading = (
-    <h3 className="border-b border-gray-200 dark:border-gray-700 border-opacity-60 dark:border-opacity-50 text-lg lg:text-lg font-semibold py-3 px-6">
+    <h3 className="">
       {t('Souls')} ({totalItems})
     </h3>
   );
@@ -121,9 +121,9 @@ const Questers = (props) => {
 
   return (
     <Fragment>
-      <div className={`${classes[rootClassName]}`}>
-        {blockHeading}
-        <div className={classes.questers}>{child}</div>
+      <div className={`card card-trans ${classes[rootClassName]}`}>
+        <div className="card-header">{blockHeading}</div>
+        <div className={`card-body ${classes.questers}`}>{child}</div>
       </div>
     </Fragment>
   );

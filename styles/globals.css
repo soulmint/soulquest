@@ -1,6 +1,5 @@
 @import url('https://fonts.cdnfonts.com/css/pt-root-ui');
-@import url('http://fonts.cdnfonts.com/css/outfit');
-
+/* @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,700;1,400&display=swap'); */
 
 @tailwind base;
 @tailwind components;
@@ -43,13 +42,17 @@ p {
   @apply my-6;
 }
 
-ul, ol {
+ul {
   @apply list-disc ml-8;
+}
+
+ol {
+  @apply list-decimal ml-8;
 }
 
 ul li,
 ol li {
-  @apply py-3 pl-1;
+  @apply py-2 pl-1;
 }
 
 ul li p,
@@ -61,4 +64,32 @@ ol li p {
 /* Improve style for Web3 modal */
 .web3modal-modal-lightbox {
   z-index: 20;
+}
+
+
+/* -------------------------*/
+/* Components 
+/* -------------------------*/
+
+/* 
+Cards
+-------------------------*/
+.card {
+  @apply bg-white rounded-xl border border-slate-200;
+}
+
+.card-trans {
+  @apply bg-transparent rounded-xl border border-slate-200;
+}
+
+.card-header {
+  @apply pt-6 pb-3 px-6;
+}
+
+.card-header h3 {
+  @apply font-bold text-lg m-0;
+}
+
+.card-body {
+  @apply pb-6 px-6;
 }

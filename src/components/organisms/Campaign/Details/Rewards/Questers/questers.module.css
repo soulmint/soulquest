@@ -1,5 +1,5 @@
 .root {
-  @apply bg-white shadow-sm rounded-xl mt-10 pb-6;
+  @apply mt-8;
 }
 
 .rootDark {
