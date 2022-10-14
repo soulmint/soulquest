@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
+// import useImageBase64 from '../../../hooks/useImageBase64';
 import settings from './settings';
+
 const socialTags = ({
   type,
   url,
@@ -57,6 +59,7 @@ const socialTags = ({
 
 const HeadCustom = (props) => {
   const { title, description, image } = props;
+  // const imagess = useImageBase64({ url: image });
   const schemaType = props.schemaType || HeadCustom.defaultProps.schemaType;
   const url = props.url || HeadCustom.defaultProps.url;
   return (

@@ -13,6 +13,8 @@ import {
   FaTwitter,
   FaUserPlus,
   FaCheck,
+  // FaAngleRight,
+  // FaLongArrowAltRight,
   FaAngleRight
 } from 'react-icons/fa';
 // import Cookie from 'js-cookie';
@@ -126,9 +128,9 @@ const Quest = (props) => {
           type="button"
           onPress={() => handleTwitterLogin()}
         />
-        <span className="flex items-center flex-row text-normal font-normal text-gray-600 ml-auto">
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
           {t('Login')}&nbsp;
-          <FaAngleRight />
+          <FaAngleRight className="text-lg" />
         </span>
       </>
     ) : (
@@ -246,10 +248,10 @@ const Quest = (props) => {
           {t('on Twitter')}
         </div>
 
-        <span className="flex items-center flex-row text-normal font-normal text-gray-600 ml-auto">
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
           {twitterFollowStatus}
           {t('Verify')}&nbsp;
-          <FaAngleRight />
+          <FaAngleRight className="text-lg" />
         </span>
 
         {verifyTwitterFollowBtn}
@@ -348,9 +350,9 @@ const Quest = (props) => {
         {twitterReTweetStatus}
 
         {verifyTwitterReTweetBtn}
-        <span className="flex items-center flex-row text-normal font-normal text-gray-600">
+        <span className="flex items-center flex-row text-sm font-bold text-slate-600">
           {t('Verify')}&nbsp;
-          <FaAngleRight />
+          <FaAngleRight className="text-lg" />
         </span>
       </div>
     );
@@ -435,10 +437,10 @@ const Quest = (props) => {
           >
             {t('Task')} {tasks.ck_nft_ownership.id}
           </span>
-          <h4 className="mt-0 mb-0 ">{t('SoulBound Token Ownership')}</h4>
-          <p className="text-sm text-gray-500 font-normal mt-0 mb-0">
+          <h4 className="mt-0 mb-0">{t('Hold Binance Account Bound token')}</h4>
+          {/* <p className="text-sm text-gray-500 font-normal mt-0 mb-0">
             {t('Must hold Binance Account Bound Token in wallet.')}{' '}
-          </p>
+          </p> */}
         </div>
       </div>
 
@@ -447,9 +449,9 @@ const Quest = (props) => {
         {nftOwnershipStatus}
         {verifyNftOwnershipBtn}
 
-        <span className="flex items-center flex-row text-normal font-normal text-gray-600">
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400">
           {t('Verify')}&nbsp;
-          <FaAngleRight />
+          <FaAngleRight className="text-lg" />
         </span>
       </div>
     </div>
@@ -515,7 +517,7 @@ const Quest = (props) => {
     <Fragment>
       <div className="card-header md:flex items-center md:justify-between">
         <h3 className="">{t('Require tasks')}</h3>
-        <p className="text-sm text-gray-600 font-normal mt-0 mb-0">
+        <p className="text-sm text-slate-600 font-normal mt-0 mb-0">
           {t('Complete all task below to be eligible.')}
         </p>
       </div>

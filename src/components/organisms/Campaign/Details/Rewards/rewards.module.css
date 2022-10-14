@@ -29,6 +29,10 @@
   @apply rounded-lg overflow-hidden mb-8;
 }
 
+.coverImage img {
+  @apply !w-full;
+}
+
 .coverImage > span {
   position: relative !important;
 }

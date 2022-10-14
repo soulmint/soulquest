@@ -58,13 +58,13 @@ const Header = (props) => {
   });
 
   const [menuRootClassName, setMenuRootClassName] = useState('offCanvasHide');
-  const toggleOffCanvasMenu = () => {
+  /* const toggleOffCanvasMenu = () => {
     if (menuRootClassName === 'offCanvasHide') {
       setMenuRootClassName('offCanvasShow');
     } else {
       setMenuRootClassName('offCanvasHide');
     }
-  };
+  }; */
 
   return (
     <Fragment>
