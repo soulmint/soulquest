@@ -30,14 +30,12 @@ const Rewards = (props) => {
   const rewardOverview =
     campaign.reward_overview && enabled.how_to_claim ? (
       <div
-        className={`${classes.rewardOverview} bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-6`}
+        className={`card ${classes.rewardOverview} bg-white dark:bg-gray-800 shadow-sm rounded-xl mb-6`}
       >
-        <div className="border-b border-b-gray-200 dark:border-b-gray-700 border-opacity-60 py-3 px-6">
-          <h3 className="font-semibold text-lg text-xl text-gray-800 dark:text-gray-300 my-0">
-            Reward Overview
-          </h3>
+        <div className="card-header">
+          <h3 className="">Reward Overview</h3>
         </div>
-        <div className="p-6">
+        <div className="card-body">
           <div
             className={classes.rewardOverview}
             dangerouslySetInnerHTML={{ __html: campaign.reward_overview }}

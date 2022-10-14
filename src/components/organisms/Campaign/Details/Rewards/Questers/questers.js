@@ -95,15 +95,15 @@ const Questers = (props) => {
             >
               <span className={`${classes.souldAvatar}`}>
                 <Avatar
-                  size={45}
+                  size={24}
                   name={quester.user_created.email}
                   variant="beam" //oneOf: marble (default), beam, pixel,sunset, ring, bauhaus
                   colors={[
-                    '#92A1C6',
-                    '#146A7C',
-                    '#F0AB3D',
-                    '#C271B4',
-                    '#C20D90'
+                    '#F97316',
+                    '#EAB308',
+                    '#4ADE80',
+                    '#6d28d9',
+                    '#475569'
                   ]}
                 />
               </span>
@@ -121,7 +121,7 @@ const Questers = (props) => {
 
   return (
     <Fragment>
-      <div className={`card card-trans ${classes[rootClassName]}`}>
+      <div className={`card ${classes[rootClassName]}`}>
         <div className="card-header">{blockHeading}</div>
         <div className={`card-body ${classes.questers}`}>{child}</div>
       </div>
