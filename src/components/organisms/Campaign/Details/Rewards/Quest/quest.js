@@ -9,7 +9,7 @@ import Button from '../../../../../atoms/Button';
 import TextLink from '../../../../../../components/atoms/TextLink';
 import BrowserPersistence from '../../../../../../utils/simplePersistence';
 
-import { FaWallet, FaTwitter, FaUserPlus } from 'react-icons/fa';
+import { FaWallet, FaTwitter, FaUserPlus, FaArrowRight, FaCheck, FaLongArrowAltRight } from 'react-icons/fa';
 
 // import Cookie from 'js-cookie';
 import {
@@ -58,19 +58,30 @@ const Quest = (props) => {
   if (userState.wallet_address) {
     tasks.ck_connect_wallet.status = true;
   }
+
   let walletConnect = userState.wallet_address ? (
-    <span>{TaskSuccessIcon}</span>
+    <span></span>
   ) : (
     <ConnectWallet />
   );
+
+  const connectWalletStatus = userState.wallet_address ? (
+    <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
+      <FaCheck />
+    </div>
+  ) : (
+    <div className={`${classes.questItemIcon} bg-violet-600 text-white`}>
+      <FaWallet />
+    </div>
+  );
+
   const connectWalletTask = (
     <div className={`${classes.questItem} ${classes.connectWalletTask}`}>
-      <div className={`${classes.questItemIcon} bg-violet-600 text-white`}>
-        <FaWallet />
-      </div>
+
+      {connectWalletStatus}
 
       <div className="flex items-center justify-between flex-1">
-        <div className="flex-1">
+        <div className="">
           <span
             className={`${classes.taskIndex} ${
               userState.wallet_address ? classes.taskSuccess : ''
@@ -80,7 +91,13 @@ const Quest = (props) => {
           </span>
           {t('Connect Wallet')}
         </div>
+
         {walletConnect}
+
+        <span className="flex items-center flex-row text-normal font-normal text-gray-600">
+          {t('Connect')}&nbsp;
+          <FaLongArrowAltRight />
+        </span>
       </div>
     </div>
   );
