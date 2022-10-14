@@ -1,8 +1,11 @@
 import React, { Fragment } from 'react';
+import { useTranslation } from 'next-i18next';
+import Image from 'src/components/atoms/Image';
 import classes from './features.module.css';
 import useThemes from 'src/hooks/useThemes';
 
 const Features = () => {
+  const { t } = useTranslation('home');
   const { isDark } = useThemes();
   const rootClass = isDark ? classes.rootDark : classes.root;
   return (
@@ -18,7 +21,13 @@ const Features = () => {
           <div className="flex flex-wrap lg:flex-nowrap items-start lg:gap-8">
             <div className="basis-full md:basis-1/4 text-center mb-12 md:mb-0">
               <div className="mb-6 mx-6">
-                <img src="/features/soulbound_token_curator.png" alt="SoulBound Token curator" />
+                <Image
+                  src="/features/soulbound_token_curator.png"
+                  alt="SoulBound Token curator"
+                  layout="responsive"
+                  width="240"
+                  height="184"
+                />
               </div>
               <h3 className="my-0 text-xl font-bold text-gray-800 mb-4 dark:text-white">
                 SoulBound Token curator
@@ -30,10 +39,16 @@ const Features = () => {
 
             <div className="basis-full md:basis-1/4 text-center mb-12 md:mb-0">
               <div className="mb-6 mx-6">
-                <img src="/features/chain_agnostic.png" alt="Chain agnostic" />
+                <Image
+                  src="/features/chain_agnostic.png"
+                  alt="Chain agnostic"
+                  layout="responsive"
+                  width="240"
+                  height="184"
+                />
               </div>
               <h3 className="my-0 text-xl text-gray-800 mb-4 font-bold dark:text-white">
-                Chain agnostic
+                {t('Chain agnostic')}
               </h3>
               <p className="my-0 lg:text-lg">
                 No more pain switching between chains. Enjoy perks on
@@ -43,9 +58,12 @@ const Features = () => {
 
             <div className="basis-full md:basis-1/4 text-center mb-12 md:mb-0">
               <div className="mb-6 mx-6">
-                <img
+                <Image
                   src="/features/nocode_campaign_creator.png"
                   alt="No-code campaign creator"
+                  layout="responsive"
+                  width="240"
+                  height="184"
                 />
               </div>
               <h3 className="my-0 text-lg lg:text-xl font-bold text-gray-800 mb-4 dark:text-white">
@@ -58,9 +76,12 @@ const Features = () => {
 
             <div className="basis-full md:basis-1/4 text-center">
               <div className="mb-6 mx-6">
-                <img
+                <Image
                   src="/features/on_chain_reward_distribution.png"
                   alt="On-chain reward distribution"
+                  layout="responsive"
+                  width="240"
+                  height="184"
                 />
               </div>
               <h3 className="my-0 text-lg lg:text-xl font-bold text-gray-800 mb-4 dark:text-white">

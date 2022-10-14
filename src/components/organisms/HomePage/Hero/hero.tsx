@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import Image from 'src/components/atoms/Image';
 import classes from './hero.module.css';
 const Hero = () => {
   return (
@@ -39,7 +40,12 @@ const Hero = () => {
             </div>
 
             <div className="hidden lg:flex justify-end basis-5/12 text-right pl-4">
-              <img src="hero.png" alt="Hero decor" />
+              <Image
+                src="/hero.png"
+                alt="Hero decor"
+                width="500"
+                height="500"
+              />
             </div>
           </div>
         </div>

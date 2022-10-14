@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { Fragment, FunctionComponent /*, useState*/ } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'next-i18next';
 import { useStyle } from '../../../classify';
@@ -17,6 +17,10 @@ const DropDownMenu: FunctionComponent<DropDownMenuProps> = (props) => {
   const { t } = useTranslation('common');
   const { isDark } = useThemes();
   const rootClass = isDark ? classes.rootDark : classes.root;
+  // const [expanded /*, setExpanded*/] = useState(false);
+  // const handleDropDownMenu = () => {
+  //   setExpanded(!expanded);
+  // };
   const dispatch = useDispatch();
   const disConnect = async () => {
     await logOut(dispatch);
@@ -25,10 +29,8 @@ const DropDownMenu: FunctionComponent<DropDownMenuProps> = (props) => {
   return (
     <Fragment>
       <div className={rootClass}>
-        <div
-          className={`${classes.userInfo} bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-nowrap items-center shadow-none rounded-full py-1 pl-3 pr-1`}
-        >
-          <span className={`${classes.souldAvatar} mr-2`}>
+        <div className={`${classes.userInfo}`}>
+          <span className={`${classes.souldAvatar}`}>
             <Avatar
               size={24}
               name={t(name)}
@@ -41,6 +43,27 @@ const DropDownMenu: FunctionComponent<DropDownMenuProps> = (props) => {
             {t('Sign out')}
           </Link>
         </div>
+
+        {/* <div
+          id="dropdownInformation"
+          style={{ display: expanded ? 'block' : 'none' }}
+          className="z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+        > */}
+        {/*<ul className="py-1 text-sm text-gray-700 dark:text-gray-200">*/}
+        {/*  <li>*/}
+        {/*    <Link href="/create-campaign"> {t('Create Campaign')}</Link>*/}
+        {/*  </li>*/}
+        {/*  <li>*/}
+        {/*    <Link href="/my-campaign"> {t('My Campaigns')}</Link>*/}
+        {/*  </li>*/}
+        {/*  <li>*/}
+        {/*    <Link href="/user/settings">{t('Settings')}</Link>*/}
+        {/*  </li>*/}
+        {/*</ul>*/}
+        {/* <Link href="#" onClick={disConnect}>
+              {t('Sign out')}
+            </Link> */}
+        {/* </div> */}
       </div>
     </Fragment>
   );
