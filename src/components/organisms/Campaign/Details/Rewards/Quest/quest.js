@@ -13,8 +13,6 @@ import {
   FaTwitter,
   FaUserPlus,
   FaCheck,
-  // FaAngleRight,
-  // FaLongArrowAltRight,
   FaAngleRight
 } from 'react-icons/fa';
 // import Cookie from 'js-cookie';
@@ -399,7 +397,7 @@ const Quest = (props) => {
       />
     ) : null;
   const nftOwnershipStatus = (
-    <span className={`ml-auto`}>
+    <span className={`ml-auto mr-2`}>
       {tasks.ck_nft_ownership && tasks.ck_nft_ownership.status === true
         ? TaskSuccessIcon
         : tasks.ck_nft_ownership && tasks.ck_nft_ownership.status === false
@@ -411,13 +409,21 @@ const Quest = (props) => {
   nftTaskClasses.push(
     nftOwnershipState === 'loading' ? classes.taskLoading : null
   );
+
+  const nftIconStatus = tasks.ck_nft_ownership && tasks.ck_nft_ownership.status ? (
+    <div className={`relative ${classes.questItemIcon} bg-green-600 text-white`} >
+      <FaCheck />
+    </div>
+  ) : (
+    <div className={`relative ${classes.questItemIcon} bg-slate-700 text-white`} >
+      <span className={`${classes.bsc}`} />
+    </div>
+  )
+
   const nftOwnershipTask = tasks.ck_nft_ownership ? (
     <div className={`${classes.questItem} ${nftTaskClasses.join(' ')}`}>
-      <div
-        className={`relative ${classes.questItemIcon} bg-slate-700 text-white`}
-      >
-        <span className={`${classes.bsc}`} />
-      </div>
+      
+      {nftIconStatus}
 
       <div className="flex-1">
         <div className="relative">
@@ -437,10 +443,10 @@ const Quest = (props) => {
 
       <div className="">
         {/*{tasks.ck_nft_ownership.nftCollectionInfo}*/}
-        {nftOwnershipStatus}
         {verifyNftOwnershipBtn}
 
         <span className="flex items-center flex-row text-sm font-bold text-slate-400">
+          {nftOwnershipStatus}
           {t('Verify')}&nbsp;
           <FaAngleRight className="text-lg" />
         </span>

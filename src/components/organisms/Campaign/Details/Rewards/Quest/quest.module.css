@@ -11,7 +11,7 @@
 }
 
 .taskIndex {
-  @apply text-xs tracking-widest text-gray-500 font-bold block uppercase py-0;
+  @apply text-xs tracking-widest text-gray-500 font-bold block uppercase py-0 text-left;
 }
 
 .taskSuccess {
@@ -100,9 +100,15 @@
   opacity: 0.6;
   @apply bg-gray-200 text-gray-500 text-center font-medium;
 }
+
+.taskLoading::before {
+  @apply content-[''] bg-[url('/loading-2.gif')] bg-cover block w-8 h-8 absolute left-1/2 top-6;
+}
+
 .soulAvatar {
   margin: 0px 5px 0px 0px;
 }
+
 .btnConnectWallet {
   border: 3px  red solid;
 }
