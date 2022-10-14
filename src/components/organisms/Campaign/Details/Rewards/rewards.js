@@ -153,11 +153,15 @@ const Rewards = (props) => {
                 </div>
               </div>
             </div>
+            <div
+              className={`border-t border-slate-200 pt-4 mt-4 ${classes.rewardOverview}`}
+              dangerouslySetInnerHTML={{ __html: campaign.reward_overview }}
+            />
           </div>
         </div>
         {/* END: #Concept #Quest Info */}
 
-        {rewardOverview}
+        {/* {rewardOverview} */}
         {howToClaim}
         <Questers campaignId={campaign.id} />
         {coupon}
