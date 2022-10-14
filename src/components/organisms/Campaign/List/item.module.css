@@ -40,8 +40,12 @@
 }
 
 /*  */
+.itemTitle {
+	@apply line-clamp-2 text-lg text-slate-800 my-0;
+}
+
 .itemDesc {
-	@apply line-clamp-3 text-sm;
+	@apply line-clamp-3 text-base mb-4 text-slate-500;
 }
 
 .itemDesc p {
@@ -51,7 +55,7 @@
 /* All Chains */
 .nftCollectionWrap {
 	@apply bg-gray-100 rounded-full flex items-center pr-3 pl-1 py-0.5 mr-1 mb-1 relative overflow-hidden;
-	max-width: 33%;
+	max-width: 100%;
 }
 
 .rootDark .nftCollectionWrap {

@@ -8,5 +8,5 @@
 }
 
 .subHeading {
-  @apply text-gray-800 mx-auto text-center text-base md:text-xl font-medium;
+  @apply text-slate-500 mx-auto text-center text-base lg:text-xl;
 }

@@ -145,7 +145,7 @@ const Item = (props) => {
           {/* {storeInfo} */}
         </div>
 
-        <span className="bg-green-100 text-green-600 inline-block absolute -bottom-3 left-4 flex items-center rounded-xl text-xs py-1 pl-1.5 pr-2 w-auto">
+        <span className="bg-green-100 text-green-600 absolute -bottom-3 left-4 flex items-center rounded-xl text-xs py-1 pl-1.5 pr-2 w-auto">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="12"
@@ -161,7 +161,7 @@ const Item = (props) => {
       </div>
 
       <div className="mb-4">
-        <h3 className="text-lg text-slate-800 font-bold my-0">{data.title}</h3>
+        <h3 className={`${classes.itemTitle}`}>{data.title}</h3>
       </div>
 
       <div className="flex flex-wrap items-center text-sm justify-between mb-4 -mt-2">
@@ -169,9 +169,7 @@ const Item = (props) => {
         <span className={`${classes.dateEnd}`}>{dateEnd}</span>
       </div>
 
-      <div
-        className={`${classes.itemDesc} text-gray-600 dark:text-gray-500 mb-4`}
-      >
+      <div className={`${classes.itemDesc}`}>
         {/* {thumbImage} */}
 
         {shortDesc}
