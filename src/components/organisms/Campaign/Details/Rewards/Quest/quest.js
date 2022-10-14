@@ -65,7 +65,7 @@ const Quest = (props) => {
   );
   const connectWalletTask = (
     <div className={`${classes.questItem} ${classes.connectWalletTask}`}>
-      <div className={`${classes.questItemIcon}`}>
+      <div className={`${classes.questItemIcon} bg-violet-600 text-white`}>
         <FaWallet />
       </div>
 
@@ -103,7 +103,7 @@ const Quest = (props) => {
     );
     twitterLoginTask = (
       <div className={`${classes.questItem} ${classes.twitterLoginTask}`}>
-        <div className={`${classes.questItemIcon}`}>
+        <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
           <FaTwitter />
         </div>
         <div className="flex items-center flex-1">
@@ -162,7 +162,7 @@ const Quest = (props) => {
     );
     twitterFollowTask = (
       <div className={`${classes.questItem} ${twFollowTaskClasses.join(' ')}`}>
-        <div className={`${classes.questItemIcon}`}>
+        <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
           <FaUserPlus />
         </div>
         <div className="flex-1">
@@ -352,7 +352,9 @@ const Quest = (props) => {
   );
   const nftOwnershipTask = tasks.ck_nft_ownership ? (
     <div className={`${classes.questItem} ${nftTaskClasses.join(' ')}`}>
-      <div className={`relative ${classes.questItemIcon}`}>
+      <div
+        className={`relative ${classes.questItemIcon} bg-slate-700 text-white`}
+      >
         <span className={`${classes.bsc}`} />
       </div>
 
