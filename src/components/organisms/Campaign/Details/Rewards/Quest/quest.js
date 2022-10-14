@@ -178,7 +178,7 @@ const Quest = (props) => {
       </Button>
     ) : null;
     const twitterFollowStatus = (
-      <span className={`ml-auto`}>
+      <span className={`ml-auto mr-2`}>
         {tasks.ck_twitter_follow.status === true
           ? TaskSuccessIcon
           : tasks.ck_twitter_follow.status === false
@@ -186,15 +186,26 @@ const Quest = (props) => {
           : ''}
       </span>
     );
+
+    const twitterFollowIconStatus = tasks.ck_twitter_follow.status ? (
+      <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
+        <FaCheck />
+      </div>
+    ) : (
+      <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
+        <FaUserPlus />
+      </div>
+    )
+
     let twFollowTaskClasses = [classes.twitterFollowTask];
     twFollowTaskClasses.push(
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
     twitterFollowTask = (
       <div className={`${classes.questItem} ${twFollowTaskClasses.join(' ')} relative`}>
-        <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
-          <FaUserPlus />
-        </div>
+        
+        {twitterFollowIconStatus}
+
         <div className="z-20">
           <span
             className={`${classes.taskIndex} ${
@@ -214,10 +225,10 @@ const Quest = (props) => {
           </TextLink>
           &nbsp;
           {t('on Twitter')}
-          {twitterFollowStatus}
         </div>
 
         <span className="flex items-center flex-row text-normal font-normal text-gray-600 ml-auto">
+          {twitterFollowStatus}
           {t('Verify')}&nbsp;
           <FaAngleRight />
         </span>
