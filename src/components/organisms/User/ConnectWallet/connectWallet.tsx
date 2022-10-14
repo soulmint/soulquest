@@ -91,12 +91,7 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = () => {
   ) : (
     <>
       {/* <Modal connect={connect} /> */}
-      <Button
-        onPress={() => connect()}
-        priority="high"
-        type="button"
-        data-modal-toggle="crypto-modal"
-      >
+      <Button onPress={() => connect()} priority="high" type="button">
         <img
           src="/icons/wallet-ico.svg"
           alt="Connect wallet"

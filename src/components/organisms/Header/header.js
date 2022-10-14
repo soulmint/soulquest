@@ -8,6 +8,7 @@ import ConnectWallet from '../User/ConnectWallet';
 import { useTranslation } from 'next-i18next';
 import { DEFAULT_LINKS } from './menuItems';
 import useThemes from '../../../hooks/useThemes';
+// import ToggleTheme from '../ToggleTheme';
 const Header = (props) => {
   const { links } = props;
 
@@ -83,7 +84,6 @@ const Header = (props) => {
             </div>
             {/* <ToggleTheme /> */}
             <ConnectWallet />
-
             <button
               data-collapse-toggle="navbar-default"
               type="button"
