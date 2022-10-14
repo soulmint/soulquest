@@ -9,7 +9,7 @@ import Button from '../../../../../atoms/Button';
 import TextLink from '../../../../../../components/atoms/TextLink';
 import BrowserPersistence from '../../../../../../utils/simplePersistence';
 
-import { FaWallet, FaTwitter, FaUserPlus, FaArrowRight, FaCheck, FaLongArrowAltRight } from 'react-icons/fa';
+import { FaWallet, FaTwitter, FaUserPlus, FaCheck, FaLongArrowAltRight, FaAngleRight } from 'react-icons/fa';
 
 // import Cookie from 'js-cookie';
 import {
@@ -60,7 +60,9 @@ const Quest = (props) => {
   }
 
   let walletConnect = userState.wallet_address ? (
-    <span></span>
+    <span className="flex items-center flex-row text-base font-medium text-gray-500">
+      {t('Connected')}
+    </span>
   ) : (
     <ConnectWallet />
   );
@@ -93,36 +95,46 @@ const Quest = (props) => {
         </div>
 
         {walletConnect}
-
-        <span className="flex items-center flex-row text-normal font-normal text-gray-600">
-          {t('Connect')}&nbsp;
-          <FaLongArrowAltRight />
-        </span>
+        
       </div>
     </div>
   );
   let twitterLoginTask = null;
   if (tasks.ck_twitter_login) {
     const twitterLoginStatus = !tasks.ck_twitter_login.status ? (
-      <Button
+      <><Button
         id={`btn-twitter-login`}
         priority="high"
         classes={{ root_highPriority: classes.btnTwitterLogin }}
         type="button"
         onPress={() => handleTwitterLogin()}
       >
-        {t('Login')}
-      </Button>
+      </Button><span className="flex items-center flex-row text-normal font-normal text-gray-600 ml-auto">
+          {t('Login')}&nbsp;
+          <FaAngleRight />
+        </span></>
     ) : (
-      <span className={`ml-auto text-blue-600`}>
+      <span className={`ml-auto text-sky-600`}>
         @{tasks.ck_twitter_login.screen_name}
       </span>
     );
+
+    const twitterLoginIconStatus = tasks.ck_twitter_login.status ? (
+      <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
+        <FaCheck />
+      </div>
+    ) : (
+      <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
+        <FaTwitter />
+      </div>
+    )
+
+
     twitterLoginTask = (
-      <div className={`${classes.questItem} ${classes.twitterLoginTask}`}>
-        <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
-          <FaTwitter />
-        </div>
+      <div className={`${classes.questItem} ${classes.twitterLoginTask} relative`}>
+
+        {twitterLoginIconStatus}
+
         <div className="flex items-center flex-1">
           <div className="flex-1">
             <span
@@ -134,8 +146,10 @@ const Quest = (props) => {
             </span>
             {t('Login Twitter')}
           </div>
-          {twitterLoginStatus}
+          
         </div>
+
+        {twitterLoginStatus}
       </div>
     );
   }
@@ -160,8 +174,7 @@ const Quest = (props) => {
         classes={{ root_highPriority: classes.btnVerifyTwitter }}
         type="button"
         onPress={() => handleCheckTwitterFollow()}
-      >
-        {t('Verify')}
+      >        
       </Button>
     ) : null;
     const twitterFollowStatus = (
@@ -178,7 +191,7 @@ const Quest = (props) => {
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
     twitterFollowTask = (
-      <div className={`${classes.questItem} ${twFollowTaskClasses.join(' ')}`}>
+      <div className={`${classes.questItem} ${twFollowTaskClasses.join(' ')} relative`}>
         <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
           <FaUserPlus />
         </div>
@@ -203,6 +216,11 @@ const Quest = (props) => {
           {t('on Twitter')}
           {twitterFollowStatus}
         </div>
+
+        <span className="flex items-center flex-row text-normal font-normal text-gray-600">
+          {t('Verify')}&nbsp;
+          <FaAngleRight />
+        </span>
 
         {verifyTwitterFollowBtn}
       </div>
@@ -273,7 +291,7 @@ const Quest = (props) => {
       twitterReTweetState === 'loading' ? classes.taskLoading : null
     );
     twitterReTweetTask = (
-      <div className={`${twReTeetTaskClasses.join(' ')}`}>
+      <div className={`${twReTeetTaskClasses.join(' ')} relative`}>
         <img
           src="/icons/retweet-ico.svg"
           alt="Follow Twitter"
@@ -298,7 +316,12 @@ const Quest = (props) => {
           </TextLink>
         </div>
         {twitterReTweetStatus}
+
         {verifyTwitterReTweetBtn}
+        <span className="flex items-center flex-row text-normal font-normal text-gray-600">
+          {t('Verify')}&nbsp;
+          <FaAngleRight />
+        </span>
       </div>
     );
   }
@@ -351,7 +374,6 @@ const Quest = (props) => {
         type="button"
         onPress={() => handleCheckNftOwnership()}
       >
-        {t('Verify')}
       </Button>
     ) : null;
   const nftOwnershipStatus = (
@@ -395,6 +417,12 @@ const Quest = (props) => {
         {/*{tasks.ck_nft_ownership.nftCollectionInfo}*/}
         {nftOwnershipStatus}
         {verifyNftOwnershipBtn}
+
+        <span className="flex items-center flex-row text-normal font-normal text-gray-600">
+          {t('Verify')}&nbsp;
+          <FaAngleRight />
+        </span>
+
       </div>
     </div>
   ) : null;
