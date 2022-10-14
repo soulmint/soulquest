@@ -29,6 +29,7 @@ export const LOAD_CAMPAIGN_BY_SLUG = gql`
         #          filename_download
       }
       reward_overview
+      reward_token_volume
       twitter_username
       twitter_owner_id
       twitter_tweet

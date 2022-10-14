@@ -1,6 +1,7 @@
 import React from 'react';
 import { shape, string } from 'prop-types';
-// import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'next-i18next';
+import TextLink from '../../../../atoms/TextLink';
 import classes from './rewards.module.css';
 import Coupon from './Coupon';
 import Quest from './Quest';
@@ -9,13 +10,14 @@ import HowClaim from './HowClaim';
 import { useRewards } from '../../../../../hooks/Campaign/Rewards';
 import useThemes from '../../../../../hooks/useThemes';
 import Image from '../../../../atoms/Image';
+import { ellipsify } from '../../../../../utils/strUtils';
 
 const Rewards = (props) => {
   const { campaign } = props;
 
   const { rootClassName } = useThemes();
 
-  // const { t } = useTranslation('campaign_details');
+  const { t } = useTranslation('campaign_details');
 
   const {
     userState,
@@ -44,19 +46,105 @@ const Rewards = (props) => {
     />
   ) : null;
 
-  const rewardOverview = campaign.reward_overview ? (
-    <div className={`card ${classes.rewardOverview}`}>
-      <div className="card-header">
-        <h3 className="">Reward Overview</h3>
-      </div>
-      <div className="card-body">
-        <div
-          className={classes.rewardOverview}
-          dangerouslySetInnerHTML={{ __html: campaign.reward_overview }}
-        />
-      </div>
+  //Build store/campaign owner info
+  const storeLogo = campaign.store_logo_url ? (
+    <span className="pair-value--logo">
+      <img src={`${campaign.store_logo_url}`} title={'SidedFinance'} />
+    </span>
+  ) : null;
+  const storeName = campaign.store_name ? campaign.store_name : null;
+  const storeInfoLine =
+    storeName || storeLogo ? (
+      <span className="pair-value">
+        {storeLogo}
+        {storeName}
+      </span>
+    ) : null;
+  const providerInfo = campaign.store_url ? (
+    <TextLink
+      className={classes.storeLink}
+      target={`_blank`}
+      href={campaign.store_url}
+    >
+      {storeInfoLine}
+    </TextLink>
+  ) : (
+    storeInfoLine
+  );
+  const rewardOwnerInfo = providerInfo ? (
+    <div className="list-pair--item">
+      <div className="pair-title">{t('Provider')}</div>
+      {providerInfo}
     </div>
   ) : null;
+  const rewardTokenVolumeInfo = campaign.reward_token_volume ? (
+    <div className="list-pair--item">
+      <div className="pair-title">{t('Rewards')}</div>
+      <div className="pair-value">{campaign.reward_token_volume}</div>
+    </div>
+  ) : null;
+
+  // Build related chain info
+  const chainInfo = campaign.nft_collection_ids.length
+    ? campaign.nft_collection_ids.map((nftCollection, index) => (
+        <div key={index} className={`${classes.nftCollectionWrap}`}>
+          <span
+            className={`${classes.chain} ${
+              classes[nftCollection.nft_collection_id.chain_name]
+            }`}
+          >
+            {nftCollection.nft_collection_id.chain_name}
+          </span>
+          <TextLink
+            className={classes.nftCollectionLink}
+            href={`/nft-collection-details/${nftCollection.nft_collection_id.slug}`}
+          >
+            <span className={`${classes.collectionName}`}>
+              {nftCollection.nft_collection_id.name}
+            </span>{' '}
+            <span className={classes.contractAdd}>
+              (
+              {ellipsify({
+                str: nftCollection.nft_collection_id.contract_address,
+                start: 4,
+                end: 4
+              })}
+              )
+            </span>{' '}
+          </TextLink>
+        </div>
+      ))
+    : null;
+  const rewardChainInfo = chainInfo ? (
+    <div className="list-pair--item">
+      <div className="pair-title">Chain</div>
+      <div className="pair-value">{chainInfo}</div>
+    </div>
+  ) : null;
+
+  const rewardOverViewInfo = campaign.reward_overview ? (
+    <div
+      className={`${classes.rewardOverview}`}
+      dangerouslySetInnerHTML={{ __html: campaign.reward_overview }}
+    />
+  ) : null;
+
+  const rewardInfo =
+    rewardOwnerInfo || rewardTokenVolumeInfo || rewardChainInfo ? (
+      <div className={`card mb-6 ${classes.rewardWrapper}`}>
+        <div className="card-header">
+          <h3 className="">{t('Rewards Info')}</h3>
+        </div>
+        <div className="card-body">
+          <div className="list-pair">
+            {rewardOwnerInfo}
+            {rewardTokenVolumeInfo}
+            {rewardChainInfo}
+          </div>
+          {rewardOverViewInfo}
+        </div>
+      </div>
+    ) : null;
 
   const howToClaim = campaign.how_to_claim ? (
     <HowClaim content={campaign.how_to_claim} />
@@ -74,6 +162,8 @@ const Rewards = (props) => {
       verifyNftOwnership={handleVerifyNftOwnership}
     />
   );
+
+  const questers = <Questers campaignId={campaign.id} />;
 
   // Build cover and thumb images
   const assetsBaseUrl = process.env.MEDIA_BASE_URL;
@@ -113,57 +203,10 @@ const Rewards = (props) => {
           {description}
         </div>
       </div>
-
       <div className={`${classes.pageSidebar}`}>
-        {/* #Concept #Quest Info */}
-        <div className={`card mb-6 ${classes.rewardOverview}`}>
-          <div className="card-header">
-            <h3 className="">Quest Info</h3>
-          </div>
-          <div className="card-body">
-            <div className="list-pair">
-              <div className="list-pair--item">
-                <div className="pair-title">Provider</div>
-                <div className="pair-value">
-                  <span className="pair-value--logo">
-                    <img
-                      // className="pair-value--logo"
-                      // layout="fill"
-                      src={'/logos/sidedfinance.png'}
-                      title={'SoulMint'}
-                    />
-                  </span>
-                  SidedFinance
-                </div>
-              </div>
-              <div className="list-pair--item">
-                <div className="pair-title">Rewards</div>
-                <div className="pair-value">500 USDC</div>
-              </div>
-              <div className="list-pair--item">
-                <div className="pair-title">Chain</div>
-                <div className="pair-value">
-                  {/* <img
-                    className="w-6 h-6 mr-2 bg-slate-800 rounded-full"
-                    // layout="fill"
-                    src={'/chains/bsc.svg'}
-                    title={'BSC'}
-                  /> */}
-                  Binance Smart Chain
-                </div>
-              </div>
-            </div>
-            <div
-              className={`border-t border-slate-200 pt-4 mt-4 ${classes.rewardOverview}`}
-              dangerouslySetInnerHTML={{ __html: campaign.reward_overview }}
-            />
-          </div>
-        </div>
-        {/* END: #Concept #Quest Info */}
-
-        {/* {rewardOverview} */}
+        {rewardInfo}
         {howToClaim}
-        <Questers campaignId={campaign.id} />
+        {questers}
         {coupon}
       </div>
     </div>

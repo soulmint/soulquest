@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
-import TextLink from '../../../atoms/TextLink';
 import HeadCustom from '../../Head';
 import Rewards from './Rewards';
 import useThemes from '../../../../hooks/useThemes';
@@ -37,27 +36,6 @@ const Details = (props) => {
     if (data.campaign.length) {
       const campaign = data.campaign[0];
       pageTitle = campaign.title;
-
-      // Build store info
-      const storeLogo = campaign.store_logo_url ? (
-        <img
-          className={`${classes.storeLogo}`}
-          src={campaign.store_logo_url}
-          alt={`${campaign.store_name}`}
-        />
-      ) : null;
-      const storeInfo = campaign.store_url ? (
-        <TextLink
-          className={classes.storeLink}
-          target={`_blank`}
-          href={campaign.store_url}
-        >
-          {storeLogo}
-          {/* <span className={classes.storeName}> {campaign.store_name} </span> */}
-        </TextLink>
-      ) : (
-        <span className={classes.storeName}> {campaign.store_name} </span>
-      );
 
       const startDate = Moment(campaign.date_start);
       const endDate = Moment(campaign.date_end);
@@ -99,7 +77,6 @@ const Details = (props) => {
         <div className={`${classes.campaignMeta}`}>
           {stateInfo}
           {datesInfo}
-          {storeInfo}
         </div>
       );
 

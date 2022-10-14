@@ -52,20 +52,27 @@
     @apply basis-full md:basis-1/3 lg:pl-4 max-w-full;
 }
 
+.chain {
+    @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-cover;
+}
 .bsc {
-  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-[url('/chains/bsc.svg')] bg-cover;
+    composes: chain;
+    @apply  bg-[url('/chains/bsc.svg')];
 }
 
 .ethereum {
-  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-[url('/chains/ethereum.svg')] bg-cover;
+    composes: chain;
+    @apply bg-[url('/chains/ethereum.svg')];
 }
 
 .polygon {
-  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-[url('/chains/polygon.svg')] bg-cover;
+    composes: chain;
+    @apply bg-[url('/chains/polygon.svg')];
 }
 
 .solana {
-  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-[url('/chains/solana.svg')] bg-cover;
+    composes: chain;
+    @apply bg-[url('/chains/solana.svg')];
 }
 
 .nftCollectionWrap {
@@ -83,11 +90,18 @@
 .contractAdd {
     composes: contractAdd from '../../List/item.module.css';
 }
-
+.rewardWrapper {
+}
+.rewardOverview {
+    @apply border-t border-slate-200 pt-4 mt-4;
+}
 .rewardOverview p {
   @apply my-0;
 }
 
 .rewardOverview p + p {
     @apply mt-4;
+}
+.storeLink {
+
 }
