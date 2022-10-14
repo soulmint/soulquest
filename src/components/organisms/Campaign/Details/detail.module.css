@@ -30,6 +30,10 @@
   @apply bg-slate-100;
 }
 
+.pageHeader {
+  @apply mb-12;
+}
+
 .pageContainer {
   @apply container mx-auto max-w-screen-xl py-12 px-4;
 }
@@ -49,11 +53,11 @@
 }
 
 .dateStart {
-  @apply pr-4;
+  @apply pr-2;
 }
 
 .dateEnd {
-  @apply pl-4;
+  @apply pl-2;
 }
 
 /* Sidebar list coupon */

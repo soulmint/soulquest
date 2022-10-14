@@ -68,19 +68,25 @@ const Details = (props) => {
             {t('Ended')}
           </div>
         ) : (
-          <div className="bg-green-100 text-green-600 rounded-full py-1 px-3 text-sm font-medium mr-4">
+          <div className="bg-green-300 text-slate-800 rounded-full py-1 px-3 text-sm font-bold mr-4">
             {t('Ongoing')}
           </div>
         );
       const datesInfo =
         campaign.date_start || campaign.date_end ? (
-          <div className="bg-violet-100 text-violet-600 rounded-full px-3 py-1 font-medium text-sm">
+          <div className="bg-violet-200 text-slate-800 rounded-full px-3 py-1 font-medium text-sm">
             <span className={classes.dateStart}>
               {t('Start: ')}
-              {startDate.format('DD MMM YYYY')}
+              <span className="font-bold text-slate-800">
+                {startDate.format('DD MMM YYYY')}
+              </span>
             </span>
+            |
             <span className={classes.dateEnd}>
-              {t('Ends: ')} {endDate.format('DD MMM YYYY')}
+              {t('Ends: ')}
+              <span className="font-bold text-slate-800">
+                {endDate.format('DD MMM YYYY')}
+              </span>
             </span>
           </div>
         ) : null;
