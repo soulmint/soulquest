@@ -14,42 +14,42 @@ const socialTags = ({
   updatedAt
 }) => {
   const metaTags = [
-    { name: 'twitter:card', content: 'summary_large_image' },
+    { property: 'twitter:card', content: 'summary_large_image' },
     {
-      name: 'twitter:site',
+      property: 'twitter:site',
       content:
         settings &&
         settings.meta &&
         settings.meta.social &&
         settings.meta.social.twitter
     },
-    { name: 'twitter:title', content: title },
-    { name: 'twitter:description', content: description },
+    { property: 'twitter:title', content: title },
+    { property: 'twitter:description', content: description },
     {
-      name: 'twitter:creator',
+      property: 'twitter:creator',
       content:
         settings &&
         settings.meta &&
         settings.meta.social &&
         settings.meta.social.twitter
     },
-    { name: 'twitter:image:src', content: image },
-    { name: 'twitter:card', content: 'summary_large_image' },
-    { name: 'og:title', content: title },
-    { name: 'og:type', content: type },
-    { name: 'og:url', content: url },
-    { name: 'og:image', content: image },
-    { name: 'og:description', content: description },
+    { property: 'twitter:image:src', content: image },
+    { property: 'twitter:card', content: 'summary_large_image' },
+    { property: 'og:title', content: title },
+    { property: 'og:type', content: type },
+    { property: 'og:url', content: url },
+    { property: 'og:image', content: image },
+    { property: 'og:description', content: description },
     {
-      name: 'og:site_name',
+      property: 'og:site_name',
       content: settings && settings.meta && settings.meta.title
     },
     {
-      name: 'og:published_time',
+      property: 'og:published_time',
       content: createdAt || new Date().toISOString()
     },
     {
-      name: 'og:modified_time',
+      property: 'og:modified_time',
       content: updatedAt || new Date().toISOString()
     }
   ];
@@ -65,12 +65,10 @@ const HeadCustom = (props) => {
   return (
     <Head>
       <title>{title}</title>
+      <meta name="title" content={title} />
       <meta name="description" content={description} />
-      <meta itemProp="name" content={title} />
-      <meta itemProp="description" content={description} />
-      <meta itemProp="image" content={image} />
-      {socialTags(props).map(({ name, content }) => {
-        return <meta key={name} name={name} content={content} />;
+      {socialTags(props).map(({ property, content }) => {
+        return <meta key={property} property={property} content={content} />;
       })}
 
       <script

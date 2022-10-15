@@ -58,13 +58,14 @@ const Header = (props) => {
   });
 
   const [menuRootClassName, setMenuRootClassName] = useState('offCanvasHide');
-  /* const toggleOffCanvasMenu = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const toggleOffCanvasMenu = () => {
     if (menuRootClassName === 'offCanvasHide') {
       setMenuRootClassName('offCanvasShow');
     } else {
       setMenuRootClassName('offCanvasHide');
     }
-  }; */
+  };
 
   return (
     <header className={`${classes[rootClassName]}`}>

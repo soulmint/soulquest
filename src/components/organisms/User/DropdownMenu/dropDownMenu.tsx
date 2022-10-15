@@ -5,8 +5,8 @@ import { useStyle } from '../../../classify';
 import useThemes from '../../../../hooks/useThemes';
 import defaultClasses from './dropDownMenu.module.css';
 import { logOut } from 'src/store/user/operations';
-import Link from 'src/components/atoms/Link';
 import Avatar from 'boring-avatars';
+import TextLink from 'src/components/atoms/TextLink';
 interface DropDownMenuProps {
   name?: string;
   classes?: object;
@@ -37,9 +37,9 @@ const DropDownMenu: FunctionComponent<DropDownMenuProps> = (props) => {
             />
           </span>
           <span className="mr-2"> {t(name)}</span>
-          <Link href="#" onClick={disConnect}>
+          <TextLink href="#" onClick={disConnect}>
             {t('Sign out')}
-          </Link>
+          </TextLink>
         </div>
       </div>
     </Fragment>

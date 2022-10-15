@@ -6,7 +6,7 @@ import { twDecode } from 'src/libs/useFunc';
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const token = nextCookies({ req }).twt;
-  const accessToken = JSON.parse(twDecode(token));
+  const accessToken = token ? JSON.parse(twDecode(token)) : {};
   const client = new Client(process.env.TWITTER_BEARER_TOKEN);
   const twAuthClient = new auth.OAuth2User({
     client_id: process.env.TWITTER_ID,

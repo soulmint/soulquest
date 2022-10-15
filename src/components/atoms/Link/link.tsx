@@ -1,10 +1,9 @@
 import React from 'react';
+import LinkNext from 'next/link';
 const Link = (props: any) => {
-  const { href, onClick, children } = props;
-  return (
-    <a href={href} onClick={onClick}>
-      {children}
-    </a>
-  );
+  const data = {
+    ...props
+  };
+  return <LinkNext {...data} />;
 };
 export default Link;

@@ -8,7 +8,7 @@ const useThemes = () => {
 
   // When mounted on client, now we can show the UI
   React.useEffect(
-    () => (theme === 'dark' ? setIsDark(true) : setIsDark(false)),
+    () => (theme === 'dark' ? setIsDark(false) : setIsDark(false)),
     [theme]
   );
 
