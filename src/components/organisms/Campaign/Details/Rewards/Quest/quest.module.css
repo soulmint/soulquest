@@ -26,7 +26,6 @@
   @apply py-1.5 px-3 text-xs rounded-md ml-auto;
 }
 
-/* Step 2 */
 .twitterLoginTask {
 }
 
@@ -34,7 +33,6 @@
   @apply absolute left-0 top-0 right-0 bottom-0 w-full;
 }
 
-/* Step 3 */
 .twitterFollowTask {
 }
 
@@ -43,9 +41,8 @@
   @apply border-red-500 hover:border-red-500;
 }
 
-/* Step 4 */
 .twitterRetweetTask {
-  @apply border-b border-b-gray-200 flex items-center text-sm relative py-4 font-medium;
+  /*@apply border-b border-b-gray-200 flex items-center text-sm relative py-4 font-medium;*/
 }
 
 .nftOwnershipTask {
@@ -56,7 +53,6 @@
   @apply absolute left-0 top-0 right-0 bottom-0 w-full;
 }
 
-/* Step 5 */
 .soulBoundTokenTask {
   @apply relative pt-4;
 }

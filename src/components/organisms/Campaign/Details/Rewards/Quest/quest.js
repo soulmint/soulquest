@@ -12,6 +12,7 @@ import {
   FaWallet,
   FaTwitter,
   FaUserPlus,
+  FaRetweet,
   FaCheck,
   FaAngleRight
 } from 'react-icons/fa';
@@ -167,9 +168,9 @@ const Quest = (props) => {
     await TwitterLogin({ reference_url: router.asPath });
   };
 
-  let twitterFollowTask = null;
+  let twFollowTask = null;
   if (tasks.ck_twitter_follow) {
-    const verifyTwitterFollowBtn = !tasks.ck_twitter_follow.status ? (
+    const btnVerifyTwitterFollow = !tasks.ck_twitter_follow.status ? (
       <Button
         id={`btn-verify-twitter-follow`}
         priority="high"
@@ -178,8 +179,7 @@ const Quest = (props) => {
         onPress={() => handleCheckTwitterFollow()}
       />
     ) : null;
-
-    const twitterFollowStatus = (
+    const twFollowStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
         <span className={`ml-auto mr-2`}>
           {tasks.ck_twitter_follow.status === true
@@ -196,29 +196,18 @@ const Quest = (props) => {
         ) : null}
       </span>
     );
-
-    const twitterFollowIconStatus = tasks.ck_twitter_follow.status ? (
+    const twFollowIconLeft = (
       <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
-        <FaCheck />
-      </div>
-    ) : (
-      <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
-        <FaUserPlus />
+        {tasks.ck_twitter_follow.status ? <FaCheck /> : <FaUserPlus />}
       </div>
     );
-
-    let twFollowTaskClasses = [classes.twitterFollowTask];
+    let twFollowTaskClasses = [classes.questItem, classes.twFollowTask];
     twFollowTaskClasses.push(
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
-    twitterFollowTask = (
-      <div
-        className={`${classes.questItem} ${twFollowTaskClasses.join(
-          ' '
-        )} relative`}
-      >
-        {twitterFollowIconStatus}
-
+    twFollowTask = (
+      <div className={`${twFollowTaskClasses.join(' ')} relative`}>
+        {twFollowIconLeft}
         <div className="z-20">
           <span
             className={`${classes.taskIndex} ${
@@ -239,8 +228,8 @@ const Quest = (props) => {
           &nbsp;
           {t('on Twitter')}
         </div>
-        {twitterFollowStatus}
-        {verifyTwitterFollowBtn}
+        {twFollowStatus}
+        {btnVerifyTwitterFollow}
       </div>
     );
   }
@@ -282,9 +271,9 @@ const Quest = (props) => {
     }
   };
 
-  let twitterReTweetTask = null;
+  let twReTweetTask = null;
   if (tasks.ck_twitter_retweet) {
-    const verifyTwitterReTweetBtn = !tasks.ck_twitter_retweet.status ? (
+    const btnVerifyTwitterReTweet = !tasks.ck_twitter_retweet.status ? (
       <Button
         id={`btn-verify-twitter-re-tweet`}
         priority="high"
@@ -293,7 +282,7 @@ const Quest = (props) => {
         onPress={() => handleCheckTwitterReTweet()}
       />
     ) : null;
-    const twitterReTweetStatus = (
+    const twReTweetStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
         <span className={`ml-auto mr-2`}>
           {tasks.ck_twitter_retweet.status === true
@@ -310,18 +299,19 @@ const Quest = (props) => {
         </span>
       </span>
     );
-    let twReTeetTaskClasses = [classes.twitterRetweetTask];
+    const twReTweetIconLeft = (
+      <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
+        {tasks.ck_twitter_retweet.status ? <FaCheck /> : <FaRetweet />}
+      </div>
+    );
+    let twReTeetTaskClasses = [classes.questItem, classes.twitterRetweetTask];
     twReTeetTaskClasses.push(
       twitterReTweetState === 'loading' ? classes.taskLoading : null
     );
-    twitterReTweetTask = (
+    twReTweetTask = (
       <div className={`${twReTeetTaskClasses.join(' ')} relative`}>
-        <img
-          src="/icons/retweet-ico.svg"
-          alt="Follow Twitter"
-          className="w-6 h-6 mr-4"
-        />
-        <div className="flex-1">
+        {twReTweetIconLeft}
+        <div className="z-20">
           <span
             className={`${classes.taskIndex} ${
               tasks.ck_twitter_retweet.status ? classes.taskSuccess : ''
@@ -339,8 +329,8 @@ const Quest = (props) => {
             {t('this tweet')}
           </TextLink>
         </div>
-        {twitterReTweetStatus}
-        {verifyTwitterReTweetBtn}
+        {twReTweetStatus}
+        {btnVerifyTwitterReTweet}
       </div>
     );
   }
@@ -518,8 +508,8 @@ const Quest = (props) => {
       <div className="card-body">
         {connectWalletTask}
         {twitterLoginTask}
-        {twitterFollowTask}
-        {twitterReTweetTask}
+        {twFollowTask}
+        {twReTweetTask}
         {nftOwnershipTask}
         {btnClaimReward}
       </div>
