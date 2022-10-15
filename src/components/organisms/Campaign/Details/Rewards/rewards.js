@@ -89,13 +89,11 @@ const Rewards = (props) => {
     ? campaign.nft_collection_ids.map((nftCollection, index) => (
         <div key={index} className={`${classes.nftCollectionWrap}`}>
           <span
-            className={`${classes.chain} ${
-              classes[nftCollection.nft_collection_id.chain_name]
-            }`}
+            className={`${classes[nftCollection.nft_collection_id.chain_name]}`}
           >
             {nftCollection.nft_collection_id.chain_name}
           </span>
-          <TextLink
+          {/*<TextLink
             className={classes.nftCollectionLink}
             href={`/nft-collection-details/${nftCollection.nft_collection_id.slug}`}
           >
@@ -111,7 +109,7 @@ const Rewards = (props) => {
               })}
               )
             </span>{' '}
-          </TextLink>
+          </TextLink>*/}
         </div>
       ))
     : null;
