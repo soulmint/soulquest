@@ -7,6 +7,7 @@ import { ThemeProvider } from 'next-themes';
 import { appWithTranslation } from 'next-i18next';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../libs/apolloClient';
+import { getScreenName } from '../utils/responsive';
 import { Provider } from 'react-redux';
 import { useStore } from 'src/store/redux';
 import dynamic from 'next/dynamic';
@@ -46,6 +47,23 @@ const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
 
     // return () => {};
   }, [session]);
+
+  // window resize monitor, using for responsive/device info
+  useEffect(() => {
+    const onResize = () => {
+      // update body attribute for styling
+      document.body.setAttribute(
+        'data-screen',
+        getScreenName(window.innerWidth)
+      );
+    };
+    onResize();
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
 
   return (
     <Providers>
