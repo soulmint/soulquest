@@ -1,4 +1,5 @@
 import Router from 'next/router';
+import { toast } from 'react-toastify';
 const TwitterLogin = (props: any) => {
   let { reference_url } = props;
   const lastChar = reference_url.substr(reference_url.length - 1);
@@ -13,6 +14,8 @@ const TwitterLogin = (props: any) => {
 
 const TwitterFollow = async (props: any) => {
   const { user_id, owner_id } = props;
+  if (!user_id || !owner_id)
+    return toast.warning('Invalid user id or owner id');
   let checked = false;
   await fetch(
     '/api/twitter/user?task=follower&user_id=' +

@@ -68,7 +68,6 @@
     "tinymce": "^6.1.1",
     "tus-node-server": "^0.7.1",
     "twitter-api-sdk": "^1.2.0",
-    "twitter-lite": "^1.1.0",
     "url": "^0.11.0",
     "web3": "^1.7.1",
     "web3modal": "^1.9.5"
