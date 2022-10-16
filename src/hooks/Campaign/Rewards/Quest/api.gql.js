@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { initializeApollo } from '../../../libs/apolloClient';
+import { initializeApollo } from 'src/libs/apolloClient';
 
 export const CREATE_QUESTER = gql`
   mutation CreateQuester(
@@ -11,6 +11,7 @@ export const CREATE_QUESTER = gql`
       data: { campaign_id: $campaign_id, tasks: $tasks, status: $status }
     ) {
       id
+      status
       tasks
     }
   }
@@ -28,6 +29,7 @@ export const UPDATE_QUESTER = gql`
       data: { campaign_id: $campaign_id, tasks: $tasks, status: $status }
     ) {
       id
+      status
       tasks
     }
   }
@@ -42,7 +44,6 @@ export const IS_QUESTER_EXISTS = gql`
       filter: { campaign_id: $campaign_id, user_created: $user_created }
     ) {
       id
-      status
       tasks
     }
   }

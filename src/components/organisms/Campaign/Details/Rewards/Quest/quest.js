@@ -1,13 +1,13 @@
-import React, { Fragment, useState } from 'react';
-import { shape, string, object, func, bool } from 'prop-types';
+import React, { Fragment, useEffect, useState } from 'react';
+import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import defaultClasses from './quest.module.css';
-import { useStyle } from '../../../../../classify';
-import Button from '../../../../../atoms/Button';
-import TextLink from '../../../../../../components/atoms/TextLink';
-import BrowserPersistence from '../../../../../../utils/simplePersistence';
+import { useStyle } from 'src/components/classify';
+import Button from 'src/components/atoms/Button';
+import TextLink from 'src/components/atoms/TextLink';
+import BrowserPersistence from 'src/utils/simplePersistence';
 import {
   FaWallet,
   FaTwitter,
@@ -22,44 +22,186 @@ import {
   // getTwitterUserIdByUsermame,
   getTweetsStatus,
   TwitterFollow
-} from '../../../../../../hooks/Campaign/Rewards/useTwitter';
-import ConnectWallet from '../../../../../../components/organisms/User/ConnectWallet';
-import { TaskFailIcon, TaskSuccessIcon } from '../../../../Svg/SvgIcons';
-import { ellipsify } from '../../../../../../utils/strUtils';
+} from 'src/hooks/Campaign/Rewards/useTwitter';
+import ConnectWallet from 'src/components/organisms/User/ConnectWallet';
+import { TaskFailIcon } from 'src/components/organisms/Svg/SvgIcons';
+import { ellipsify } from 'src/utils/strUtils';
+import {
+  checkExistsSocialLink,
+  saveSocialLink
+} from 'src/hooks/User/useSocial';
+import { isQuesterExists } from 'src/hooks/Campaign/Rewards/api.gql';
+import Cookies from 'js-cookie';
+import { useQuest } from 'src/hooks/Campaign/Rewards';
 
 const Quest = (props) => {
-  const {
-    classes: propClasses,
-    campaignId,
-    userState,
-    tasks,
-    doneTasks,
-    submitted,
-    isFinishedTasks,
-    onClaimReward,
-    verifyNftOwnership
-  } = props;
+  const { classes: propClasses, campaign } = props;
+
   const classes = useStyle(defaultClasses, propClasses);
+
   const router = useRouter();
   const { t } = useTranslation('campaign_details');
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const taskLogTtl = 30 * 24 * 60 * 60;
-  const [twitterFollowState, setTwitterFollowState] = useState(
-    tasks.ck_twitter_follow ? tasks.ck_twitter_follow.status : true
-  );
-  const [twitterReTweetState, setTwitterReTweetState] = useState(
-    tasks.ck_twitter_retweet ? tasks.ck_twitter_retweet.status : true
-  );
-  const [nftOwnershipState, setNftOwnershipState] = useState(
-    tasks.ck_nft_ownership ? tasks.ck_nft_ownership.status : true
-  );
-
   const storage = new BrowserPersistence();
 
-  if (userState.wallet_address) {
-    tasks.ck_connect_wallet.status = true;
-  }
+  const {
+    localQuesterKey,
+    localSubmittedTasksKey,
+    localTwSocialLinkKey,
+    twSocialLinkedTtl,
+    userState,
+    tasks,
+    isFinishedTasks,
+    handleUpdateSubmittedTasks,
+    handleSubmit,
+    handleVerifyNftOwnership
+  } = useQuest({
+    campaign,
+    classes
+  });
+
+  const add = userState.wallet_address ? userState.wallet_address : null;
+  const campaignId = campaign.id;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let twSocialLinked = null;
+
+  const [submitted, setSubmitted] = useState(false);
+  const [hasSubmit, setHasSubmit] = useState(false);
+
+  const [twitterLoginState, setTwitterLoginState] = useState(
+    tasks.ck_twitter_login ? tasks.ck_twitter_login.status : null
+  );
+  const [twitterFollowState, setTwitterFollowState] = useState(
+    tasks.ck_twitter_follow ? tasks.ck_twitter_follow.status : null
+  );
+  const [twitterReTweetState, setTwitterReTweetState] = useState(
+    tasks.ck_twitter_retweet ? tasks.ck_twitter_retweet.status : null
+  );
+  const [nftOwnershipState, setNftOwnershipState] = useState(
+    tasks.ck_nft_ownership ? tasks.ck_nft_ownership.status : null
+  );
+
+  console.log('tasks:', tasks);
+
+  useEffect(async () => {
+    if (add) {
+      tasks.ck_connect_wallet.status = true;
+      twSocialLinked = storage.getItem(localTwSocialLinkKey);
+      if (twSocialLinked === undefined) {
+        // check exits social link from off chain DB
+        const twSocialLinked = await checkExistsSocialLink(
+          { _eq: 'twitter' },
+          { email: { _eq: userState.wallet_address } }
+        );
+        if (twSocialLinked) {
+          storage.setItem(
+            localTwSocialLinkKey,
+            twSocialLinked,
+            twSocialLinkedTtl
+          );
+        }
+      }
+      if (twSocialLinked && tasks.ck_twitter_login) {
+        console.log('twSocialLinked:', twSocialLinked);
+        tasks.ck_twitter_login.status = true;
+        tasks.ck_twitter_login.uid = twSocialLinked.uid;
+        tasks.ck_twitter_login.screen_name = twSocialLinked.username;
+        setTwitterLoginState(true);
+
+        //update submitted tasks
+        handleUpdateSubmittedTasks('ck_twitter_login', true);
+        //log to db
+        await handleSubmit({
+          status: 'pending',
+          quester_id: storage.getItem(localQuesterKey),
+          submitted_tasks: storage.getItem(localSubmittedTasksKey)
+        });
+      }
+    }
+  }, [router.isReady, add]);
+
+  useEffect(async () => {
+    if (add) {
+      // Check current User has do tasks
+      const quester = await isQuesterExists(
+        { _eq: campaignId },
+        { email: { _eq: userState.wallet_address } }
+      );
+      if (quester) {
+        console.log('quester: ', quester);
+
+        storage.setItem(localQuesterKey, quester.id);
+
+        const submittedTasks = quester.tasks ? JSON.parse(quester.tasks) : {};
+        storage.setItem(localSubmittedTasksKey, submittedTasks);
+
+        //update task status
+        const taskKeys = Object.keys(submittedTasks);
+        taskKeys.map((key) => {
+          if (tasks[key]) {
+            tasks[key].status = submittedTasks[key];
+          }
+        });
+
+        if (quester.status === 'approved') {
+          setSubmitted(true);
+        } else {
+          setHasSubmit(true);
+        }
+      }
+    }
+  }, [router.isReady, add, twitterLoginState]);
+
+  useEffect(async () => {
+    if (add && twSocialLinked === undefined && router.query.user) {
+      const { user, uid, twt } = router.query;
+      if (twt) {
+        Cookies.set('twt', twt, {
+          expires: 1 / 24,
+          path: '/',
+          sameSite: 'lax'
+        });
+      }
+      if (uid) {
+        //add new
+        twSocialLinked = await saveSocialLink({
+          name: 'twitter',
+          username: user,
+          uid
+        });
+        if (twSocialLinked) {
+          //update submitted tasks
+          handleUpdateSubmittedTasks('ck_twitter_login', true);
+          //log to db
+          await handleSubmit({
+            status: 'pending',
+            quester_id: storage.getItem(localQuesterKey),
+            submitted_tasks: storage.getItem(localSubmittedTasksKey)
+          });
+
+          tasks.ck_twitter_login.status = true;
+          tasks.ck_twitter_login.uid = twSocialLinked.uid
+            ? twSocialLinked.uid
+            : null;
+          tasks.ck_twitter_login.screen_name = twSocialLinked.username
+            ? twSocialLinked.username
+            : null;
+
+          //saving to local storage for other contexts
+          storage.setItem(
+            localTwSocialLinkKey,
+            twSocialLinked,
+            twSocialLinkedTtl
+          );
+
+          setTwitterLoginState(true);
+
+          // Refresh page - coming soon
+          //router.push('/campaign-details/' + router.query.slug[0]);
+        }
+      }
+    }
+  }, [router.isReady]);
 
   let walletConnect = userState.wallet_address ? (
     <span className="flex items-center flex-row text-base font-medium text-gray-500">
@@ -164,7 +306,6 @@ const Quest = (props) => {
         t('You must connect your wallet before do this task!')
       );
     }
-
     await TwitterLogin({ reference_url: router.asPath });
   };
 
@@ -254,21 +395,27 @@ const Quest = (props) => {
       tasks.ck_twitter_follow.status = true;
       //trigger to re-render
       setTwitterFollowState(tasks.ck_twitter_follow.status);
-      //saving for resume later
-      doneTasks.ck_twitter_follow = true;
-      storage.setItem(
-        `user_${userState.wallet_address}_campaign_${campaignId}_doneTasks`,
-        doneTasks,
-        taskLogTtl
-      );
     } else {
       tasks.ck_twitter_follow.status = false;
       //trigger to re-render
       setTwitterFollowState(tasks.ck_twitter_follow.status);
       toast.error(
-        t('You have not completed this task yet!  Please try again later!')
+        t('You have not completed this task yet.  Please try again later!')
       );
     }
+
+    //update submitted tasks
+    await handleUpdateSubmittedTasks(
+      'ck_twitter_follow',
+      tasks.ck_twitter_follow.status
+    );
+
+    //log to db
+    await handleSubmit({
+      status: 'pending',
+      quester_id: storage.getItem(localQuesterKey),
+      submitted_tasks: storage.getItem(localSubmittedTasksKey)
+    });
   };
 
   let twReTweetTask = null;
@@ -344,24 +491,18 @@ const Quest = (props) => {
     if (!tasks.ck_twitter_login.uid) {
       return toast.warning(t('You must login twitter before do this task!'));
     }
-    // checking twitter re-tweet here...
-    const socialLink = storage.getItem('twSocialLink');
+
+    setTwitterReTweetState('loading');
+
+    twSocialLinked = storage.getItem(localTwSocialLinkKey);
     const tw_tweet_status = await getTweetsStatus({
-      user_id: socialLink.uid,
+      user_id: twSocialLinked.uid,
       tweet_id: tasks.ck_twitter_retweet.tweet_id
     });
-    setTwitterReTweetState('loading');
     if (tw_tweet_status) {
       tasks.ck_twitter_retweet.status = true;
       //trigger to re-render
       setTwitterReTweetState(tasks.ck_twitter_retweet.status);
-      //saving for resume later
-      doneTasks.ck_twitter_retweet = true;
-      storage.setItem(
-        `user_${userState.wallet_address}_campaign_${campaignId}_doneTasks`,
-        doneTasks,
-        taskLogTtl
-      );
     } else {
       tasks.ck_twitter_retweet.status = false;
       //trigger to re-render
@@ -370,6 +511,19 @@ const Quest = (props) => {
         t('You have not completed this task yet. Please try again later!')
       );
     }
+
+    //update submitted tasks
+    handleUpdateSubmittedTasks(
+      'ck_twitter_retweet',
+      tasks.ck_twitter_retweet.status
+    );
+
+    //log to db
+    await handleSubmit({
+      status: 'pending',
+      quester_id: storage.getItem(localQuesterKey),
+      submitted_tasks: storage.getItem(localSubmittedTasksKey)
+    });
   };
 
   const verifyNftOwnershipBtn =
@@ -440,8 +594,6 @@ const Quest = (props) => {
     </div>
   ) : null;
   const handleCheckNftOwnership = async () => {
-    console.log('handleCheckNftOwnership()');
-
     if (userState.wallet_address === undefined) {
       return toast.warning(
         t('You must connect your wallet before do this task!')
@@ -451,7 +603,7 @@ const Quest = (props) => {
     setNftOwnershipState('loading');
 
     // submit to verify NFT ownership
-    const status = await verifyNftOwnership();
+    const status = await handleVerifyNftOwnership();
     console.log('ckOwnership Result:', status);
 
     // update state
@@ -461,21 +613,24 @@ const Quest = (props) => {
     setNftOwnershipState(tasks.ck_nft_ownership.status);
     if (!tasks.ck_nft_ownership.status) {
       toast.error(t('You are not owner of any SoulBound Token!'));
-    } else {
-      //saving for resume later
-      doneTasks.ck_nft_ownership = true;
-      storage.setItem(
-        `user_${userState.wallet_address}_campaign_${campaignId}_doneTasks`,
-        doneTasks,
-        taskLogTtl
-      );
     }
+
+    //update submitted tasks
+    handleUpdateSubmittedTasks(
+      'ck_nft_ownership',
+      tasks.ck_nft_ownership.status
+    );
+
+    //log to db
+    await handleSubmit({
+      status: 'pending',
+      quester_id: storage.getItem(localQuesterKey),
+      submitted_tasks: storage.getItem(localSubmittedTasksKey)
+    });
   };
 
   const canSubmit =
-    userState.wallet_address && isFinishedTasks() && submitted === false
-      ? true
-      : false;
+    userState.wallet_address && isFinishedTasks() && !submitted ? true : false;
   const btnClaimReward = (
     <div className={`${classes.btnClaimRewardWrap}`}>
       <Button
@@ -489,7 +644,16 @@ const Quest = (props) => {
             : classes.btnClaimRewardSubmitted
         }}
         type="button"
-        onPress={canSubmit ? () => onClaimReward() : null}
+        onPress={
+          canSubmit
+            ? () =>
+                handleSubmit({
+                  status: 'approved',
+                  quester_id: storage.getItem(localQuesterKey),
+                  submitted_tasks: storage.getItem(localSubmittedTasksKey)
+                })
+            : null
+        }
       >
         {!submitted ? t('Submit') : t('Submission Completed.')}
       </Button>
@@ -523,13 +687,9 @@ Quest.propTypes = {
   classes: shape({
     root: string
   }),
-  useState: object,
-  tasks: object,
-  doneTasks: object,
-  isFinishedTasks: func,
-  submitted: bool,
-  verifyNftOwnership: func,
-  onClaimReward: func
+  campaign: shape({
+    id: string
+  })
 };
 
 export default Quest;

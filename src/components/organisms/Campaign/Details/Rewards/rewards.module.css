@@ -59,7 +59,6 @@
     composes: chain;
     @apply  bg-[url('/chains/bsc.svg')];
 }
-
 .ethereum {
     composes: chain;
     @apply bg-[url('/chains/ethereum.svg')];
@@ -90,6 +89,7 @@
 .contractAdd {
     composes: contractAdd from '../../List/item.module.css';
 }
+
 .rewardWrapper {
 }
 .rewardOverview {

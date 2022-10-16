@@ -39,13 +39,15 @@ export const setWalletAddressAction = (add: any) => {
 };
 
 export const logOut = () => {
-  // next-auth > logout
-  signOut();
-
   //clean related local storage vars
   storage.removeItem('user_id');
   storage.removeItem('access_token');
   storage.removeItem('wallet_address');
+
+  // next-auth > logout
+  setTimeout(function () {
+    signOut();
+  }, 1000);
 
   return {
     type: UserActionType.logOut,

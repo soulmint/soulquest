@@ -55,6 +55,7 @@ export default class BrowserPersistence {
         if (!item) {
             return undefined;
         }
+
         const { value, ttl, timeStored } = JSON.parse(item);
 
         if (ttl && now - timeStored > ttl * 1000) {

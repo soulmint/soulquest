@@ -3,14 +3,13 @@ import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import TextLink from '../../../../atoms/TextLink';
 import classes from './rewards.module.css';
-import Coupon from './Coupon';
+// import Coupon from './Coupon';
 import Quest from './Quest';
 import Questers from './Questers';
 import HowClaim from './HowClaim';
-import { useRewards } from '../../../../../hooks/Campaign/Rewards';
 import useThemes from '../../../../../hooks/useThemes';
 import Image from '../../../../atoms/Image';
-import { ellipsify } from '../../../../../utils/strUtils';
+// import { ellipsify } from '../../../../../utils/strUtils';
 
 const Rewards = (props) => {
   const { campaign } = props;
@@ -18,19 +17,6 @@ const Rewards = (props) => {
   const { rootClassName } = useThemes();
 
   const { t } = useTranslation('campaign_details');
-
-  const {
-    userState,
-    tasks,
-    doneTasks,
-    isFinishedTasks,
-    submitted,
-    handleClaimReward,
-    handleVerifyNftOwnership
-  } = useRewards({
-    campaign,
-    classes
-  });
 
   const shortDesc = campaign.short_desc ? (
     <div
@@ -148,18 +134,7 @@ const Rewards = (props) => {
     <HowClaim content={campaign.how_to_claim} />
   ) : null;
 
-  const quest = (
-    <Quest
-      userState={userState}
-      campaignId={parseInt(campaign.id)}
-      tasks={tasks}
-      doneTasks={doneTasks}
-      isFinishedTasks={isFinishedTasks}
-      submitted={submitted}
-      onClaimReward={handleClaimReward}
-      verifyNftOwnership={handleVerifyNftOwnership}
-    />
-  );
+  const quest = <Quest campaign={campaign} />;
 
   const questers = <Questers campaignId={campaign.id} />;
 
@@ -189,7 +164,7 @@ const Rewards = (props) => {
       />
     ) : null;*/
 
-  const coupon = campaign.coupon ? <Coupon campaign={campaign} /> : null;
+  //const coupon = campaign.coupon ? <Coupon campaign={campaign} /> : null; //coming soon
 
   return (
     <div className={`${classes[rootClassName]}`}>
@@ -205,7 +180,7 @@ const Rewards = (props) => {
         {rewardInfo}
         {howToClaim}
         {questers}
-        {coupon}
+        {/*{coupon}*/}
       </div>
     </div>
   );
