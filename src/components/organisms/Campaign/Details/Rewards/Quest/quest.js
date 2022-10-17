@@ -256,7 +256,7 @@ const Quest = (props) => {
           type="button"
           onPress={() => handleTwitterLogin()}
         />
-        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto group-hover:text-slate-600 transition-all duration-300">
           {t('Login')}&nbsp;
           <FaAngleRight className="text-lg" />
         </span>
@@ -279,7 +279,7 @@ const Quest = (props) => {
 
     twitterLoginTask = (
       <div
-        className={`${classes.questItem} ${classes.twitterLoginTask} relative`}
+        className={`${classes.questItem} ${classes.twitterLoginTask} relative group`}
       >
         {twitterLoginIconStatus}
 
