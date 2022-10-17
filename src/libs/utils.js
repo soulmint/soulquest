@@ -10,7 +10,7 @@ const utils = {
       keywords: 'soulbound token, web3 reward distribution platform',
       createdAt: new Date().toISOString()
     };
-    if (page == 'campaign-details') {
+    if (page == 'campaign-details' && data) {
       base.title = data.title;
       base.description = utils.htmlToString(data.short_desc);
       base.image = `${process.env.MEDIA_BASE_URL}/${data.thumb_image.id}?format=jpg&width=500`;
