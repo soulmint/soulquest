@@ -32,6 +32,7 @@ export default (props) => {
   const twSocialLinkedTtl = 24 * 60 * 60; // 1days
 
   let submittedTasks = storage.getItem(localSubmittedTasksKey);
+  console.log('submittedTasks:', submittedTasks);
 
   // Add connect wallet task
   tasks.ck_connect_wallet = {
@@ -58,7 +59,7 @@ export default (props) => {
       username: campaign.twitter_username,
       owner_id: campaign.twitter_owner_id,
       status:
-        submittedTasks && submittedTasks.ck_twitter_follow
+        submittedTasks && submittedTasks.ck_twitter_follow !== undefined
           ? submittedTasks.ck_twitter_follow
           : null,
       msg: null
@@ -72,7 +73,7 @@ export default (props) => {
       tweet_url: campaign.twitter_tweet,
       tweet_id: campaign.twitter_tweet_id,
       status:
-        submittedTasks && submittedTasks.ck_twitter_retweet
+        submittedTasks && submittedTasks.ck_twitter_retweet !== undefined
           ? submittedTasks.ck_twitter_retweet
           : null,
       msg: null
@@ -119,7 +120,7 @@ export default (props) => {
       id: ++taskTotal,
       nftCollectionInfo,
       status:
-        submittedTasks && submittedTasks.ck_nft_ownership
+        submittedTasks && submittedTasks.ck_nft_ownership !== undefined
           ? submittedTasks.ck_nft_ownership
           : null,
       msg: null
