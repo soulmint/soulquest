@@ -5,7 +5,7 @@ import defaultClasses from './relatedNftInfo.module.css';
 import { useStyle } from 'src/components/classify';
 import useThemes from 'src/hooks/useThemes';
 import TextLink from 'src/components/atoms/TextLink';
-import { ellipsify } from 'src/utils/strUtils';
+import { ellipsify, getChainName } from 'src/utils/strUtils';
 
 const RelatedNftInfo = (props) => {
   const {
@@ -33,7 +33,7 @@ const RelatedNftInfo = (props) => {
               }`}
             >
               <span className={classes.chainName}>
-                {nftCollection.nft_collection_id.chain_name}
+                {getChainName(nftCollection.nft_collection_id.chain_name)}
               </span>
             </span>
           ) : null}

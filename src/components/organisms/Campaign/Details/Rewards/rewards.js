@@ -7,8 +7,9 @@ import Quest from './Quest';
 import Questers from './Questers';
 import HowClaim from './HowClaim';
 import Summary from './Summary';
-import useThemes from '../../../../../hooks/useThemes';
-import Image from '../../../../atoms/Image';
+import useThemes from 'src/hooks/useThemes';
+import Image from 'src/components/atoms/Image';
+import Screen from 'src/utils/responsive';
 
 const Rewards = (props) => {
   const { campaign } = props;
@@ -73,6 +74,10 @@ const Rewards = (props) => {
     <div className={`${classes[rootClassName]}`}>
       <div className={`${classes.pageContent}`}>
         {quest}
+        <Screen upto="md">
+          {summary}
+          {howToClaim}
+        </Screen>
         <div className={`${classes.pageContentInner}`}>
           <div className={`${classes.coverImage}`}>{coverImage}</div>
           {shortDesc}
@@ -80,10 +85,12 @@ const Rewards = (props) => {
         </div>
       </div>
       <div className={`${classes.pageSidebar}`}>
-        {summary}
-        {howToClaim}
-        {questers}
-        {/*{coupon}*/}
+        <Screen from="md">
+          {summary}
+          {howToClaim}
+          {questers}
+          {/*{coupon}*/}
+        </Screen>
       </div>
     </div>
   );
