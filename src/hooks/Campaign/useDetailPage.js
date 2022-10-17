@@ -1,7 +1,8 @@
 import API from './details.api.gql';
 import { initializeApollo } from '../../libs/apolloClient';
 
-export async function getCampaignDetail({ slug }) {
+export async function getCampaignDetail(props) {
+  const { slug } = props;
   if (!slug) return null;
   const { getCampaignBySlug } = API;
 

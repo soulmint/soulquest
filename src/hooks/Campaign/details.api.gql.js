@@ -56,22 +56,8 @@ export const GET_COUPON_CODES_BY_SLUG = gql`
   }
 `;
 export const GET_CAMPAIGN_BY_SLUG = gql`
-  query getCampaigns(
-    $filter: campaign_filter
-    $sort: [String]
-    $limit: Int
-    $offset: Int
-    $page: Int
-    $search: String
-  ) {
-    campaign(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      offset: $offset
-      page: $page
-      search: $search
-    ) {
+  query getCampaigns($slug: String!) {
+    campaign(filter: { slug: { _eq: $slug } }) {
       id
       title
       slug
