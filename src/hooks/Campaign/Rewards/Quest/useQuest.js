@@ -1,6 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
-import TextLink from 'src/components/atoms/TextLink';
-import { ellipsify } from 'src/utils/strUtils';
+import React, { useCallback, useEffect, useState } from 'react';
 import { EvmChain } from '@moralisweb3/evm-utils';
 import Moralis from 'moralis';
 import { useMutation } from '@apollo/client';
@@ -9,9 +7,10 @@ import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
 import { useSelector } from 'react-redux';
 import BrowserPersistence from 'src/utils/simplePersistence';
+import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 
 export default (props) => {
-  const { campaign, classes } = props;
+  const { campaign } = props;
 
   const { createQuester, updateQuester } = API;
 
@@ -81,41 +80,15 @@ export default (props) => {
   }
 
   // Add nft ownership task
+
   if (campaign.nft_collection_ids.length) {
-    // Build NFT collection information
-    const nftCollectionInfo =
-      campaign &&
-      campaign.nft_collection_ids &&
-      campaign.nft_collection_ids.length
-        ? campaign.nft_collection_ids.map((nftCollection, index) => (
-            <div key={index} className={`${classes.nftCollectionWrap}`}>
-              <span
-                className={`${classes.chain} ${
-                  classes[nftCollection.nft_collection_id.chain_name]
-                }`}
-              >
-                {nftCollection.nft_collection_id.chain_name}
-              </span>
-              <TextLink
-                className={classes.nftCollectionLink}
-                href={`/nft-collection-details/${nftCollection.nft_collection_id.slug}`}
-              >
-                <span className={`${classes.collectionName}`}>
-                  {nftCollection.nft_collection_id.name}
-                </span>{' '}
-                <span className={classes.contractAdd}>
-                  (
-                  {ellipsify({
-                    str: nftCollection.nft_collection_id.contract_address,
-                    start: 6,
-                    end: 4
-                  })}
-                  )
-                </span>{' '}
-              </TextLink>
-            </div>
-          ))
-        : null;
+    const nftCollectionInfo = (
+      <RelatedNftInfo
+        nftCollections={campaign.nft_collection_ids}
+        showCollectionLink={true}
+        showChainName={true}
+      />
+    );
     tasks.ck_nft_ownership = {
       id: ++taskTotal,
       nftCollectionInfo,
