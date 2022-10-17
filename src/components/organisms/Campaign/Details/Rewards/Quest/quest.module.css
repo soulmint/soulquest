@@ -3,7 +3,7 @@
 }
 
 .questItem {
-  @apply py-3 px-4 bg-slate-100 rounded-xl flex items-center text-lg font-bold mb-4 relative;
+  @apply py-3 px-4 bg-slate-100 rounded-xl flex items-center text-lg font-bold mb-4 relative overflow-hidden;
 }
 
 .questItemIcon {
@@ -20,13 +20,23 @@
 
 /* Step 1 */
 .connectWalletTask {
+  @apply hover:bg-slate-200 hover:bg-opacity-80 transition-all duration-300;
 }
 
-.connectWalletTask button {
-  @apply py-1.5 px-3 text-xs rounded-md ml-auto;
+.btnConnectWallet {
+  @apply absolute top-0 right-0 bottom-0 left-0 m-0 w-full text-right text-sm text-slate-400 font-bold px-6;
+}
+
+.connectWalletTask:hover button {
+  @apply text-slate-600;
+}
+
+.btnConnectWallet img {
+  @apply hidden;
 }
 
 .twitterLoginTask {
+  @apply hover:bg-slate-200 hover:bg-opacity-80 transition-all duration-300;
 }
 
 .btnTwitterLogin {
@@ -137,8 +147,4 @@
 
 .soulAvatar {
   margin: 0px 5px 0px 0px;
-}
-
-.btnConnectWallet {
-  border: 3px  red solid;
 }
