@@ -55,6 +55,62 @@ export const GET_COUPON_CODES_BY_SLUG = gql`
     }
   }
 `;
+export const GET_CAMPAIGN_BY_SLUG = gql`
+  query getCampaigns(
+    $filter: campaign_filter
+    $sort: [String]
+    $limit: Int
+    $offset: Int
+    $page: Int
+    $search: String
+  ) {
+    campaign(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      offset: $offset
+      page: $page
+      search: $search
+    ) {
+      id
+      title
+      slug
+      discount_value
+      short_desc
+      store_name
+      store_logo_url
+      store_url
+      date_created
+      date_start
+      date_end
+      nft_collection_ids {
+        #          campaing_id {
+        #              id
+        #          }
+        nft_collection_id {
+          #           id
+          name
+          slug
+          contract_address
+          chain_name
+        }
+      }
+      user_created {
+        id
+      }
+      thumb_image {
+        id
+        title
+        #          filename_download
+      }
+      cover_image {
+        id
+        title
+        #          filename_download
+      }
+    }
+  }
+`;
 export const getCouponCodes = async (slug) => {
   let rs = null;
   const client = initializeApollo();
@@ -79,5 +135,6 @@ export const getCouponCodes = async (slug) => {
 
 export default {
   getCampaign: LOAD_CAMPAIGN_BY_SLUG,
-  getCouponCodes
+  getCouponCodes,
+  getCampaignBySlug: GET_CAMPAIGN_BY_SLUG
 };

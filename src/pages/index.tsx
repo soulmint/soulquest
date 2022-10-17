@@ -2,9 +2,12 @@ import React from 'react';
 import { NextPage, GetStaticProps } from 'next';
 import HomeTmpl from '../components/templates/homeTmpl';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import utils from 'src/libs/utils';
 
 const HomePage: NextPage = () => {
-  const child = <HomeTmpl />;
+  const page = `home`;
+  const meta = utils.createMetaData({ page, data: {} });
+  const child = <HomeTmpl meta={meta} />;
   return child;
 };
 

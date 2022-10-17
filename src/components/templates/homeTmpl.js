@@ -7,16 +7,10 @@ import Head from 'next/head';
 import HeadCustom from '../organisms/Head';
 
 const HomeTmpl = (props) => {
+  const { meta } = props;
   return (
     <Fragment>
-      <HeadCustom
-        url={`${process.env.PUBLIC_URL}`}
-        openGraphType="website"
-        schemaType="article"
-        title={`Reward distribution platform based on SoulBound Token - SoulMint`}
-        description={`Build your Web3 reputation through SoulBound Tokens. Discover, participate and earn the most exclusive rewards from SoulBound token based campaigns.`}
-        image={`${process.env.PUBLIC_URL}/soulmint-social.png`}
-      />
+      <HeadCustom {...meta} />
       <MainTmpl>
         <Hero />
         <div className="bg-white">

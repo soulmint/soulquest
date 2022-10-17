@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import Details from '../organisms/Campaign/Details';
 
 const CampaignDetailTmpl = (props) => {
-  const { slug } = props;
+  const { slug, meta } = props;
 
   return (
     <Fragment>
-      <MainTmpl>
+      <MainTmpl meta={meta}>
         <Details slug={slug} />
       </MainTmpl>
     </Fragment>
@@ -17,7 +17,8 @@ const CampaignDetailTmpl = (props) => {
 };
 
 CampaignDetailTmpl.propTypes = {
-  slug: PropTypes.string.isRequired
+  slug: PropTypes.string.isRequired,
+  meta: PropTypes.object
 };
 
 export default CampaignDetailTmpl;
