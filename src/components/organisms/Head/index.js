@@ -9,6 +9,7 @@ const socialTags = ({
   url,
   title,
   description,
+  keywords,
   image,
   createdAt,
   updatedAt
@@ -49,8 +50,20 @@ const socialTags = ({
       content: createdAt || new Date().toISOString()
     },
     {
-      property: 'og:modified_time',
+      property: 'article:tag',
+      content: keywords || settings.meta.keywords
+    },
+    {
+      property: 'article:section',
+      content: type
+    },
+    {
+      property: 'article:published_time',
       content: updatedAt || new Date().toISOString()
+    },
+    {
+      property: 'article:author',
+      content: 'Soulmint'
     }
   ];
 
@@ -58,16 +71,22 @@ const socialTags = ({
 };
 
 const HeadCustom = (props) => {
-  const { title, description, image } = props;
-  // const imagess = useImageBase64({ url: image });
-  const schemaType = props.schemaType || HeadCustom.defaultProps.schemaType;
-  const url = props.url || HeadCustom.defaultProps.url;
+  const data = {};
+  data.schemaType = props.schemaType || HeadCustom.defaultProps.schemaType;
+  data.url = props.url || HeadCustom.defaultProps.url;
+  data.title = props.title || HeadCustom.defaultProps.title;
+  data.description = props.description || HeadCustom.defaultProps.description;
+  data.image = props.image || HeadCustom.defaultProps.image;
+  data.keywords = props.keywords
+    ? `${props.keywords}, ${settings.meta.keywords}`
+    : settings.meta.keywords;
   return (
     <Head>
-      <title>{title}</title>
-      <meta name="title" content={title} />
-      <meta name="description" content={description} />
-      {socialTags(props).map(({ property, content }) => {
+      <title>{data.title}</title>
+      <meta name="title" content={data.title} />
+      <meta name="description" content={data.description} />
+      <meta name="keywords" content={data.keywords} />
+      {socialTags(data).map(({ property, content }) => {
         return <meta key={property} property={property} content={content} />;
       })}
 
@@ -76,10 +95,10 @@ const HeadCustom = (props) => {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             '@context': 'http://schema.org',
-            '@type': schemaType,
-            name: title,
-            about: description,
-            url
+            '@type': data.schemaType,
+            name: data.title,
+            about: data.description,
+            url: data.url
           })
         }}
       />
@@ -94,11 +113,7 @@ HeadCustom.defaultProps = {
   type: 'article',
   title: settings && settings.meta && settings.meta.title,
   description: settings && settings.meta && settings.meta.description,
-  image:
-    settings &&
-    settings.meta &&
-    settings.meta.social &&
-    settings.meta.social.graphic
+  image: settings && settings.meta && settings.meta.image
 };
 
 HeadCustom.propTypes = {

@@ -31,6 +31,7 @@ const TwitterFollow = async (props: any) => {
 };
 const getTwitterUserIdByUsermame = async (props: any) => {
   const { screen_name } = props;
+  if (!screen_name) return toast.warning('Invalid user screen_name');
   let id = 0;
   await fetch('/api/twitter/user?task=getid&screen_name=' + screen_name)
     .then((res) => res.json())
@@ -41,6 +42,8 @@ const getTwitterUserIdByUsermame = async (props: any) => {
 };
 const getTweetsStatus = async (props: any) => {
   const { user_id, tweet_id } = props;
+  if (!user_id || !tweet_id)
+    return toast.warning('Invalid user id or tweet id');
   let checked = false;
   await fetch(
     '/api/twitter/user?task=tweets&user_id=' + user_id + '&tweet_id=' + tweet_id
