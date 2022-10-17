@@ -16,6 +16,7 @@ import {
   FaCheck,
   FaAngleRight
 } from 'react-icons/fa';
+
 // import Cookie from 'js-cookie';
 import {
   TwitterLogin,

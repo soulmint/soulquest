@@ -1,4 +1,5 @@
 import '../../styles/globals.css';
+import '../../public/fonts/pt-root-ui/fonts.css';
 import React from 'react';
 import { useEffect } from 'react';
 import { SessionProvider, useSession } from 'next-auth/react';
