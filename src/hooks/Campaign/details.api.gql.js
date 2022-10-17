@@ -75,38 +75,12 @@ export const GET_CAMPAIGN_BY_SLUG = gql`
       id
       title
       slug
-      discount_value
       short_desc
       store_name
-      store_logo_url
-      store_url
       date_created
-      date_start
-      date_end
-      nft_collection_ids {
-        #          campaing_id {
-        #              id
-        #          }
-        nft_collection_id {
-          #           id
-          name
-          slug
-          contract_address
-          chain_name
-        }
-      }
-      user_created {
-        id
-      }
       thumb_image {
         id
         title
-        #          filename_download
-      }
-      cover_image {
-        id
-        title
-        #          filename_download
       }
     }
   }
