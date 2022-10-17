@@ -256,7 +256,7 @@ const Quest = (props) => {
           type="button"
           onPress={() => handleTwitterLogin()}
         />
-        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto group-hover:text-slate-600 transition-all duration-300">
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto group-hover:text-slate-600 transition-color duration-300">
           {t('Login')}&nbsp;
           <FaAngleRight className="text-lg" />
         </span>
@@ -330,7 +330,7 @@ const Quest = (props) => {
             : ''}
         </span>
         {!tasks.ck_twitter_follow.status ? (
-          <span className="flex items-center flex-row text-sm font-bold text-slate-600">
+          <span className="flex items-center flex-row text-sm font-bold text-slate-400 group-hover:text-slate-600 transition-color duration-300">
             {t('Verify')}&nbsp;
             <FaAngleRight className="text-lg" />
           </span>
@@ -347,7 +347,7 @@ const Quest = (props) => {
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
     twFollowTask = (
-      <div className={`${twFollowTaskClasses.join(' ')} relative`}>
+      <div className={`${twFollowTaskClasses.join(' ')} relative group`}>
         {twFollowIconLeft}
         <div className="z-20">
           <span
@@ -438,7 +438,7 @@ const Quest = (props) => {
             ? TaskFailIcon
             : ''}
           {!tasks.ck_twitter_retweet.status ? (
-            <span className="flex items-center flex-row text-sm font-bold text-slate-600">
+            <span className="flex items-center flex-row text-sm font-bold text-slate-400 group-hover:text-slate-600 transition-color duration-300">
               {t('Verify')}&nbsp;
               <FaAngleRight className="text-lg" />
             </span>
@@ -456,7 +456,7 @@ const Quest = (props) => {
       twitterReTweetState === 'loading' ? classes.taskLoading : null
     );
     twReTweetTask = (
-      <div className={`${twReTeetTaskClasses.join(' ')} relative`}>
+      <div className={`${twReTeetTaskClasses.join(' ')} relative group`}>
         {twReTweetIconLeft}
         <div className="z-20">
           <span
@@ -577,7 +577,7 @@ const Quest = (props) => {
             {t('Task')} {tasks.ck_nft_ownership.id}
           </span>
           <h4 className="mt-0 mb-0">
-            {t('Must hold at least one of NFT on the following collection:')}
+            {t('Must hold:')}
           </h4>
           {tasks.ck_nft_ownership.nftCollectionInfo}
         </div>
@@ -585,7 +585,7 @@ const Quest = (props) => {
 
       <div className="">
         {verifyNftOwnershipBtn}
-        <span className="flex items-center flex-row text-sm font-bold text-slate-400">
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 transition-color duration-300">
           {nftOwnershipStatus}
           {t('Verify')}&nbsp;
           <FaAngleRight className="text-lg" />
