@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
 import HeadCustom from '../../Head';
@@ -107,10 +107,10 @@ const Details = (props) => {
     } else {
       SEOChild = (
         <HeadCustom
-          url={`${process.env.PUBLIC_URL}/campaign/${slug}`}
+          url={``}
           openGraphType="website"
           schemaType="article"
-          title={`${pageTitle} - SoulMint - The 1st SoulBound`}
+          title={``}
         />
       );
       child = <div className={classes.notFound}>{t('Not Found.')}</div>;
