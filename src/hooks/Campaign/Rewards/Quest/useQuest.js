@@ -80,7 +80,6 @@ export default (props) => {
   }
 
   // Add nft ownership task
-
   if (campaign.nft_collection_ids.length) {
     const nftCollectionInfo = (
       <RelatedNftInfo

@@ -53,7 +53,7 @@
 }
 
 /* All Chains */
-.nftCollectionWrap {
+/*.nftCollectionWrap {
 	@apply bg-gray-100 rounded-full flex items-center pr-3 pl-1 py-0.5 mr-1 mb-1 relative overflow-hidden;
 	max-width: 100%;
 }
@@ -76,12 +76,11 @@
 
 .rootDark .collectionName {
 	@apply text-white;
-}
+}*/
 
-.contractAdd {
+/*.contractAdd {
 	@apply bg-gray-800 text-white text-xs rounded-md absolute py-1.5 px-2 left-1/2 -translate-x-1/2 -top-8 transition-all duration-500 opacity-0;
 }
-
 .contractAdd::after {
 	border-top: 5px solid #1F2937;;
 	border-left: 5px solid transparent;
@@ -92,50 +91,9 @@
 	left: 50%;
 	margin-left: -3px;
 	bottom: -5px;
-	height: 0;	
+	height: 0;
 	width: 0;
-}
-
-.nftCollectionWrap:hover .contractAdd {
-	@apply opacity-100 -top-9;
-}
-
-.chainWrap {
-	@apply border border-red-800 flex items-center mt-8;
-}
-
-/* All chains */
-.bsc {
-  @apply bg-gray-100 inline-block rounded-full mr-1 w-5 h-5 indent-96 overflow-hidden bg-[url('/chains/bsc.svg')] bg-cover;
-}
-
-.rootDark .bsc {
-	@apply bg-gray-800 ring-1 ring-gray-700;
-}
-
-.ethereum {
-  @apply bg-gray-100 inline-block rounded-full mr-1 w-5 h-5 indent-96 overflow-hidden bg-[url('/chains/ethereum.svg')] bg-cover;
-}
-
-.rootDark .ethereum {
-	@apply bg-gray-800 ring-1 ring-gray-700;
-}
-
-.polygon {
-  @apply bg-gray-100 inline-block rounded-full mr-1 w-5 h-5 indent-96 overflow-hidden bg-[url('/chains/polygon.svg')] bg-cover;
-}
-
-.rootDark .polygon {
-	@apply bg-gray-800 ring-1 ring-gray-700;
-}
-
-.solana {
-  @apply bg-gray-100 inline-block rounded-full mr-1 w-5 h-5 indent-96 overflow-hidden bg-[url('/chains/solana.svg')] bg-cover;
-}
-
-.rootDark .solana {
-	@apply bg-gray-800 ring-1 ring-gray-700;
-}
+}*/
 
 /* Get coupon button */
 .getCoupon span {

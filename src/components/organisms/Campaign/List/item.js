@@ -4,12 +4,13 @@ import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import { useSelector } from 'react-redux';
 import Moment from 'moment';
-import Button from '../../../atoms/Button';
-import Image from '../../../atoms/Image';
+import Button from 'src/components/atoms/Button';
+import Image from 'src/components/atoms/Image';
 import classes from './item.module.css';
-import useThemes from '../../../../hooks/useThemes';
-import TextLink from '../../../atoms/TextLink';
-import { toHTML, subStrWords, ellipsify } from '../../../../utils/strUtils';
+import useThemes from 'src/hooks/useThemes';
+import TextLink from 'src/components/atoms/TextLink';
+import { toHTML, subStrWords } from 'src/utils/strUtils';
+import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 
 const DESC_MAX_LENGTH = 200;
 
@@ -42,36 +43,13 @@ const Item = (props) => {
     ) : null;
 
   // Build NFT collection information
-  const nftCollectionInfo = data.nft_collection_ids.length
-    ? data.nft_collection_ids.map((nftCollection, index) => (
-        <div key={index} className={`${classes.nftCollectionWrap}`}>
-          <span
-            className={`${classes.chain} ${
-              classes[nftCollection.nft_collection_id.chain_name]
-            }`}
-          >
-            {nftCollection.nft_collection_id.chain_name}
-          </span>
-          <TextLink
-            className={classes.nftCollectionLink}
-            href={`/nft-collection-details/${nftCollection.nft_collection_id.slug}`}
-          >
-            <span className={`${classes.collectionName}`}>
-              {nftCollection.nft_collection_id.name}
-            </span>{' '}
-            <span className={classes.contractAdd}>
-              (
-              {ellipsify({
-                str: nftCollection.nft_collection_id.contract_address,
-                start: 4,
-                end: 4
-              })}
-              )
-            </span>{' '}
-          </TextLink>
-        </div>
-      ))
-    : null;
+  const nftCollectionInfo = data.nft_collection_ids.length ? (
+    <RelatedNftInfo
+      nftCollections={data.nft_collection_ids}
+      showCollectionLink={true}
+      showChainName={true}
+    />
+  ) : null;
 
   // Build store info
   /*const storeLogo = data.store_logo_url ? (
