@@ -52,44 +52,6 @@
     @apply basis-full md:basis-1/3 lg:pl-4 max-w-full;
 }
 
-.chain {
-    @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-cover;
-}
-.bsc {
-    composes: chain;
-    @apply  bg-[url('/chains/bsc.svg')];
-}
-.ethereum {
-    composes: chain;
-    @apply bg-[url('/chains/ethereum.svg')];
-}
-
-.polygon {
-    composes: chain;
-    @apply bg-[url('/chains/polygon.svg')];
-}
-
-.solana {
-    composes: chain;
-    @apply bg-[url('/chains/solana.svg')];
-}
-
-.nftCollectionWrap {
-  composes: nftCollectionWrap from '../../List/item.module.css';
-  @apply flex items-center;
-}
-
-.nftCollectionLink {
-}
-
-.collectionName {
-    composes: collectionName from '../../List/item.module.css';
-}
-
-.contractAdd {
-    composes: contractAdd from '../../List/item.module.css';
-}
-
 .rewardWrapper {
 }
 .rewardOverview {

@@ -57,45 +57,6 @@
   @apply relative pt-4;
 }
 
-.chain {
-  @apply bg-gray-100 inline-block rounded-full mr-2 w-6 h-6 indent-96 overflow-hidden bg-cover;
-}
-.bsc {
-  composes: chain;
-  @apply  bg-[url('/chains/bsc.svg')] bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center ml-2;
-}
-
-.ethereum {
-  composes: chain;
-  @apply bg-[url('/chains/ethereum.svg')];
-}
-
-.polygon {
-  composes: chain;
-  @apply bg-[url('/chains/polygon.svg')];
-}
-
-.solana {
-  composes: chain;
-  @apply bg-[url('/chains/solana.svg')];
-}
-
-.nftCollectionWrap {
-  composes: nftCollectionWrap from '../../../List/item.module.css';
-  @apply flex items-center;
-}
-
-.nftCollectionLink {
-}
-
-.collectionName {
-  composes: collectionName from '../../../List/item.module.css';
-}
-
-.contractAdd {
-  composes: contractAdd from '../../../List/item.module.css';
-}
-
 .btnClaimRewardWrap {
   @apply mt-4 pt-4;
 }

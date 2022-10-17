@@ -56,8 +56,7 @@ const Quest = (props) => {
     handleSubmit,
     handleVerifyNftOwnership
   } = useQuest({
-    campaign,
-    classes
+    campaign
   });
 
   const add = userState.wallet_address ? userState.wallet_address : null;
