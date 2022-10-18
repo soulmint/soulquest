@@ -161,7 +161,7 @@ const Quest = (props) => {
       const uid = id;
       if (access_token) {
         Cookies.set('tw_access_token', access_token, {
-          expires: 1 / 24,
+          expires: 24,
           path: '/',
           sameSite: 'lax'
         });
@@ -171,8 +171,7 @@ const Quest = (props) => {
         twSocialLinked = await saveSocialLink({
           name: 'twitter',
           username,
-          uid,
-          access_token
+          uid
         });
         if (twSocialLinked) {
           //update submitted tasks
