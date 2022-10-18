@@ -21,7 +21,6 @@ const Details = (props) => {
 
   let pageTitle = null;
   let child = null;
-  let SEOChild = null;
   if (!data) {
     if (error) {
       if (process.env.NODE_ENV !== 'production') {
@@ -97,12 +96,7 @@ const Details = (props) => {
     }
   }
 
-  return (
-    <div className={`${classes[rootClassName]}`}>
-      {SEOChild}
-      {child}
-    </div>
-  );
+  return <div className={`${classes[rootClassName]}`}>{child}</div>;
 };
 
 export default Details;

@@ -115,13 +115,24 @@ export default (props) => {
   }, [tasks]);
 
   const handleUpdateSubmittedTasks = useCallback(
-    (key, value) => {
+    async (key, value) => {
       let submittedTasks = storage.getItem(localSubmittedTasksKey);
       if (submittedTasks === undefined) {
         submittedTasks = {};
       }
       submittedTasks[key] = value;
       storage.setItem(localSubmittedTasksKey, submittedTasks);
+
+      // Saving quester
+      const questerId = storage.getItem(localQuesterKey);
+      await saveQuester({
+        variables: {
+          id: questerId !== undefined ? parseInt(questerId) : null,
+          campaign_id: campaign.id,
+          tasks: JSON.stringify(submittedTasks),
+          status: 'pending'
+        }
+      });
     },
     [localSubmittedTasksKey]
   );

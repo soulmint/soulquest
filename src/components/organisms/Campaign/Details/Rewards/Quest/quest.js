@@ -85,44 +85,7 @@ const Quest = (props) => {
   );
 
   useEffect(async () => {
-    if (add) {
-      tasks.ck_connect_wallet.status = true;
-      twSocialLinked = storage.getItem(localTwSocialLinkKey);
-      if (twSocialLinked === undefined) {
-        // check exits social link from off chain DB
-        const twSocialLinked = await checkExistsSocialLink(
-          { _eq: 'twitter' },
-          { email: { _eq: userState.wallet_address } }
-        );
-        if (twSocialLinked) {
-          storage.setItem(
-            localTwSocialLinkKey,
-            twSocialLinked,
-            twSocialLinkedTtl
-          );
-        }
-      }
-      if (twSocialLinked && tasks.ck_twitter_login) {
-        console.log('twSocialLinked:', twSocialLinked);
-        tasks.ck_twitter_login.status = true;
-        tasks.ck_twitter_login.uid = twSocialLinked.uid;
-        tasks.ck_twitter_login.screen_name = twSocialLinked.username;
-        setTwitterLoginState(true);
-
-        //update submitted tasks
-        handleUpdateSubmittedTasks('ck_twitter_login', true);
-        //log to db
-        await handleSubmit({
-          status: 'pending',
-          quester_id: storage.getItem(localQuesterKey),
-          submitted_tasks: storage.getItem(localSubmittedTasksKey)
-        });
-      }
-    }
-  }, [router.isReady, add]);
-
-  useEffect(async () => {
-    if (add) {
+    if (add && !isSoul) {
       // Check current User has do tasks
       const quester = await isQuesterExists(
         { _eq: campaignId },
@@ -154,54 +117,70 @@ const Quest = (props) => {
   }, [router.isReady, add, twitterLoginState]);
 
   useEffect(async () => {
-    if (add && twSocialLinked === undefined && router.query.user) {
-      const { user } = router.query;
-      const UserDecode = JSON.parse(base64URLDecode(user));
-      const { id, username, access_token } = UserDecode;
-      const uid = id;
-      if (access_token) {
-        Cookies.set('tw_access_token', access_token, {
-          expires: 24,
-          path: '/',
-          sameSite: 'lax'
-        });
-      }
-      if (uid) {
-        //add new
-        twSocialLinked = await saveSocialLink({
-          name: 'twitter',
-          username,
-          uid
-        });
-        if (twSocialLinked) {
-          //update submitted tasks
-          handleUpdateSubmittedTasks('ck_twitter_login', true);
-          //log to db
-          await handleSubmit({
-            status: 'pending',
-            quester_id: storage.getItem(localQuesterKey),
-            submitted_tasks: storage.getItem(localSubmittedTasksKey)
+    if (add && !isSoul) {
+      tasks.ck_connect_wallet.status = true;
+
+      // After twitter login case
+      if (router.query.user) {
+        const { user } = router.query;
+        const UserDecode = JSON.parse(base64URLDecode(user));
+        const { id, username, access_token } = UserDecode;
+        const uid = id;
+        if (access_token) {
+          Cookies.set('tw_access_token', access_token, {
+            expires: 24,
+            path: '/',
+            sameSite: 'lax'
           });
-
-          tasks.ck_twitter_login.status = true;
-          tasks.ck_twitter_login.uid = twSocialLinked.uid
-            ? twSocialLinked.uid
-            : null;
-          tasks.ck_twitter_login.screen_name = twSocialLinked.username
-            ? twSocialLinked.username
-            : null;
-
-          //saving to local storage for other contexts
-          storage.setItem(
-            localTwSocialLinkKey,
-            twSocialLinked,
-            twSocialLinkedTtl
-          );
-
-          setTwitterLoginState(true);
-
+        }
+        if (uid) {
+          //add new
+          twSocialLinked = await saveSocialLink({
+            name: 'twitter',
+            username,
+            uid
+          });
+          if (twSocialLinked) {
+            //saving to local storage for other contexts
+            storage.setItem(
+              localTwSocialLinkKey,
+              twSocialLinked,
+              twSocialLinkedTtl
+            );
+          }
           // Refresh page - coming soon
           //router.push('/campaign-details/' + router.query.slug[0]);
+        }
+      } else {
+        twSocialLinked = storage.getItem(localTwSocialLinkKey);
+        if (twSocialLinked === undefined) {
+          // check exits social link from off chain DB
+          const twSocialLinked = await checkExistsSocialLink(
+            { _eq: 'twitter' },
+            { email: { _eq: userState.wallet_address } }
+          );
+          if (twSocialLinked) {
+            storage.setItem(
+              localTwSocialLinkKey,
+              twSocialLinked,
+              twSocialLinkedTtl
+            );
+          }
+        }
+      }
+
+      //if has tw social linked
+      if (twSocialLinked) {
+        console.log('twSocialLinked:', twSocialLinked);
+        if (tasks.ck_twitter_login) {
+          tasks.ck_twitter_login.status = true;
+          tasks.ck_twitter_login.uid = twSocialLinked.uid;
+          tasks.ck_twitter_login.screen_name = twSocialLinked.username;
+
+          // update submitted tasks to local storage
+          await handleUpdateSubmittedTasks('ck_twitter_login', true);
+
+          setTwitterLoginState(true);
         }
       }
     }
@@ -408,18 +387,11 @@ const Quest = (props) => {
       );
     }
 
-    //update submitted tasks
+    // update submitted tasks to local storage
     await handleUpdateSubmittedTasks(
       'ck_twitter_follow',
       tasks.ck_twitter_follow.status
     );
-
-    //log to db
-    await handleSubmit({
-      status: 'pending',
-      quester_id: storage.getItem(localQuesterKey),
-      submitted_tasks: storage.getItem(localSubmittedTasksKey)
-    });
   };
 
   let twReTweetTask = null;
@@ -516,18 +488,11 @@ const Quest = (props) => {
       );
     }
 
-    //update submitted tasks
-    handleUpdateSubmittedTasks(
+    // update submitted tasks to local storage
+    await handleUpdateSubmittedTasks(
       'ck_twitter_retweet',
       tasks.ck_twitter_retweet.status
     );
-
-    //log to db
-    await handleSubmit({
-      status: 'pending',
-      quester_id: storage.getItem(localQuesterKey),
-      submitted_tasks: storage.getItem(localSubmittedTasksKey)
-    });
   };
 
   const verifyNftOwnershipBtn =
@@ -619,18 +584,11 @@ const Quest = (props) => {
       toast.error(t('You are not owner of any SoulBound Token!'));
     }
 
-    //update submitted tasks
-    handleUpdateSubmittedTasks(
+    // update submitted tasks to local storage
+    await handleUpdateSubmittedTasks(
       'ck_nft_ownership',
       tasks.ck_nft_ownership.status
     );
-
-    //log to db
-    await handleSubmit({
-      status: 'pending',
-      quester_id: storage.getItem(localQuesterKey),
-      submitted_tasks: storage.getItem(localSubmittedTasksKey)
-    });
   };
 
   const canSubmit =
