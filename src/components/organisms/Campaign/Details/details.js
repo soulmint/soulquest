@@ -42,7 +42,7 @@ const Details = (props) => {
       const now = Moment();
       let stateInfo =
         now > endDate ? (
-          <div className="bg-gray-100 text-red-600 rounded-full py-1 px-3 text-sm font-medium mr-4">
+          <div className="bg-red-300 text-slate-800 rounded-full py-1 px-3 text-sm font-bold mr-4">
             {t('Ended')}
           </div>
         ) : (
