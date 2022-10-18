@@ -14,8 +14,7 @@ import {
   FaUserPlus,
   FaRetweet,
   FaCheck,
-  FaAngleRight,
-  FaBtc
+  FaAngleRight
 } from 'react-icons/fa';
 
 import {
@@ -561,7 +560,9 @@ const Quest = (props) => {
       <div
         className={`relative ${classes.questItemIcon} bg-slate-700 text-white`}
       >
-        <span className={`${classes.nftOwnership}`}><FaBtc /></span>
+        <span className={`${classes.nftOwnership}`}>       
+          <img src="/icons/nft.svg" alt="NFT" />
+        </span>
       </div>
     );
   const nftOwnershipTask = tasks.ck_nft_ownership ? (
