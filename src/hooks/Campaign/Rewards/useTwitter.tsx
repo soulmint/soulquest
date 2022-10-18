@@ -7,7 +7,7 @@ const TwitterLogin = (props: any) => {
     reference_url = reference_url.slice(0, -1);
   }
   Router.push(
-    '/api/twitter/callback?state=login&reference_url=' +
+    '/api/twitter/callback?action=login&reference_url=' +
       encodeURIComponent(reference_url)
   );
 };
