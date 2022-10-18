@@ -26,6 +26,10 @@
   @apply absolute top-0 right-0 bottom-0 left-0 m-0 w-full text-right text-sm text-slate-400 font-bold px-6;
 }
 
+.btnConnectWallet span {
+  @apply justify-end;
+}
+
 .connectWalletTask:hover button {
   @apply text-slate-600;
 }

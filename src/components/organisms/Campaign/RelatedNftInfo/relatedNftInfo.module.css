@@ -1,22 +1,25 @@
 .root {
+  @apply flex flex-wrap text-sm;
 }
 
 .rootDark {
 }
 
 .chain {
-    @apply bg-gray-100 inline-block rounded-full mr-2 /*w-6 h-6*/ /*indent-96*/ overflow-hidden bg-cover;
+  @apply bg-gray-100 inline-block rounded-full w-6 h-6 indent-96 overflow-hidden bg-cover;
 }
-.chainName {
 
+.chainName {
 }
+
 .bsc {
-    composes: chain;
-    @apply  bg-[url('/chains/bsc.svg')];
+  composes: chain;
+  @apply bg-[url('/chains/bsc.svg')];
 }
+
 .ethereum {
-    composes: chain;
-    @apply bg-[url('/chains/ethereum.svg')];
+  composes: chain;
+  @apply bg-[url('/chains/ethereum.svg')];
 }
 
 .polygon {
@@ -25,22 +28,27 @@
 }
 
 .solana {
-    composes: chain;
-    @apply bg-[url('/chains/solana.svg')];
+  composes: chain;
+  @apply bg-[url('/chains/solana.svg')];
 }
 
 .nftCollectionWrap {
-    composes: nftCollectionWrap from '../List/item.module.css';
-    @apply flex items-center;
+  composes: nftCollectionWrap from '../List/item.module.css';
+  @apply flex items-center;
+}
+
+.nftCollectionWrap + .nftCollectionWrap {
+  @apply ml-2;
 }
 
 .nftCollectionLink {
+  @apply ml-2;
 }
 
 .collectionName {
-    composes: collectionName from '../List/item.module.css';
+  composes: collectionName from '../List/item.module.css';
 }
 
 .contractAdd {
-    composes: contractAdd from '../List/item.module.css';
+  composes: contractAdd from '../List/item.module.css';
 }
