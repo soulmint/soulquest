@@ -121,6 +121,7 @@ const Quest = (props) => {
       tasks.ck_connect_wallet.status = true;
 
       // After twitter login case
+      twSocialLinked = storage.getItem(localTwSocialLinkKey);
       if (router.query.user) {
         const { user } = router.query;
         const UserDecode = JSON.parse(base64URLDecode(user));
@@ -133,7 +134,7 @@ const Quest = (props) => {
             sameSite: 'lax'
           });
         }
-        if (uid) {
+        if (twSocialLinked === undefined && uid) {
           //add new
           twSocialLinked = await saveSocialLink({
             name: 'twitter',
