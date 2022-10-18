@@ -20,7 +20,7 @@
 }
 
 .pageContent {
-  @apply lg:pr-4 basis-full md:basis-2/3 mb-4 lg:mb-0;
+  @apply lg:pr-4 basis-full lg:basis-2/3 mb-4 lg:mb-0;
 }
 
 .rootDark .pageContent {

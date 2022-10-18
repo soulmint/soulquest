@@ -76,7 +76,6 @@ const Rewards = (props) => {
         {quest}
         <Screen upto="md">
           {summary}
-          {howToClaim}
         </Screen>
         <div className={`${classes.pageContentInner}`}>
           <div className={`${classes.coverImage}`}>{coverImage}</div>
@@ -85,12 +84,14 @@ const Rewards = (props) => {
         </div>
       </div>
       <div className={`${classes.pageSidebar}`}>
-        <Screen from="md">
+        <Screen from="lg">
           {summary}
-          {howToClaim}
-          {questers}
-          {/*{coupon}*/}
         </Screen>
+
+        {howToClaim}
+        {questers}
+        {/*{coupon}*/}
+
       </div>
     </div>
   );
