@@ -37,3 +37,7 @@ export default {
   capitalize,
   getChainName
 };
+export const base64URLDecode = (str) =>
+  Buffer.from(str, 'base64').toString('binary');
+export const base64URLEncode = (str) =>
+  Buffer.from(str, 'binary').toString('base64');

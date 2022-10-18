@@ -1,12 +1,12 @@
 import { Client, auth } from 'twitter-api-sdk';
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextCookies from 'next-cookies';
-import { twDecode } from 'src/libs/useFunc';
+import { base64URLDecode } from 'src/utils/strUtils';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const token = nextCookies({ req }).twt;
-  const accessToken = token ? JSON.parse(twDecode(token)) : {};
+  const accessToken = token ? JSON.parse(base64URLDecode(token)) : {};
   const client = new Client(process.env.TWITTER_BEARER_TOKEN);
 
   try {
