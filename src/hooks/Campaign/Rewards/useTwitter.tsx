@@ -1,4 +1,5 @@
 import Router from 'next/router';
+import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 const TwitterLogin = (props: any) => {
   let { reference_url } = props;
@@ -25,6 +26,13 @@ const TwitterFollow = async (props: any) => {
   )
     .then((res) => res.json())
     .then((data) => {
+      if (data.refreshToken) {
+        Cookies.set('tw_access_token', data.refreshToken, {
+          expires: 24,
+          path: '/',
+          sameSite: 'lax'
+        });
+      }
       checked = data.checked;
     });
   return checked;
@@ -50,11 +58,19 @@ const getTweetsStatus = async (props: any) => {
   )
     .then((res) => res.json())
     .then((data) => {
+      if (data.refreshToken) {
+        Cookies.set('tw_access_token', data.refreshToken, {
+          expires: 24,
+          path: '/',
+          sameSite: 'lax'
+        });
+      }
       checked = data?.checked;
     });
 
   return checked;
 };
+
 export {
   TwitterLogin,
   TwitterFollow,

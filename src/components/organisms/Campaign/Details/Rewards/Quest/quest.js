@@ -25,7 +25,11 @@ import {
 } from 'src/hooks/Campaign/Rewards/useTwitter';
 import ConnectWallet from 'src/components/organisms/User/ConnectWallet';
 import { TaskFailIcon } from 'src/components/organisms/Svg/SvgIcons';
-import { ellipsify } from 'src/utils/strUtils';
+import {
+  base64URLDecode,
+  base64URLEncode,
+  ellipsify
+} from 'src/utils/strUtils';
 import {
   checkExistsSocialLink,
   saveSocialLink
@@ -79,8 +83,6 @@ const Quest = (props) => {
   const [nftOwnershipState, setNftOwnershipState] = useState(
     tasks.ck_nft_ownership ? tasks.ck_nft_ownership.status : null
   );
-
-  console.log('tasks:', tasks);
 
   useEffect(async () => {
     if (add) {
@@ -153,9 +155,12 @@ const Quest = (props) => {
 
   useEffect(async () => {
     if (add && twSocialLinked === undefined && router.query.user) {
-      const { user, uid, twt } = router.query;
-      if (twt) {
-        Cookies.set('twt', twt, {
+      const { user } = router.query;
+      const UserDecode = JSON.parse(base64URLDecode(user));
+      const { id, username, access_token } = UserDecode;
+      const uid = id;
+      if (access_token) {
+        Cookies.set('tw_access_token', access_token, {
           expires: 1 / 24,
           path: '/',
           sameSite: 'lax'
@@ -165,8 +170,9 @@ const Quest = (props) => {
         //add new
         twSocialLinked = await saveSocialLink({
           name: 'twitter',
-          username: user,
-          uid
+          username,
+          uid,
+          access_token
         });
         if (twSocialLinked) {
           //update submitted tasks
@@ -560,7 +566,7 @@ const Quest = (props) => {
       <div
         className={`relative ${classes.questItemIcon} bg-slate-700 text-white`}
       >
-        <span className={`${classes.nftOwnership}`}>       
+        <span className={`${classes.nftOwnership}`}>
           <img src="/icons/nft.svg" alt="NFT" />
         </span>
       </div>

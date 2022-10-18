@@ -1,45 +1,43 @@
-import { Client, auth } from 'twitter-api-sdk';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Client, auth } from 'twitter-api-sdk';
 import nextCookies from 'next-cookies';
-import { base64URLDecode } from 'src/utils/strUtils';
+import { base64URLDecode, base64URLEncode } from 'src/utils/strUtils';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const token = nextCookies({ req }).twt;
+  const token = nextCookies({ req }).tw_access_token;
   const accessToken = token ? JSON.parse(base64URLDecode(token)) : {};
   const client = new Client(process.env.TWITTER_BEARER_TOKEN);
-
+  const twitterAuthClient = new auth.OAuth2User({
+    client_id: process.env.TWITTER_ID,
+    client_secret: process.env.TWITTER_SECRET,
+    callback: process.env.NEXTAUTH_URL + '/api/twitter/callback',
+    scopes: [
+      'users.read',
+      'offline.access',
+      'tweet.read',
+      'tweet.write',
+      'like.write',
+      'like.read',
+      'follows.read',
+      'follows.write'
+    ],
+    token: accessToken.token
+  });
+  const twitterClient = new Client(twitterAuthClient);
+  let refreshToken;
+  if (twitterAuthClient.isAccessTokenExpired()) {
+    refreshToken = await twitterAuthClient.refreshAccessToken();
+  }
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(refreshToken);
+  }
   try {
     const { task } = req.query;
     if (task === 'follower') {
       const user_id = req.query.user_id;
       const owner_id = `${req.query.owner_id}`;
-      console.log(accessToken);
-
-      if (!accessToken.token) {
-        return res.status(200).json({
-          status: 'false',
-          mesg: 'Please login to twitter'
-        });
-      }
-      const expire = new Date(accessToken.token.expires_at);
-      if (new Date() > expire) {
-        // const token = twAuthClient.refreshAccessToken();
-      }
-      const twAuthClient = new auth.OAuth2User({
-        client_id: process.env.TWITTER_ID,
-        client_secret: process.env.TWITTER_SECRET,
-        callback: process.env.NEXTAUTH_URL + '/api/twitter/callback',
-        scopes: [
-          'users.read',
-          'offline.access',
-          'follows.read',
-          'follows.write'
-        ],
-        token: accessToken.token ?? null
-      });
-      const twFollow = new Client(twAuthClient);
-      const followers = await twFollow.users.usersIdFollow(
+      const followers = await twitterClient.users.usersIdFollow(
         //The ID of the user that is requesting to follow the target user
         user_id as string,
         {
@@ -49,6 +47,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       );
       return res.status(200).json({
         status: 'true',
+        refreshToken: refreshToken
+          ? base64URLEncode(JSON.stringify(refreshToken))
+          : '',
         checked: followers.data.following ?? false
       });
       // let checked = false;
@@ -67,30 +68,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json(user);
     } else if (task === 'tweets') {
       const { user_id, tweet_id } = req.query;
-      const expire = new Date(accessToken.token.expires_at);
-      const twAuthClientRetweet = new auth.OAuth2User({
-        client_id: process.env.TWITTER_ID,
-        client_secret: process.env.TWITTER_SECRET,
-        callback: process.env.NEXTAUTH_URL + '/api/twitter/callback',
-        scopes: [
-          'users.read',
-          'tweet.moderate.write',
-          'offline.access',
-          'tweet.read',
-          'tweet.write'
-        ],
-        token: accessToken.token ?? null
-      });
-      console.log('====================================');
-      console.log(new Date() > expire);
-      console.log('====================================');
-      if (new Date() > expire) {
-        // const token = twAuthClient.refreshAccessToken();
-      }
-      const twRetweets = new Client(twAuthClientRetweet);
-      const data = await twRetweets.tweets.usersIdRetweets(user_id as string, {
-        tweet_id: tweet_id as string
-      });
+      const data = await twitterClient.tweets.usersIdRetweets(
+        user_id as string,
+        {
+          tweet_id: tweet_id as string
+        }
+      );
       // const lists = await client.users.tweetsIdRetweetingUsers(
       //   tweet_id as string,
       //   {
@@ -105,6 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // });
       return res.status(200).json({
         status: 'Ok',
+        refreshToken: base64URLEncode(JSON.stringify(refreshToken)),
         checked: data.data?.retweeted ?? false
       });
     } else if (task === 'liked') {

@@ -34,6 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const accessToken = await twitterAuthClient.requestAccessToken(
         code as string
       );
+
       const access_token = base64URLEncode(JSON.stringify(accessToken));
       if (accessToken) {
         const response = await twitterClient.users.findMyUser();
