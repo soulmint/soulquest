@@ -88,7 +88,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // });
       return res.status(200).json({
         status: 'Ok',
-        refreshToken: base64URLEncode(JSON.stringify(refreshToken)),
+        refreshToken: refreshToken
+          ? base64URLEncode(JSON.stringify(refreshToken))
+          : '',
         checked: data.data?.retweeted ?? false
       });
     } else if (task === 'liked') {
