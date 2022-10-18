@@ -86,7 +86,7 @@ const SoulMintApp = ({
 
   return (
     <ApolloProvider client={apolloClient}>
-      <ThemeProvider attribute="class">
+      <ThemeProvider attribute="class" defaultTheme="light">
         <Provider store={store}>
           <FullPageLoader />
           <SessionProvider session={session}>

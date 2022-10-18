@@ -1,7 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
-import HeadCustom from '../../Head';
 import Rewards from './Rewards';
 import useThemes from '../../../../hooks/useThemes';
 import { useDetails } from '../../../../hooks/Campaign';
@@ -80,17 +79,6 @@ const Details = (props) => {
         </div>
       );
 
-      SEOChild = (
-        <HeadCustom
-          url={`${process.env.PUBLIC_URL}/campaign/${slug}`}
-          openGraphType="website"
-          schemaType="article"
-          title={`${pageTitle} - SoulMint - The 1st SoulBound`}
-          description={`${campaign.short_desc}...`}
-          image={`${process.env.MEDIA_BASE_URL}/${campaign.thumb_image.id}?format=png&width=500`}
-        />
-      );
-
       child = (
         <div className={`${classes.pageWrapper} dark:bg-gray-900`}>
           <div className={`${classes.pageContainer}`}>
@@ -105,14 +93,6 @@ const Details = (props) => {
         </div>
       );
     } else {
-      SEOChild = (
-        <HeadCustom
-          url={``}
-          openGraphType="website"
-          schemaType="article"
-          title={``}
-        />
-      );
       child = <div className={classes.notFound}>{t('Not Found.')}</div>;
     }
   }

@@ -3,6 +3,7 @@ import {
   initTwitterClient
 } from 'src/libs/twitterAuthClient';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getCsrfToken } from 'next-auth/react';
 import { twEncode } from 'src/libs/useFunc';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -10,6 +11,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const twitterAuthClient = initTwitterAuthClient();
     const twitterClient = initTwitterClient();
     const { code, state, reference_url, error } = req.query;
+    const csrfToken = await getCsrfToken({ req });
+
     if (state === 'login') {
       const authUrl = twitterAuthClient.generateAuthURL({
         state: `${reference_url}`,
