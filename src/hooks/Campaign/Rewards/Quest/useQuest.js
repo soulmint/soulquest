@@ -10,7 +10,7 @@ import BrowserPersistence from 'src/utils/simplePersistence';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 
 export default (props) => {
-  const { campaign } = props;
+  const { campaign, setIsSoul } = props;
 
   const { createQuester, updateQuester } = API;
 
@@ -243,6 +243,7 @@ export default (props) => {
       if (questerId) {
         storage.setItem(localQuesterKey, questerId);
         if (status === 'approved') {
+          setIsSoul(true);
           return toast.success(t('Submitted.'));
         }
       }

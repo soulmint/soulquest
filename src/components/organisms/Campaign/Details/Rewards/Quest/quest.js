@@ -17,7 +17,6 @@ import {
   FaAngleRight
 } from 'react-icons/fa';
 
-// import Cookie from 'js-cookie';
 import {
   TwitterLogin,
   // getTwitterUserIdByUsermame,
@@ -44,6 +43,11 @@ const Quest = (props) => {
   const { t } = useTranslation('campaign_details');
   const storage = new BrowserPersistence();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  let twSocialLinked = null;
+  const [isSoul, setIsSoul] = useState(false);
+  const [hasSubmit, setHasSubmit] = useState(false);
+
   const {
     localQuesterKey,
     localSubmittedTasksKey,
@@ -56,17 +60,12 @@ const Quest = (props) => {
     handleSubmit,
     handleVerifyNftOwnership
   } = useQuest({
-    campaign
+    campaign,
+    setIsSoul
   });
 
   const add = userState.wallet_address ? userState.wallet_address : null;
   const campaignId = campaign.id;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let twSocialLinked = null;
-
-  const [submitted, setSubmitted] = useState(false);
-  const [hasSubmit, setHasSubmit] = useState(false);
 
   const [twitterLoginState, setTwitterLoginState] = useState(
     tasks.ck_twitter_login ? tasks.ck_twitter_login.status : null
@@ -144,7 +143,7 @@ const Quest = (props) => {
         });
 
         if (quester.status === 'approved') {
-          setSubmitted(true);
+          setIsSoul(true);
         } else {
           setHasSubmit(true);
         }
@@ -576,9 +575,7 @@ const Quest = (props) => {
           >
             {t('Task')} {tasks.ck_nft_ownership.id}
           </span>
-          <h4 className="mt-0 mb-0">
-            {t('Must hold:')}
-          </h4>
+          <h4 className="mt-0 mb-0">{t('Must hold:')}</h4>
           {tasks.ck_nft_ownership.nftCollectionInfo}
         </div>
       </div>
@@ -630,7 +627,7 @@ const Quest = (props) => {
   };
 
   const canSubmit =
-    userState.wallet_address && isFinishedTasks() && !submitted ? true : false;
+    userState.wallet_address && isFinishedTasks() && !isSoul ? true : false;
   const btnClaimReward = (
     <div className={`${classes.btnClaimRewardWrap}`}>
       <Button
@@ -639,7 +636,7 @@ const Quest = (props) => {
         classes={{
           root_highPriority: canSubmit
             ? classes.btnClaimReward
-            : !submitted
+            : !isSoul
             ? classes.btnClaimRewardDisabled
             : classes.btnClaimRewardSubmitted
         }}
@@ -655,7 +652,7 @@ const Quest = (props) => {
             : null
         }
       >
-        {!submitted ? t('Submit') : t('Submission Completed.')}
+        {!isSoul ? t('Submit') : t('Submission Completed.')}
       </Button>
     </div>
   );
