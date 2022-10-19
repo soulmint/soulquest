@@ -1,5 +1,6 @@
 .root {
 	@apply bg-white border border-slate-200 rounded-xl flex flex-col items-stretch relative transition-all duration-500;
+	@apply hover:shadow-xl transform hover:-translate-y-1;
 }
 
 .itemBody {
