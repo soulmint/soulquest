@@ -3,3 +3,11 @@
 
 .rootDark {
 }
+
+.rewardOverview {
+  @apply pt-4 mt-4 border-t border-slate-200;
+}
+
+.rewardOverview p {
+    @apply mt-0;
+  }

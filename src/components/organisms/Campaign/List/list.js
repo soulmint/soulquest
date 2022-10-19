@@ -110,7 +110,8 @@ const List = (props) => {
   const heading = (
     <div className={classes.headingWrap}>
       <Heading HeadingType="h1" subHeading={`${subheading}`}>
-        {headingTitle}
+        <span className="font-normal">Soul</span>
+        <span className="font-bold">Quest</span>
       </Heading>
     </div>
   );

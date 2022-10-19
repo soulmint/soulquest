@@ -226,7 +226,6 @@ const Quest = (props) => {
           </span>
           {t('Connect Wallet')}
         </div>
-
         {walletConnect}
       </div>
     </div>
@@ -308,7 +307,7 @@ const Quest = (props) => {
     ) : null;
     const twFollowStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`ml-auto mr-2`}>
+        <span className={`ml-auto`}>
           {tasks.ck_twitter_follow.status === true
             ? t('Verified')
             : tasks.ck_twitter_follow.status === false
@@ -414,7 +413,7 @@ const Quest = (props) => {
     ) : null;
     const twReTweetStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`ml-auto mr-2`}>
+        <span className={`ml-auto`}>
           {tasks.ck_twitter_retweet.status === true
             ? t('Verified')
             : tasks.ck_twitter_retweet.status === false
@@ -517,7 +516,7 @@ const Quest = (props) => {
       />
     ) : null;
   const nftOwnershipStatus = (
-    <span className={`ml-auto mr-2`}>
+    <span className={`ml-auto`}>
       {tasks.ck_nft_ownership && tasks.ck_nft_ownership.status === true
         ? t('Verified')
         : tasks.ck_nft_ownership && tasks.ck_nft_ownership.status === false
