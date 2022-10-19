@@ -8,7 +8,6 @@ import { useTranslation } from 'next-i18next';
 import { useSelector } from 'react-redux';
 import BrowserPersistence from 'src/utils/simplePersistence';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
-import { getTwitterUserIdByUsermame } from '../useTwitter';
 
 export default (props) => {
   const { campaign, setIsSoul } = props;
@@ -53,21 +52,10 @@ export default (props) => {
 
   // Add twitter follow task
   if (campaign.twitter_username) {
-    let twitter_owner_id = storage.getItem(campaign.twitter_username);
-
-    if (!campaign.twitter_owner_id && !twitter_owner_id) {
-      const getTwUserId = useCallback(async () => {
-        return await getTwitterUserIdByUsermame(campaign.screen_name);
-      }, [campaign.screen_name]);
-      twitter_owner_id = getTwUserId();
-      storage.setItem(campaign.twitter_username, twitter_owner_id);
-    } else {
-      twitter_owner_id = campaign.twitter_owner_id;
-    }
     tasks.ck_twitter_follow = {
       id: ++taskTotal,
       username: campaign.twitter_username,
-      owner_id: twitter_owner_id,
+      owner_id: '',
       status:
         submittedTasks && submittedTasks.ck_twitter_follow !== undefined
           ? submittedTasks.ck_twitter_follow
@@ -78,6 +66,14 @@ export default (props) => {
 
   // Add twitter retweet task
   if (campaign.twitter_tweet) {
+    if (!campaign.twitter_tweet_id) {
+      let tweetUrl = campaign.twitter_tweet;
+      if (campaign.twitter_tweet.indexOf('?') > -1) {
+        tweetUrl = campaign.twitter_tweet.split('?')[0];
+      }
+      const tweetId = tweetUrl.split('/').pop();
+      campaign.twitter_tweet_id = tweetId;
+    }
     tasks.ck_twitter_retweet = {
       id: ++taskTotal,
       tweet_url: campaign.twitter_tweet,

@@ -19,7 +19,7 @@ import {
 
 import {
   TwitterLogin,
-  // getTwitterUserIdByUsermame,
+  getTwitterUserIdByUsermame,
   // getReTweets,
   getFollowLookup,
   getTweetLookup /* , */
@@ -29,7 +29,7 @@ import ConnectWallet from 'src/components/organisms/User/ConnectWallet';
 import { TaskFailIcon } from 'src/components/organisms/Svg/SvgIcons';
 import {
   base64URLDecode,
-  // base64URLEncode,
+  base64URLEncode,
   ellipsify
 } from 'src/utils/strUtils';
 import {
@@ -182,6 +182,23 @@ const Quest = (props) => {
 
           setTwitterLoginState(true);
         }
+      }
+      // check twitter userid
+      if (!tasks.ck_twitter_follow.owner_id) {
+        let tw_owner_id = storage.getItem(
+          base64URLEncode(tasks.ck_twitter_follow.username)
+        );
+        if (!tw_owner_id) {
+          tw_owner_id = await getTwitterUserIdByUsermame({
+            screen_name: tasks.ck_twitter_follow.username
+          });
+          storage.setItem(
+            base64URLEncode(tasks.ck_twitter_follow.username),
+            tw_owner_id,
+            twSocialLinkedTtl
+          );
+        }
+        tasks.ck_twitter_follow.owner_id = tw_owner_id;
       }
     }
   }, [router.isReady]);
