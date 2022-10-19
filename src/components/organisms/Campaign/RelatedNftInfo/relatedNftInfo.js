@@ -31,6 +31,7 @@ const RelatedNftInfo = (props) => {
               className={`${
                 classes[nftCollection.nft_collection_id.chain_name]
               }`}
+              title={getChainName(nftCollection.nft_collection_id.chain_name)}
             >
               <span className={classes.chainName}>
                 {getChainName(nftCollection.nft_collection_id.chain_name)}
