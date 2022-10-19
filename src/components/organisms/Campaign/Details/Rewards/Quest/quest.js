@@ -125,10 +125,10 @@ const Quest = (props) => {
       if (router.query.user) {
         const { user } = router.query;
         const UserDecode = JSON.parse(base64URLDecode(user));
-        const { id, username, access_token } = UserDecode;
+        const { id, username, tw_token } = UserDecode;
         const uid = id;
-        if (access_token) {
-          Cookies.set('tw_access_token', access_token, {
+        if (tw_token) {
+          Cookies.set('tw_token', tw_token, {
             expires: 24,
             path: '/',
             sameSite: 'lax'
@@ -322,7 +322,11 @@ const Quest = (props) => {
       </span>
     );
     const twFollowIconLeft = (
-      <div className={`${classes.questItemIcon} ${tasks.ck_twitter_follow.status ? "bg-green-600" : "bg-cyan-400"} text-white`}>
+      <div
+        className={`${classes.questItemIcon} ${
+          tasks.ck_twitter_follow.status ? 'bg-green-600' : 'bg-cyan-400'
+        } text-white`}
+      >
         {tasks.ck_twitter_follow.status ? <FaCheck /> : <FaUserPlus />}
       </div>
     );
@@ -424,7 +428,11 @@ const Quest = (props) => {
       </span>
     );
     const twReTweetIconLeft = (
-      <div className={`${classes.questItemIcon} ${tasks.ck_twitter_retweet.status ? "bg-green-600" : "bg-cyan-400"} text-white`}>
+      <div
+        className={`${classes.questItemIcon} ${
+          tasks.ck_twitter_retweet.status ? 'bg-green-600' : 'bg-cyan-400'
+        } text-white`}
+      >
         {tasks.ck_twitter_retweet.status ? <FaCheck /> : <FaRetweet />}
       </div>
     );

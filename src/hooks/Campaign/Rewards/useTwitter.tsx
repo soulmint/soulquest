@@ -19,15 +19,12 @@ const TwitterFollow = async (props: any) => {
     return toast.warning('Invalid user id or owner id');
   let checked = false;
   await fetch(
-    '/api/twitter/user?task=follower&user_id=' +
-      user_id +
-      '&owner_id=' +
-      owner_id
+    '/api/twitter/user?task=follow&user_id=' + user_id + '&owner_id=' + owner_id
   )
     .then((res) => res.json())
     .then((data) => {
-      if (data.refreshToken) {
-        Cookies.set('tw_access_token', data.refreshToken, {
+      if (data.tw_token) {
+        Cookies.set('tw_token', data.tw_token, {
           expires: 24,
           path: '/',
           sameSite: 'lax'
@@ -54,12 +51,15 @@ const getTweetsStatus = async (props: any) => {
     return toast.warning('Invalid user id or tweet id');
   let checked = false;
   await fetch(
-    '/api/twitter/user?task=tweets&user_id=' + user_id + '&tweet_id=' + tweet_id
+    '/api/twitter/user?task=retweet&user_id=' +
+      user_id +
+      '&tweet_id=' +
+      tweet_id
   )
     .then((res) => res.json())
     .then((data) => {
-      if (data.refreshToken) {
-        Cookies.set('tw_access_token', data.refreshToken, {
+      if (data.tw_token) {
+        Cookies.set('tw_token', data.tw_token, {
           expires: 24,
           path: '/',
           sameSite: 'lax'
@@ -70,10 +70,55 @@ const getTweetsStatus = async (props: any) => {
 
   return checked;
 };
+const getReTweets = async (props: any) => {
+  const { user_id, owner_id } = props;
+  if (!user_id || !owner_id)
+    return toast.warning('Invalid user id or tweet id');
+  let checked = false;
+  await fetch(
+    '/api/twitter/retweet?user_id=' + user_id + '&owner_id=' + owner_id
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.tw_token) {
+        Cookies.set('tw_token', data.tw_token, {
+          expires: 24,
+          path: '/',
+          sameSite: 'lax'
+        });
+      }
+      checked = data?.checked;
+    });
 
+  return checked;
+};
+const getFollowed = async (props: any) => {
+  const { user_id, tweet_id } = props;
+  if (!user_id || !tweet_id)
+    return toast.warning('Invalid user id or tweet id');
+  let checked = false;
+  await fetch(
+    '/api/twitter/followed?user_id=' + user_id + '&tweet_id=' + tweet_id
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.tw_token) {
+        Cookies.set('tw_token', data.tw_token, {
+          expires: 24,
+          path: '/',
+          sameSite: 'lax'
+        });
+      }
+      checked = data?.checked;
+    });
+
+  return checked;
+};
 export {
   TwitterLogin,
   TwitterFollow,
   getTweetsStatus,
-  getTwitterUserIdByUsermame
+  getTwitterUserIdByUsermame,
+  getReTweets,
+  getFollowed
 };

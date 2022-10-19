@@ -5,7 +5,7 @@ import { base64URLDecode, base64URLEncode } from 'src/utils/strUtils';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const token = nextCookies({ req }).tw_access_token;
+  const token = nextCookies({ req }).tw_token;
   const accessToken = token ? JSON.parse(base64URLDecode(token)) : {};
   const client = new Client(process.env.TWITTER_BEARER_TOKEN);
   const twitterAuthClient = new auth.OAuth2User({
@@ -34,7 +34,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
   try {
     const { task } = req.query;
-    if (task === 'follower') {
+    if (task === 'follow') {
       const user_id = req.query.user_id;
       const owner_id = `${req.query.owner_id}`;
       const followers = await twitterClient.users.usersIdFollow(
@@ -47,7 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       );
       return res.status(200).json({
         status: 'true',
-        refreshToken: refreshToken
+        tw_token: refreshToken
           ? base64URLEncode(JSON.stringify(refreshToken))
           : '',
         checked: followers.data.following ?? false
@@ -66,7 +66,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const user = await client.users.findUserByUsername(screen_name as string);
 
       return res.status(200).json(user);
-    } else if (task === 'tweets') {
+    } else if (task === 'retweet') {
       const { user_id, tweet_id } = req.query;
       const data = await twitterClient.tweets.usersIdRetweets(
         user_id as string,
@@ -88,7 +88,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       // });
       return res.status(200).json({
         status: 'Ok',
-        refreshToken: refreshToken
+        tw_token: refreshToken
           ? base64URLEncode(JSON.stringify(refreshToken))
           : '',
         checked: data.data?.retweeted ?? false

@@ -31,15 +31,15 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           decodeURIComponent(referenceUrl as string) + '?error=' + error
         );
       }
-      const accessToken = await twitterAuthClient.requestAccessToken(
+      const twToken = await twitterAuthClient.requestAccessToken(
         code as string
       );
 
-      const access_token = base64URLEncode(JSON.stringify(accessToken));
-      if (accessToken) {
+      const tw_token = base64URLEncode(JSON.stringify(twToken));
+      if (twToken) {
         const response = await twitterClient.users.findMyUser();
         const userEncode = base64URLEncode(
-          JSON.stringify({ ...response.data, access_token })
+          JSON.stringify({ ...response.data, tw_token })
         );
         const redirectUrl = referenceUrl
           ? `${referenceUrl}?user=${userEncode}`
