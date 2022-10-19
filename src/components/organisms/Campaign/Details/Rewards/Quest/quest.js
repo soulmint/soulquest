@@ -428,7 +428,7 @@ const Quest = (props) => {
         </span>
       </span>
     );
-    const twReTweetIconLeft = (
+    const twReTweetIconLeft = tasks.ck_twitter_retweet ? (
       <div
         className={`${classes.questItemIcon} ${
           tasks.ck_twitter_retweet.status ? 'bg-green-600' : 'bg-cyan-400'
@@ -436,7 +436,7 @@ const Quest = (props) => {
       >
         {tasks.ck_twitter_retweet.status ? <FaCheck /> : <FaRetweet />}
       </div>
-    );
+    ) : null;
     let twReTeetTaskClasses = [classes.questItem, classes.twitterRetweetTask];
     twReTeetTaskClasses.push(
       twitterReTweetState === 'loading' ? classes.taskLoading : null
@@ -505,8 +505,9 @@ const Quest = (props) => {
     );
   };
 
-  const verifyNftOwnershipBtn =
-    tasks.ck_nft_ownership && !tasks.ck_nft_ownership.status ? (
+  let nftOwnershipTask = null;
+  if (tasks.ck_nft_ownership) {
+    const btnVerifyNftOwnership = !tasks.ck_nft_ownership.status ? (
       <Button
         id={`btn-verify-nft-ownership`}
         priority="high"
@@ -515,22 +516,28 @@ const Quest = (props) => {
         onPress={() => handleCheckNftOwnership()}
       />
     ) : null;
-  const nftOwnershipStatus = (
-    <span className={`ml-auto`}>
-      {tasks.ck_nft_ownership && tasks.ck_nft_ownership.status === true
-        ? t('Verified')
-        : tasks.ck_nft_ownership && tasks.ck_nft_ownership.status === false
-        ? TaskFailIcon
-        : ''}
-    </span>
-  );
-  let nftTaskClasses = [classes.soulBoundTokenTask];
-  nftTaskClasses.push(
-    nftOwnershipState === 'loading' ? classes.taskLoading : null
-  );
-
-  const nftOwnershipIconStatus =
-    tasks.ck_nft_ownership && tasks.ck_nft_ownership.status ? (
+    const nftOwnershipStatus = (
+      <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
+        <span className={`ml-auto`}>
+          {tasks.ck_nft_ownership.status === true
+            ? t('Verified')
+            : tasks.ck_nft_ownership.status === false
+            ? TaskFailIcon
+            : ''}
+          {!tasks.ck_nft_ownership.status ? (
+            <span className="flex items-center flex-row text-sm font-bold text-slate-400 group-hover:text-slate-600 transition-color duration-300">
+              {t('Verify')}&nbsp;
+              <FaAngleRight className="text-lg" />
+            </span>
+          ) : null}
+        </span>
+      </span>
+    );
+    let nftTaskClasses = [classes.soulBoundTokenTask];
+    nftTaskClasses.push(
+      nftOwnershipState === 'loading' ? classes.taskLoading : null
+    );
+    const nftOwnershipIconStatus = tasks.ck_nft_ownership.status ? (
       <div
         className={`relative ${classes.questItemIcon} bg-green-600 text-white`}
       >
@@ -545,33 +552,27 @@ const Quest = (props) => {
         </span>
       </div>
     );
-  const nftOwnershipTask = tasks.ck_nft_ownership ? (
-    <div className={`${classes.questItem} ${nftTaskClasses.join(' ')}`}>
-      {nftOwnershipIconStatus}
-      <div className="flex-1">
-        <div className="relative">
-          <span
-            className={`${classes.taskIndex} ${
-              tasks.ck_nft_ownership.status ? classes.taskSuccess : ''
-            }`}
-          >
-            {t('Task')} {tasks.ck_nft_ownership.id}
-          </span>
-          <h4 className="mt-0 mb-0">{t('Must hold:')}</h4>
-          {tasks.ck_nft_ownership.nftCollectionInfo}
+    nftOwnershipTask = (
+      <div className={`${classes.questItem} ${nftTaskClasses.join(' ')}`}>
+        {nftOwnershipIconStatus}
+        <div className="z-20">
+          <div className="relative">
+            <span
+              className={`${classes.taskIndex} ${
+                tasks.ck_nft_ownership.status ? classes.taskSuccess : ''
+              }`}
+            >
+              {t('Task')} {tasks.ck_nft_ownership.id}
+            </span>
+            <h4 className="mt-0 mb-0">{t('Must hold:')}</h4>
+            {tasks.ck_nft_ownership.nftCollectionInfo}
+          </div>
         </div>
+        {nftOwnershipStatus}
+        {btnVerifyNftOwnership}
       </div>
-
-      <div className="">
-        {verifyNftOwnershipBtn}
-        <span className="flex items-center flex-row text-sm font-bold text-slate-400 transition-color duration-300">
-          {nftOwnershipStatus}
-          {t('Verify')}&nbsp;
-          <FaAngleRight className="text-lg" />
-        </span>
-      </div>
-    </div>
-  ) : null;
+    );
+  }
   const handleCheckNftOwnership = async () => {
     if (userState.wallet_address === undefined) {
       return toast.warning(
@@ -583,7 +584,6 @@ const Quest = (props) => {
 
     // submit to verify NFT ownership
     const status = await handleVerifyNftOwnership();
-    console.log('ckOwnership Result:', status);
 
     // update state
     tasks.ck_nft_ownership.status = status;
