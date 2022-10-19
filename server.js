@@ -23,10 +23,10 @@ app.prepare().then(() => {
       } else if (pathname === '/b') {
         await app.render(req, res, '/b', query)
       } 
-			if (pathname === '/sw.js' || /^\/(workbox|worker|fallback)-\w+\.js$/.test(pathname)) {
+			/*if (pathname === '/sw.js' || /^\/(workbox|worker|fallback)-\w+\.js$/.test(pathname)) {
         const filePath = join(__dirname, '.next', pathname)
         app.serveStatic(req, res, filePath)
-      } else {
+      }*/ else {
         await handle(req, res, parsedUrl)
       }
     } catch (err) {

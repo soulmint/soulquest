@@ -1,27 +1,33 @@
 {
-  "name": "SoulMint - The 1st SoulBound",
+  "name": "Reward distribution platform based on SoulBound Token - SoulMint",
   "short_name": "SoulMint",
   "theme_color": "#6366F1",
   "background_color": "#FFFFFF",
-  "display": "fullscreen",
+  "display": "standalone",
   "orientation": "portrait",
   "start_url": "/",
+  "description": "SoulMint is a reward distribution platform based on SoulBound Token. It is a decentralized platform that allows users to create and manage their own reward distribution campaigns.",
   "icons": [
     {
-      "src": "https://cdn.rada.network/icons/rada32x32.png",
-      "sizes": "72x72",
+      "src": "/icons/soulmint_144.png",
+      "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "https://cdn.rada.network/icons/rada180x180.png",
-      "sizes": "180x180",
-      "type": "image/png"
-    },
-    {
-      "src": "https://cdn.rada.network/icons/rada192x192.png",
+      "src": "/icons/soulmint_192.png",
       "sizes": "192x192",
       "type": "image/png"
+    },
+    {
+      "src": "/icons/soulmint_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/soulmint_maskable_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ],
-  "splash_pages": null
+  ]
 }
