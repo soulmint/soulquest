@@ -40,6 +40,7 @@
 }
 
 .twitterLoginTask {
+  @apply bg-cyan-50 hover:bg-cyan-100;
 }
 
 .btnTwitterLogin {
@@ -47,6 +48,7 @@
 }
 
 .twitterFollowTask {
+  @apply bg-cyan-50 hover:bg-cyan-100;
 }
 
 .twitterFollowTaskError {
@@ -55,6 +57,7 @@
 }
 
 .twitterRetweetTask {
+  @apply bg-cyan-50 hover:bg-cyan-100;
 }
 
 .nftOwnershipTask {

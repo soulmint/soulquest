@@ -350,7 +350,7 @@ const Quest = (props) => {
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
     twFollowTask = (
-      <div className={`${twFollowTaskClasses.join(' ')} relative group`}>
+      <div className={`${twFollowTaskClasses.join(' ')} ${classes.twitterFollowTask} relative group`}>
         {twFollowIconLeft}
         <div className="z-20">
           <span
