@@ -45,6 +45,9 @@ const Hero = () => {
                 alt="Hero decor"
                 width="500"
                 height="500"
+                placeholder="blur"
+                placeholder_w="500"
+                placeholder_h="500"
               />
             </div>
           </div>
