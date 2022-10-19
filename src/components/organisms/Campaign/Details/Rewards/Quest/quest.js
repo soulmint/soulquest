@@ -187,7 +187,7 @@ const Quest = (props) => {
         }
       }
       // check twitter userid
-      if (!tasks.ck_twitter_follow.owner_id) {
+      if (tasks.ck_twitter_follow && !tasks.ck_twitter_follow.owner_id) {
         let tw_owner_id = storage.getItem(
           base64URLEncode(tasks.ck_twitter_follow.username)
         );
