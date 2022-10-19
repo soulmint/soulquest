@@ -204,7 +204,7 @@ const Quest = (props) => {
   }, [router.isReady]);
 
   let walletConnect = userState.wallet_address ? (
-    <span className="flex items-center flex-row text-base font-medium text-gray-500">
+    <span className="flex items-center flex-row text-sm font-bold text-slate-400">
       {ellipsify({
         str: userState.wallet_address,
         start: 4,

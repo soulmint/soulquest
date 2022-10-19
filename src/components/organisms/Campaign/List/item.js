@@ -139,7 +139,7 @@ const Item = (props) => {
           <span className={`${classes.dateEnd}`}>{dateEnd}</span>
         </div>
 
-        <span className="font-bold bg-green-100 text-green-600 items-center rounded-xl text-sm py-0.5 pl-1 pr-2 w-auto inline-flex absolute top-4 left-6">
+        <span className="font-bold bg-green-200 text-green-700 items-center rounded-xl text-sm py-0.5 pl-1 pr-2 w-auto inline-flex absolute top-5 left-6">
           <HiBadgeCheck className="text-2xl mr-1" />
           {t('Verified')}
         </span>
