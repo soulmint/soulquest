@@ -53,11 +53,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         data = twitterClient.users.usersIdFollowing(user_id as string);
         for await (const page of data) {
           if (!page.data) break;
-          page.data.forEach((item) => {
+          for (const item of page.data) {
             if (item.id === owner_id) {
               checked = true;
+              break;
             }
-          });
+          }
           if (checked) break;
         }
         break;
@@ -71,7 +72,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         data = twitterClient.users.tweetsIdRetweetingUsers(tweet_id as string);
         for await (const page of data) {
           if (!page.data) break;
-          console.log(page.data);
           for (const item of page.data) {
             if (item.id === user_id) {
               checked = true;
@@ -83,23 +83,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         break;
       case 'liked':
         data = client.users.tweetsIdLikingUsers(tweet_id as string);
-        for await (const list of data) {
-          if (!list.data) break;
-          list.data.forEach((item) => {
+        for await (const page of data) {
+          if (!page.data) break;
+          for (const item of page.data) {
             if (item.id === user_id) {
               checked = true;
+              break;
             }
-          });
+          }
           if (checked) break;
         }
         break;
       case 'getid':
         user = await client.users.findUserByUsername(screen_name as string);
-        return res.status(200).json(user);
         break;
 
       default:
         break;
+    }
+    if (user) {
+      return res.status(200).json(user);
     }
     return res.status(200).json({
       status: 'true',
