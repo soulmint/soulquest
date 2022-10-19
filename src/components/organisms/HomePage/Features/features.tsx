@@ -31,7 +31,7 @@ const Features = () => {
                   placeholder_h="184"
                 />
               </div>
-              <h3 className="my-0 font-bold text-slate-800 mb-2">
+              <h3 className="mt-4 font-bold text-slate-800 mb-2">
                 SoulBound Token curator
               </h3>
               <p className="my-0">
@@ -51,7 +51,7 @@ const Features = () => {
                   placeholder_h="184"
                 />
               </div>
-              <h3 className="my-0 font-bold text-slate-800 mb-2">
+              <h3 className="mt-4 font-bold text-slate-800 mb-2">
                 {t('Chain agnostic')}
               </h3>
               <p className="my-0">
@@ -72,7 +72,7 @@ const Features = () => {
                   placeholder_h="184"
                 />
               </div>
-              <h3 className="my-0 font-bold text-slate-800 mb-2">
+              <h3 className="mt-4 font-bold text-slate-800 mb-2">
                 No-code campaign creator
               </h3>
               <p className="my-0">
@@ -92,7 +92,7 @@ const Features = () => {
                   placeholder_h="184"
                 />
               </div>
-              <h3 className="my-0 font-bold text-slate-800 mb-2">
+              <h3 className="mt-4 font-bold text-slate-800 mb-2">
                 On-chain reward distribution
               </h3>
               <p className="my-0">Distribute rewards through smart-contract</p>

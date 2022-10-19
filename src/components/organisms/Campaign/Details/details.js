@@ -50,7 +50,7 @@ const Details = (props) => {
         );
       const datesInfo =
         campaign.date_start || campaign.date_end ? (
-          <div className="shadow bg-violet-200 text-slate-800 rounded-full px-3 py-1 font-medium text-sm">
+          <div className="shadow bg-slate-200 text-slate-800 rounded-full px-3 py-1 font-medium text-sm">
             <span className={classes.dateStart}>
               {t('Start: ')}
               <span className="font-bold text-slate-800">

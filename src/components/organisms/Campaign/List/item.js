@@ -13,6 +13,8 @@ import { toHTML, subStrWords } from 'src/utils/strUtils';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 import { fail } from 'assert';
 
+import { HiBadgeCheck } from 'react-icons/hi';
+
 const DESC_MAX_LENGTH = 200;
 
 const Item = (props) => {
@@ -106,7 +108,7 @@ const Item = (props) => {
     ) : null;*/
 
   const dateStart = data.date_start
-    ? t('Start from ') + Moment(data.date_start).fromNow()
+    ? t('Start ') + Moment(data.date_start).fromNow()
     : '';
   const dateEnd = data.date_end
     ? t('Ends ') + Moment(data.date_end).fromNow()
@@ -121,8 +123,8 @@ const Item = (props) => {
   ) : null;
 
   return (
-    <div className={`${classes[rootClassName]} p-4`}>
-      <div className="mb-6 relative">
+    <div className={`${classes[rootClassName]}`}>
+      <div className="relative rounded-lg overflow-hidden">
         <div
           className={`${classes.itemCover} bg-gray-100 dark:bg-gray-900 overflow-hidden relative rounded-lg shadow-sm flex items-center justify-center`}
         >
@@ -130,61 +132,105 @@ const Item = (props) => {
           {/* {storeInfo} */}
         </div>
 
-        <span className="bg-green-100 text-green-600 absolute -bottom-3 left-4 flex items-center rounded-xl text-xs py-1 pl-1.5 pr-2 w-auto">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="12"
-            height="12"
-            fill="currentColor"
-            className="bi bi-check-circle-fill mr-1"
-            viewBox="0 0 16 16"
-          >
-            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-          </svg>
+        <div className="bg-slate-700 text-white bg-opacity-80 backdrop-filter backdrop-blur px-6 py-2 font-medium text-sm justify-between flex absolute bottom-0 left-0 right-0">
+          <span className={``}>Ongoing</span>
+          {/* <span className={`${classes.dateStart}`}>{dateStart}</span> */}
+          {/* <span className="mx-2">|</span> */}
+          <span className={`${classes.dateEnd}`}>{dateEnd}</span>
+        </div>
+
+        <span className="font-bold bg-green-100 text-green-600 items-center rounded-xl text-sm py-0.5 pl-1 pr-2 w-auto inline-flex absolute top-4 left-6">
+          <HiBadgeCheck className="text-2xl mr-1" />
           {t('Verified')}
         </span>
       </div>
 
-      <div className="mb-4">
-        <h3 className={`${classes.itemTitle}`}>{data.title}</h3>
+      <div className={`${classes.itemBody}`}>
+        <div className="mb-4">
+          <h3 className={`${classes.itemTitle}`}>
+            <span className="mr-1">{data.title}</span>
+          </h3>
+        </div>
+
+        <div className="list-pair">
+          <div className="list-pair--item">
+            <div className="pair-title">Provider</div>
+            <a target="_blank" href="https://app.sided.fi/" rel="noreferrer">
+              <span className="pair-value">
+                <span className="pair-value--logo">
+                  <img
+                    src="https://app.sided.fi/assets/icon.svg"
+                    title="SidedFinance"
+                  />
+                </span>
+                SidedFinance
+              </span>
+            </a>
+          </div>
+          <div className="list-pair--item">
+            <div className="pair-title">Rewards</div>
+            <div className="pair-value">500 USDC</div>
+          </div>
+          <div className="list-pair--item">
+            <div className="pair-title">Chains</div>
+            <div className="pair-value">
+              <div className="">BSC, Ethereum</div>
+            </div>
+          </div>
+          <div className="list-pair--item">
+            <div className="pair-title">Rquired NFTs</div>
+            <div className="pair-value">
+              <div className="">
+                <div className="flex items-center">
+                  <span
+                    className="mr-1"
+                    title="Binance Account Bound Token (BABT)"
+                  >
+                    <img
+                      src="/chains/bsc.svg"
+                      title="Binance Account Bound Token (BABT)"
+                      className="w-6 h-6"
+                    />
+                  </span>
+                  <span className="relatedNftInfo_chainName__ZJd83">BABT</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={`${classes.itemDesc}`}>
+          {/* {thumbImage} */}
+          {shortDesc}
+        </div>
+
+        {/* <div className="flex items-center flex-wrap mb-4">
+          {nftCollectionInfo}
+        </div> */}
+
+        {editButton}
+
+        {/* <div className={classes.itemFoot}>
+          {storeInfo}
+          {discountAmountInfo}
+        </div> */}
+
+        {/* <TextLink
+          title={t('Join this quest')}
+          className={`${classes.getCoupon} bg-gray-200 dark:bg-gray-700 hover:bg-violet-500 focus:bg-violet-500 text-gray-700 dark:text-gray-400 hover:text-white focus:text-white focus:outline-none rounded-lg font-medium flex jusity-center block w-full text-center text-md py-3 px-0 mt-auto transition-all duration-300`}
+          href={`/campaign-details/${data.slug}`}
+        >
+          <span>{t('Join this quest')}</span>
+        </TextLink> */}
+
+        <TextLink
+          title={t('Join this quest')}
+          className="block absolute left-0 top-0 right-0 bottom-0 w-full"
+          href={`/campaign-details/${data.slug}`}
+        >
+          <span>{t('')}</span>
+        </TextLink>
       </div>
-
-      <div className="flex flex-wrap items-center text-sm justify-between mb-4 -mt-2">
-        <span className={`${classes.dateStart}`}>{dateStart}</span>
-        <span className={`${classes.dateEnd}`}>{dateEnd}</span>
-      </div>
-
-      <div className={`${classes.itemDesc}`}>
-        {/* {thumbImage} */}
-        {shortDesc}
-      </div>
-
-      <div className="flex items-center flex-wrap mb-4">
-        {nftCollectionInfo}
-      </div>
-
-      {editButton}
-
-      {/* <div className={classes.itemFoot}>
-        {storeInfo}
-        {discountAmountInfo}
-      </div> */}
-
-      {/* <TextLink
-        title={t('Join this quest')}
-        className={`${classes.getCoupon} bg-gray-200 dark:bg-gray-700 hover:bg-violet-500 focus:bg-violet-500 text-gray-700 dark:text-gray-400 hover:text-white focus:text-white focus:outline-none rounded-lg font-medium flex jusity-center block w-full text-center text-md py-3 px-0 mt-auto transition-all duration-300`}
-        href={`/campaign-details/${data.slug}`}
-      >
-        <span>{t('Join this quest')}</span>
-      </TextLink> */}
-
-      <TextLink
-        title={t('Join this quest')}
-        className="block absolute left-0 top-0 right-0 bottom-0 w-full"
-        href={`/campaign-details/${data.slug}`}
-      >
-        <span>{t('')}</span>
-      </TextLink>
     </div>
   );
 };

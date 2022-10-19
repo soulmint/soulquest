@@ -1,34 +1,9 @@
 .root {
-	@apply bg-white border-2 border-transparent shadow-sm hover:shadow-lg hover:border-violet-600 rounded-xl flex flex-col items-stretch relative transition-all duration-500;
+	@apply bg-white border border-slate-200 rounded-xl flex flex-col items-stretch relative transition-all duration-500;
 }
 
-.rootDark {
-  composes: root;
-	@apply bg-gray-800 border-gray-800;
-}
-
-.root:hover .getCoupon {
-	@apply bg-violet-600 text-white;
-}
-
-.couponAmoun {
-	@apply inline-block text-2xl font-bold text-gray-800 mr-4;
-}
-
-.rootDark .couponAmoun {
-	@apply text-white;
-}
-
-.couponLabel {
-	@apply bg-green-100 flex items-center text-green-600 text-xs rounded-xl py-1 pl-2 pr-3;
-}
-
-.couponLabel svg {
-	@apply fill-current mr-1;
-}
-
-.itemHead button {
-	@apply ml-auto border border-violet-600 hover:bg-violet-600 hover:text-white hover:border-opacity-0 cursor-pointer rounded-md py-0.5 px-2 transition-all;
+.itemBody {
+	@apply p-6;
 }
 
 /* Item cover */
@@ -42,7 +17,7 @@
 }
 
 .itemDesc {
-	@apply line-clamp-3 text-base mb-4 text-slate-500;
+	@apply sr-only line-clamp-3 text-base mb-4 text-slate-500;
 }
 
 .itemDesc p {
@@ -113,6 +88,7 @@
 .storeName {
 }
 
+/*
 .dateStart:not(:empty)::before {
 	@apply bg-green-500 content-[''] inline-block h-1.5 w-1.5 mr-1.5 mb-0.5;
 }
@@ -120,3 +96,4 @@
 .dateEnd:not(:empty)::before {
 	@apply bg-red-500 content-[''] inline-block h-1.5 w-1.5 mr-1.5 mb-0.5;
 }
+*/

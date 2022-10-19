@@ -25,7 +25,7 @@ const HowItWork = () => {
               <span className="bg-violet-600 text-white flex items-center justify-center h-10 w-10 lg:h-16 lg:w-16 rounded-full ring-4 ring-slate-100 text-lg lg:text-2xl font-bold mb-2 lg:mb-8 mr-4 lg:mr-0 z-10">
                 1
               </span>
-              <h4 className="flex-1 font-semibold text-lg">
+              <h4 className="flex-1 font-semibold text-lg leading-5">
                 {t('Connect wallet')}
               </h4>
             </div>
@@ -34,7 +34,7 @@ const HowItWork = () => {
               <span className="bg-violet-600 text-white flex items-center justify-center h-10 w-10 lg:h-16 lg:w-16 rounded-full ring-4 ring-slate-100 text-lg lg:text-2xl font-bold mb-2 lg:mb-8 mr-4 lg:mr-0 z-10">
                 2
               </span>
-              <h4 className="flex-1 font-semibold text-lg">
+              <h4 className="flex-1 font-semibold text-lg leading-6">
                 {t('Browse available campaigns')}
               </h4>
             </div>
@@ -43,7 +43,7 @@ const HowItWork = () => {
               <span className="bg-violet-600 text-white flex items-center justify-center h-10 w-10 lg:h-16 lg:w-16 rounded-full ring-4 ring-slate-100 text-lg lg:text-2xl font-bold mb-2 lg:mb-8 mr-4 lg:mr-0 z-10">
                 3
               </span>
-              <h4 className="flex-1 font-semibold text-lg">
+              <h4 className="flex-1 font-semibold text-lg leading-6">
                 {t('Complete tasks and receive rewards')}
               </h4>
             </div>
@@ -52,7 +52,7 @@ const HowItWork = () => {
               <span className="bg-violet-600 text-white flex items-center justify-center h-10 w-10 lg:h-16 lg:w-16 rounded-full ring-4 ring-slate-100 text-lg lg:text-2xl font-bold mb-2 lg:mb-8 mr-4 lg:mr-0 z-10">
                 4
               </span>
-              <h4 className="flex-1 font-semibold text-lg">
+              <h4 className="flex-1 font-semibold text-lg leading-6">
                 {t('Manage your profile & view achievements')}
               </h4>
             </div>

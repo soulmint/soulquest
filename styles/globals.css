@@ -99,11 +99,11 @@ List pair
 }
 
 .pair-title {
-  @apply font-bold text-sm text-slate-400;
+  @apply font-bold text-sm text-slate-400 w-1/2;
 }
 
 .pair-value {
-  @apply flex items-center font-bold text-base;
+  @apply flex items-center font-bold text-base text-right;
 }
 
 .pair-value--logo {
