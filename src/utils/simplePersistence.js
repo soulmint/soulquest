@@ -30,7 +30,7 @@ class NamespacedLocalStorage {
 }
 
 export default class BrowserPersistence {
-    static KEY = 'BROWSER_PERSISTENCE';
+    static KEY = 'LOCAL_DATA';
 
     /* istanbul ignore next: test injects localstorage mock */
     constructor(localStorage = globalThis.localStorage || storageMock) {
