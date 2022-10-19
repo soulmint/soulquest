@@ -58,7 +58,7 @@ const Footer = (_props) => {
       <footer
         className={`${classes[rootClassName]} py-4 px-4 lg:px-0 space-x-4 z-10 text-sm font-medium`}
       >
-        <div className="container max-w-screen-xl mx-auto flex flex-wrap flex-col md:flex-row justify-between items-center px-4">
+        <div className="container max-w-screen-xl mx-auto flex flex-wrap flex-row justify-between items-center px-4">
           <div className="block text-sm text-gray-500 w-full md:w-auto text-center md:text-left dark:text-gray-400">
             <span>
               &copy; {year}{' '}
