@@ -13,7 +13,7 @@ const TwitterLogin = (props: any) => {
   );
 };
 
-const TwitterFollow = async (props: any) => {
+const getFollow = async (props: any) => {
   const { user_id, owner_id } = props;
   if (!user_id || !owner_id)
     return toast.warning('Invalid user id or owner id');
@@ -45,7 +45,7 @@ const getTwitterUserIdByUsermame = async (props: any) => {
     });
   return id;
 };
-const getTweetsStatus = async (props: any) => {
+const getReTweets = async (props: any) => {
   const { user_id, tweet_id } = props;
   if (!user_id || !tweet_id)
     return toast.warning('Invalid user id or tweet id');
@@ -70,13 +70,16 @@ const getTweetsStatus = async (props: any) => {
 
   return checked;
 };
-const getReTweets = async (props: any) => {
+const getFollowLookup = async (props: any) => {
   const { user_id, owner_id } = props;
   if (!user_id || !owner_id)
     return toast.warning('Invalid user id or tweet id');
   let checked = false;
   await fetch(
-    '/api/twitter/retweet?user_id=' + user_id + '&owner_id=' + owner_id
+    '/api/twitter/user?task=follow-lookup&user_id=' +
+      user_id +
+      '&owner_id=' +
+      owner_id
   )
     .then((res) => res.json())
     .then((data) => {
@@ -92,13 +95,16 @@ const getReTweets = async (props: any) => {
 
   return checked;
 };
-const getFollowed = async (props: any) => {
+const getTweetLookup = async (props: any) => {
   const { user_id, tweet_id } = props;
   if (!user_id || !tweet_id)
     return toast.warning('Invalid user id or tweet id');
   let checked = false;
   await fetch(
-    '/api/twitter/followed?user_id=' + user_id + '&tweet_id=' + tweet_id
+    '/api/twitter/user?task=tweet-loookup&user_id=' +
+      user_id +
+      '&tweet_id=' +
+      tweet_id
   )
     .then((res) => res.json())
     .then((data) => {
@@ -116,9 +122,9 @@ const getFollowed = async (props: any) => {
 };
 export {
   TwitterLogin,
-  TwitterFollow,
-  getTweetsStatus,
+  getFollow,
+  getTweetLookup,
   getTwitterUserIdByUsermame,
   getReTweets,
-  getFollowed
+  getFollowLookup
 };

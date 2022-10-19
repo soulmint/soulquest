@@ -20,14 +20,16 @@ import {
 import {
   TwitterLogin,
   // getTwitterUserIdByUsermame,
-  getTweetsStatus,
-  TwitterFollow
+  // getReTweets,
+  getFollowLookup,
+  getTweetLookup /* , */
+  // getFollow
 } from 'src/hooks/Campaign/Rewards/useTwitter';
 import ConnectWallet from 'src/components/organisms/User/ConnectWallet';
 import { TaskFailIcon } from 'src/components/organisms/Svg/SvgIcons';
 import {
   base64URLDecode,
-  base64URLEncode,
+  // base64URLEncode,
   ellipsify
 } from 'src/utils/strUtils';
 import {
@@ -375,7 +377,7 @@ const Quest = (props) => {
     setTwitterFollowState('loading');
 
     // checking twitter follow here...
-    const tw_follower_status = await TwitterFollow({
+    const tw_follower_status = await getFollowLookup({
       user_id: tasks.ck_twitter_login.uid,
       owner_id: tasks.ck_twitter_follow.owner_id
     });
@@ -480,7 +482,7 @@ const Quest = (props) => {
     setTwitterReTweetState('loading');
 
     twSocialLinked = storage.getItem(localTwSocialLinkKey);
-    const tw_tweet_status = await getTweetsStatus({
+    const tw_tweet_status = await getTweetLookup({
       user_id: twSocialLinked.uid,
       tweet_id: tasks.ck_twitter_retweet.tweet_id
     });
