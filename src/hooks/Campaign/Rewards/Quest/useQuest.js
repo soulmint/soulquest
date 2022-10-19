@@ -28,7 +28,7 @@ export default (props) => {
 
   const localQuesterKey = `${add}_${campaign.id}_quester_id`;
   const localSubmittedTasksKey = `${add}_${campaign.id}_submitted_tasks`;
-  const localTwSocialLinkKey = `${add}_${campaign.id}_twSocialLinked`;
+  const localTwSocialLinkKey = `${add}_twSocialLinked`;
   const twSocialLinkedTtl = 24 * 60 * 60; // 1days
 
   let submittedTasks = storage.getItem(localSubmittedTasksKey);
