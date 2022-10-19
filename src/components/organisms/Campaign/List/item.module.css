@@ -36,9 +36,6 @@
 	min-height: 180px;
 }
 
-.itemCover img {
-}
-
 /*  */
 .itemTitle {
 	@apply line-clamp-2 text-lg text-slate-800 my-0;

@@ -28,13 +28,13 @@ const Hero = () => {
                   Create Campaign
                 </a>
                 <a
-                  href="https://soulmint.notion.site/SoulMint-e036b079a12b41ee8bf150689ff4af22"
+                  href="//soulmint.notion.site/SoulMint-e036b079a12b41ee8bf150689ff4af22"
                   title=""
                   target="_blank"
                   className="text-lg text-slate-800 font-medium rounded-xl py-3 px-6 ml-4 tracking-wide transition-all duration-300 border-2 border-slate-800"
                   rel="noreferrer"
                 >
-                  Campaigns
+                  More info...
                 </a>
               </div>
             </div>

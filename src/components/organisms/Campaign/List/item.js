@@ -11,6 +11,7 @@ import useThemes from 'src/hooks/useThemes';
 import TextLink from 'src/components/atoms/TextLink';
 import { toHTML, subStrWords } from 'src/utils/strUtils';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
+import { fail } from 'assert';
 
 const DESC_MAX_LENGTH = 200;
 
@@ -46,7 +47,7 @@ const Item = (props) => {
   const nftCollectionInfo = data.nft_collection_ids.length ? (
     <RelatedNftInfo
       nftCollections={data.nft_collection_ids}
-      showCollectionLink={true}
+      showCollectionLink={false}
       showChainName={true}
     />
   ) : null;

@@ -322,7 +322,7 @@ const Quest = (props) => {
       </span>
     );
     const twFollowIconLeft = (
-      <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
+      <div className={`${classes.questItemIcon} ${tasks.ck_twitter_follow.status ? "bg-green-600" : "bg-cyan-400"} text-white`}>
         {tasks.ck_twitter_follow.status ? <FaCheck /> : <FaUserPlus />}
       </div>
     );
@@ -424,7 +424,7 @@ const Quest = (props) => {
       </span>
     );
     const twReTweetIconLeft = (
-      <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
+      <div className={`${classes.questItemIcon} ${tasks.ck_twitter_retweet.status ? "bg-green-600" : "bg-cyan-400"} text-white`}>
         {tasks.ck_twitter_retweet.status ? <FaCheck /> : <FaRetweet />}
       </div>
     );

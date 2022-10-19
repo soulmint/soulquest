@@ -23,8 +23,8 @@
 }
 
 .polygon {
-    composes: chain;
-    @apply bg-[url('/chains/polygon.svg')];
+  composes: chain;
+  @apply bg-[url('/chains/polygon.svg')];
 }
 
 .solana {
