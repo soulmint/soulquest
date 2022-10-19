@@ -170,13 +170,13 @@ const Item = (props) => {
         {discountAmountInfo}
       </div> */}
 
-      <TextLink
+      {/* <TextLink
         title={t('Join this quest')}
         className={`${classes.getCoupon} bg-gray-200 dark:bg-gray-700 hover:bg-violet-500 focus:bg-violet-500 text-gray-700 dark:text-gray-400 hover:text-white focus:text-white focus:outline-none rounded-lg font-medium flex jusity-center block w-full text-center text-md py-3 px-0 mt-auto transition-all duration-300`}
         href={`/campaign-details/${data.slug}`}
       >
         <span>{t('Join this quest')}</span>
-      </TextLink>
+      </TextLink> */}
 
       <TextLink
         title={t('Join this quest')}

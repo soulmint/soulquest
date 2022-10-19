@@ -171,7 +171,7 @@ const List = (props) => {
     ) : null;
 
   return (
-    <div className={`${classes[rootClassName]} bg-gray-50 dark:bg-gray-900`}>
+    <div className={`${classes[rootClassName]}`}>
       <div className="mx-auto max-w-screen-xl py-12 lg:py-24 px-6 lg:px-4">
         {heading}
         {toolbar}

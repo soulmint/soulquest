@@ -14,6 +14,8 @@ import Button from 'src/components/atoms/Button';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 
+import { FaWallet } from 'react-icons/fa';
+
 export type ConnectWalletProps = {
   name?: string;
   classes?: {
@@ -108,11 +110,7 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
         }
         onPress={() => connect()}
       >
-        <img
-          src="/icons/wallet-ico.svg"
-          alt={t('Connect wallet')}
-          className="w-4 h-4 mr-4"
-        />
+        <FaWallet className="mr-2" />
         {t('Connect wallet')}
       </Button>
     </>

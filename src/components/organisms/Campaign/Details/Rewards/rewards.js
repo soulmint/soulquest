@@ -74,24 +74,19 @@ const Rewards = (props) => {
     <div className={`${classes[rootClassName]}`}>
       <div className={`${classes.pageContent}`}>
         {quest}
-        <Screen upto="md">
-          {summary}
-        </Screen>
-        <div className={`${classes.pageContentInner}`}>
+        <Screen upto="md">{summary}</Screen>
+        <div className={`card ${classes.pageContentInner}`}>
           <div className={`${classes.coverImage}`}>{coverImage}</div>
           {shortDesc}
           {description}
         </div>
       </div>
       <div className={`${classes.pageSidebar}`}>
-        <Screen from="lg">
-          {summary}
-        </Screen>
+        <Screen from="lg">{summary}</Screen>
 
         {howToClaim}
         {questers}
         {/*{coupon}*/}
-
       </div>
     </div>
   );
