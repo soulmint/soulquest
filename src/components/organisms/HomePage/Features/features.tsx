@@ -31,10 +31,10 @@ const Features = () => {
                   placeholder_h="184"
                 />
               </div>
-              <h3 className="my-0 text-xl font-bold text-gray-800 mb-4 dark:text-white">
+              <h3 className="my-0 font-bold text-slate-800 mb-2">
                 SoulBound Token curator
               </h3>
-              <p className="my-0 lg:text-lg">
+              <p className="my-0">
                 Issue non-transferable NFT as on-chain credentials
               </p>
             </div>
@@ -51,10 +51,10 @@ const Features = () => {
                   placeholder_h="184"
                 />
               </div>
-              <h3 className="my-0 text-xl text-gray-800 mb-4 font-bold dark:text-white">
+              <h3 className="my-0 font-bold text-slate-800 mb-2">
                 {t('Chain agnostic')}
               </h3>
-              <p className="my-0 lg:text-lg">
+              <p className="my-0">
                 No more pain switching between chains. Enjoy perks on
                 multi-chain.
               </p>
@@ -72,10 +72,10 @@ const Features = () => {
                   placeholder_h="184"
                 />
               </div>
-              <h3 className="my-0 text-lg lg:text-xl font-bold text-gray-800 mb-4 dark:text-white">
+              <h3 className="my-0 font-bold text-slate-800 mb-2">
                 No-code campaign creator
               </h3>
-              <p className="my-0 lg:text-lg">
+              <p className="my-0">
                 Easily create a campaign with customized social task.
               </p>
             </div>
@@ -92,12 +92,10 @@ const Features = () => {
                   placeholder_h="184"
                 />
               </div>
-              <h3 className="my-0 text-lg lg:text-xl font-bold text-gray-800 mb-4 dark:text-white">
+              <h3 className="my-0 font-bold text-slate-800 mb-2">
                 On-chain reward distribution
               </h3>
-              <p className="my-0 lg:text-lg">
-                Distribute rewards through smart-contract
-              </p>
+              <p className="my-0">Distribute rewards through smart-contract</p>
             </div>
           </div>
         </div>

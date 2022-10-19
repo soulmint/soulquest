@@ -9,12 +9,7 @@
 
 html {
   height: 100%;
-  /* Better Font Rendering =========== */
-  -moz-font-smoothing: antialiased;
-  -moz-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "cv02","cv03","cv04","cv11";
+  @apply text-sm;
 }
 
 body {
