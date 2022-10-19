@@ -20,6 +20,7 @@
 
 /* Step 1 */
 .connectWalletTask {
+  @apply bg-violet-50 hover:bg-violet-100;
 }
 
 .btnConnectWallet {
@@ -34,7 +35,7 @@
   @apply text-slate-600;
 }
 
-.btnConnectWallet img {
+.btnConnectWallet svg {
   @apply hidden;
 }
 
