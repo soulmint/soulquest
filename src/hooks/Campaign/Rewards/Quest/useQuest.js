@@ -31,7 +31,6 @@ export default (props) => {
   const twSocialLinkedTtl = 24 * 60 * 60; // 1days
 
   let submittedTasks = storage.getItem(localSubmittedTasksKey);
-  console.log('submittedTasks:', submittedTasks);
 
   // Add connect wallet task
   tasks.ck_connect_wallet = {
@@ -245,8 +244,6 @@ export default (props) => {
   // Handle saving quest result
   useEffect(() => {
     if (saveQuestResult) {
-      console.log('saveQuestResult:', saveQuestResult);
-
       const questerId = saveQuestResult.create_quester_item
         ? saveQuestResult.create_quester_item.id
         : saveQuestResult.update_quester_item

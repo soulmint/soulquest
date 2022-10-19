@@ -94,8 +94,6 @@ const Quest = (props) => {
         { email: { _eq: userState.wallet_address } }
       );
       if (quester) {
-        console.log('quester: ', quester);
-
         storage.setItem(localQuesterKey, quester.id);
 
         const submittedTasks = quester.tasks ? JSON.parse(quester.tasks) : {};
@@ -174,7 +172,6 @@ const Quest = (props) => {
 
       //if has tw social linked
       if (twSocialLinked) {
-        console.log('twSocialLinked:', twSocialLinked);
         if (tasks.ck_twitter_login) {
           tasks.ck_twitter_login.status = true;
           tasks.ck_twitter_login.uid = twSocialLinked.uid;
