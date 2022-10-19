@@ -56,7 +56,11 @@ ol li p {
 
 /* Improve style for Web3 modal */
 .web3modal-modal-lightbox {
-  z-index: 40;
+  @apply !z-50;
+}
+
+.web3modal-modal-card {
+  @apply shadow-xl;
 }
 
 

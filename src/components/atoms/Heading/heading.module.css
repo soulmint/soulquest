@@ -1,5 +1,5 @@
 .heading {
-  @apply text-4xl lg:text-6xl font-bold text-gray-900 text-center mb-4 tracking-tight;
+  @apply text-4xl lg:text-5xl font-bold text-gray-900 text-center mb-4 tracking-tight;
 }
 
 .headingDark {

@@ -5,20 +5,20 @@ const Hero = () => {
   return (
     <Fragment>
       <div className={`${classes.root} bg-teal-400 relative`}>
-        <div className="container max-w-screen-xl mx-auto px-4 lg:px-4 z-10">
-          <div className="flex flex-wrap items-center py-10 md:py-16 lg:py-16">
+        <div className="container max-w-screen-xl mx-auto px-4 z-10">
+          <div className="flex flex-wrap items-center">
             <div className="basis-full lg:basis-7/12 text-center lg:text-left lg:pr-16">
-              <h1 className="text-4xl lg:text-6xl font-bold text-slate-800 !leading-tight mt-0 mb-4 lg:mb-6">
+              <h1 className="text-4xl lg:text-5xl font-bold text-slate-800 !leading-tight mt-0 mb-4 lg:mb-6">
                 <span className="block">
                   Reward distribution platform for <span>SoulBound</span> Tokens
                 </span>
               </h1>
-              <p className="text-lg lg:text-2xl font-normal my-0 text-slate-800">
+              <p className="text-lg lg:text-xl font-normal my-0 text-slate-800">
                 Build your Web3 reputation through SoulBound Tokens. Explore and
                 earn.
               </p>
 
-              <div className="flex items-center mt-8">
+              <div className="flex items-center mt-12">
                 <a
                   href="#"
                   title="Create Campaign"

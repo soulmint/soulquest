@@ -5,9 +5,9 @@
 }
 
 .rewardOverview {
-  @apply pt-4 mt-4 border-t border-slate-200;
+  @apply pt-0 mt-4 border-t border-slate-200;
 }
 
 .rewardOverview p {
-    @apply mt-0;
+    @apply mb-0;
   }

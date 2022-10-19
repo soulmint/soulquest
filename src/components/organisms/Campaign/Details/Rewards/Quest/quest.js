@@ -216,7 +216,7 @@ const Quest = (props) => {
   );
 
   const connectWalletStatus = userState.wallet_address ? (
-    <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
+    <div className={`${classes.questItemIcon} bg-green-300 text-slate-800`}>
       <FaCheck />
     </div>
   ) : (
@@ -267,7 +267,7 @@ const Quest = (props) => {
     );
 
     const twitterLoginIconStatus = tasks.ck_twitter_login.status ? (
-      <div className={`${classes.questItemIcon} bg-green-600 text-white`}>
+      <div className={`${classes.questItemIcon} bg-green-300 text-slate-800`}>
         <FaCheck />
       </div>
     ) : (
@@ -339,8 +339,10 @@ const Quest = (props) => {
     const twFollowIconLeft = (
       <div
         className={`${classes.questItemIcon} ${
-          tasks.ck_twitter_follow.status ? 'bg-green-600' : 'bg-cyan-400'
-        } text-white`}
+          tasks.ck_twitter_follow.status
+            ? 'bg-green-300 text-slate-800'
+            : 'bg-cyan-400 text-white'
+        }`}
       >
         {tasks.ck_twitter_follow.status ? <FaCheck /> : <FaUserPlus />}
       </div>
@@ -350,7 +352,11 @@ const Quest = (props) => {
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
     twFollowTask = (
-      <div className={`${twFollowTaskClasses.join(' ')} ${classes.twitterFollowTask} relative group`}>
+      <div
+        className={`${twFollowTaskClasses.join(' ')} ${
+          classes.twitterFollowTask
+        } relative group`}
+      >
         {twFollowIconLeft}
         <div className="z-20">
           <span
@@ -445,8 +451,10 @@ const Quest = (props) => {
     const twReTweetIconLeft = tasks.ck_twitter_retweet ? (
       <div
         className={`${classes.questItemIcon} ${
-          tasks.ck_twitter_retweet.status ? 'bg-green-600' : 'bg-cyan-400'
-        } text-white`}
+          tasks.ck_twitter_retweet.status
+            ? 'bg-green-300 text-slate-800'
+            : 'bg-cyan-400 text-white'
+        }`}
       >
         {tasks.ck_twitter_retweet.status ? <FaCheck /> : <FaRetweet />}
       </div>
@@ -553,7 +561,7 @@ const Quest = (props) => {
     );
     const nftOwnershipIconStatus = tasks.ck_nft_ownership.status ? (
       <div
-        className={`relative ${classes.questItemIcon} bg-green-600 text-white`}
+        className={`relative ${classes.questItemIcon} bg-green-300 text-slate-800`}
       >
         <FaCheck />
       </div>
