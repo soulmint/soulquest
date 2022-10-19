@@ -24,9 +24,11 @@ const Features = () => {
                 <Image
                   src="/features/soulbound_token_curator.png"
                   alt="SoulBound Token curator"
-                  layout="responsive"
                   width="240"
                   height="184"
+                  placeholder="blur"
+                  placeholder_w="240"
+                  placeholder_h="184"
                 />
               </div>
               <h3 className="my-0 text-xl font-bold text-gray-800 mb-4 dark:text-white">
@@ -42,9 +44,11 @@ const Features = () => {
                 <Image
                   src="/features/chain_agnostic.png"
                   alt="Chain agnostic"
-                  layout="responsive"
                   width="240"
                   height="184"
+                  placeholder="blur"
+                  placeholder_w="240"
+                  placeholder_h="184"
                 />
               </div>
               <h3 className="my-0 text-xl text-gray-800 mb-4 font-bold dark:text-white">
@@ -61,9 +65,11 @@ const Features = () => {
                 <Image
                   src="/features/nocode_campaign_creator.png"
                   alt="No-code campaign creator"
-                  layout="responsive"
                   width="240"
                   height="184"
+                  placeholder="blur"
+                  placeholder_w="240"
+                  placeholder_h="184"
                 />
               </div>
               <h3 className="my-0 text-lg lg:text-xl font-bold text-gray-800 mb-4 dark:text-white">
@@ -79,9 +85,11 @@ const Features = () => {
                 <Image
                   src="/features/on_chain_reward_distribution.png"
                   alt="On-chain reward distribution"
-                  layout="responsive"
                   width="240"
                   height="184"
+                  placeholder="blur"
+                  placeholder_w="240"
+                  placeholder_h="184"
                 />
               </div>
               <h3 className="my-0 text-lg lg:text-xl font-bold text-gray-800 mb-4 dark:text-white">
