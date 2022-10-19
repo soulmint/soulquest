@@ -23,7 +23,7 @@ const Hero = () => {
                   href="#"
                   title="Create Campaign"
                   target="_blank"
-                  className="bg-violet-600 hover:bg-violet-600 text-white inline-block rounded-xl py-3 px-6 text-lg font-base tracking-wide text-shadow-sm shadow-sm transition-all duration-300"
+                  className="bg-violet-600 hover:bg-violet-700 text-white inline-block rounded-xl py-3 px-6 text-lg font-medium tracking-wide shadow hover:shadow-xl border-2 border-transparent transition-all duration-300"
                 >
                   Create Campaign
                 </a>

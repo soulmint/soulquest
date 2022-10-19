@@ -13,7 +13,7 @@ const HomeTmpl = (props) => {
       <HeadCustom {...meta} />
       <MainTmpl>
         <Hero />
-        <div className="bg-white">
+        <div className="">
           <List position="home-page" />
         </div>
         {/* SoulMint Features */}

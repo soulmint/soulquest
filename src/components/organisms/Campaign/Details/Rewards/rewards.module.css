@@ -14,7 +14,7 @@
 }
 
 .pageContentInner {
-    @apply bg-white rounded-lg shadow-sm py-6 px-6;
+    @apply py-6 px-6;
 }
 
 .shortDesc {

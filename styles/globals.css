@@ -14,10 +14,11 @@ html {
   -moz-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv02","cv03","cv04","cv11";
 }
 
 body {
-  @apply antialiased text-slate-700 bg-slate-100;
+  @apply antialiased text-slate-600 bg-slate-100;
 }
 
 h1, h2, h3 {
