@@ -26,6 +26,8 @@ const socialTags = ({
     },
     { property: 'twitter:title', content: title },
     { property: 'twitter:description', content: description },
+    { property: 'twitter:image', content: image },
+    { property: 'twitter:image:src', content: image },
     {
       property: 'twitter:creator',
       content:
@@ -34,8 +36,6 @@ const socialTags = ({
         settings.meta.social &&
         settings.meta.social.twitter
     },
-    { property: 'twitter:image', content: image },
-    { property: 'twitter:card', content: 'summary_large_image' },
     { property: 'og:title', content: title },
     { property: 'og:type', content: type },
     { property: 'og:url', content: url },
