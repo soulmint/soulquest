@@ -9,7 +9,7 @@ const HowItWork = () => {
   return (
     <Fragment>
       <div
-        className={`bg-gradient-to-b from-slate-100 to-slate-50 ${rootClass}`}
+        className={`bg-gradient-to-b from-slate-100 to-slate-100 ${rootClass}`}
       >
         <div className="container max-w-screen-xl mx-auto py-12 lg:py-24 px-4">
           <div className="mb-12 lg:mb-20 text-center">
