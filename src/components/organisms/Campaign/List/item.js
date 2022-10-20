@@ -1,17 +1,16 @@
 import React from 'react';
-import Router from 'next/router';
+// import Router from 'next/router';
 import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import Moment from 'moment';
-import Button from 'src/components/atoms/Button';
+// import Button from 'src/components/atoms/Button';
 import Image from 'src/components/atoms/Image';
 import classes from './item.module.css';
 import useThemes from 'src/hooks/useThemes';
 import TextLink from 'src/components/atoms/TextLink';
 import { toHTML, subStrWords } from 'src/utils/strUtils';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
-import { fail } from 'assert';
 
 import { HiBadgeCheck } from 'react-icons/hi';
 
@@ -20,7 +19,7 @@ const DESC_MAX_LENGTH = 200;
 const Item = (props) => {
   const { data } = props;
 
-  const userState = useSelector((state) => state.user);
+  // const userState = useSelector((state) => state.user);
 
   const { rootClassName } = useThemes();
 
@@ -33,48 +32,16 @@ const Item = (props) => {
     Router.push(path);
   };*/
 
-  const handleEdit = () => {
+  /*const handleEdit = () => {
     const path = `/edit-campaign/${data.id}`;
     Router.push(path);
-  };
-
-  const editButton =
+  };*/
+  /*const editButton =
     userState.id && userState.id === data.user_created.id ? (
       <Button priority="normal" type="button" onPress={handleEdit}>
         {t('Edit')}
       </Button>
-    ) : null;
-
-  // Build NFT collection information
-  const nftCollectionInfo = data.nft_collection_ids.length ? (
-    <RelatedNftInfo
-      nftCollections={data.nft_collection_ids}
-      showCollectionLink={false}
-      showChainName={true}
-    />
-  ) : null;
-
-  // Build store info
-  /*const storeLogo = data.store_logo_url ? (
-    <img
-      className={`${classes.storeLogo}`}
-      src={data.store_logo_url}
-      alt={`cover_${data.store_name}`}
-    />
-  ) : null;*/
-
-  /*const storeInfo = data.store_url ? (
-    <TextLink
-      className={classes.storeLink}
-      target={`_blank`}
-      href={data.store_url}
-    >
-      {storeLogo}
-      {/!* <span className={classes.storeName}> {data.store_name} </span> *!/}
-    </TextLink>
-  ) : (
-    <span className={classes.storeName}> {data.store_name} </span>
-  );*/
+    ) : null;*/
 
   /*const discountAmountInfo = data.discount_value ? (
     <span className={classes.couponAmoun}>
@@ -107,12 +74,23 @@ const Item = (props) => {
       />
     ) : null;*/
 
-  const dateStart = data.date_start
+  /*const startTime = data.date_start
     ? t('Start ') + Moment(data.date_start).fromNow()
-    : '';
-  const dateEnd = data.date_end
+    : '';*/
+  const endTime = data.date_end
     ? t('Ends ') + Moment(data.date_end).fromNow()
     : '';
+  // const startDate = Moment(data.date_start);
+  const endDate = Moment(data.date_end);
+  const now = Moment();
+  let stateInfo =
+    now > endDate ? (
+      <span className={``}>{t('Ended')}</span>
+    ) : (
+      <div className="shadow bg-green-300 text-slate-800 rounded-full py-1 px-3 text-sm font-bold mr-4">
+        <span className={``}>{t('Ongoing')}</span>
+      </div>
+    );
 
   const shortDesc = data.short_desc ? (
     <div
@@ -120,6 +98,73 @@ const Item = (props) => {
         subStrWords(data?.short_desc, DESC_MAX_LENGTH)
       )}
     />
+  ) : null;
+
+  //Build store/campaign owner info
+  const storeName = data.store_name ? data.store_name : null;
+  const storeLogo = data.store_logo_url ? (
+    <span className="pair-value--logo">
+      <img src={`${data.store_logo_url}`} title={storeName} />
+    </span>
+  ) : null;
+  const storeInfoLine =
+    storeName || storeLogo ? (
+      <span className="pair-value">
+        {storeLogo}
+        {storeName}
+      </span>
+    ) : null;
+  const providerInfo = data.store_url ? (
+    <TextLink
+      className={classes.storeLink}
+      target={`_blank`}
+      href={data.store_url}
+    >
+      {storeInfoLine}
+    </TextLink>
+  ) : (
+    storeInfoLine
+  );
+  const rewardOwnerInfo = providerInfo ? (
+    <div className="list-pair--item">
+      <div className="pair-title">{t('Provider')}</div>
+      {providerInfo}
+    </div>
+  ) : null;
+  const rewardTokenVolumeInfo = data.reward_token_volume ? (
+    <div className="list-pair--item">
+      <div className="pair-title">{t('Rewards')}</div>
+      <div className="pair-value">{data.reward_token_volume}</div>
+    </div>
+  ) : null;
+
+  // Build related chain info
+  const rewardChainInfo = data.nft_collection_ids.length ? (
+    <div className="list-pair--item">
+      <div className="pair-title">{t('Chain')}</div>
+      <div className="pair-value">
+        <RelatedNftInfo
+          nftCollections={data.nft_collection_ids}
+          showChainName={true}
+          showCollectionLink={false}
+          showSmcAdd={false}
+        />
+      </div>
+    </div>
+  ) : null;
+
+  const requiredNftInfo = data.nft_collection_ids.length ? (
+    <div className="list-pair--item">
+      <div className="pair-title">{t('Rquired NFTs')}</div>
+      <div className="pair-value">
+        <RelatedNftInfo
+          nftCollections={data.nft_collection_ids}
+          showChainName={false}
+          showCollectionLink={true}
+          showSmcAdd={false}
+        />
+      </div>
+    </div>
   ) : null;
 
   return (
@@ -133,10 +178,10 @@ const Item = (props) => {
         </div>
 
         <div className="bg-slate-700 text-white bg-opacity-80 backdrop-filter backdrop-blur px-6 py-2 font-medium text-sm justify-between flex absolute bottom-0 left-0 right-0">
-          <span className={``}>Ongoing</span>
+          {stateInfo}
           {/* <span className={`${classes.dateStart}`}>{dateStart}</span> */}
           {/* <span className="mx-2">|</span> */}
-          <span className={`${classes.dateEnd}`}>{dateEnd}</span>
+          <span className={`${classes.dateEnd}`}>{endTime}</span>
         </div>
 
         <span className="font-bold bg-green-200 text-green-700 items-center rounded-xl text-sm py-0.5 pl-1 pr-2 w-auto inline-flex absolute top-5 left-6">
@@ -153,67 +198,15 @@ const Item = (props) => {
         </div>
 
         <div className="list-pair">
-          <div className="list-pair--item">
-            <div className="pair-title">Provider</div>
-            <a target="_blank" href="https://app.sided.fi/" rel="noreferrer">
-              <span className="pair-value">
-                <span className="pair-value--logo">
-                  <img
-                    src="https://app.sided.fi/assets/icon.svg"
-                    title="SidedFinance"
-                  />
-                </span>
-                SidedFinance
-              </span>
-            </a>
-          </div>
-          <div className="list-pair--item">
-            <div className="pair-title">Rewards</div>
-            <div className="pair-value">500 USDC</div>
-          </div>
-          <div className="list-pair--item">
-            <div className="pair-title">Chains</div>
-            <div className="pair-value">
-              <div className="">BSC, Ethereum</div>
-            </div>
-          </div>
-          <div className="list-pair--item">
-            <div className="pair-title">Rquired NFTs</div>
-            <div className="pair-value">
-              <div className="">
-                <div className="flex items-center">
-                  <span
-                    className="mr-1"
-                    title="Binance Account Bound Token (BABT)"
-                  >
-                    <img
-                      src="/chains/bsc.svg"
-                      title="Binance Account Bound Token (BABT)"
-                      className="w-6 h-6"
-                    />
-                  </span>
-                  <span className="relatedNftInfo_chainName__ZJd83">BABT</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          {rewardOwnerInfo}
+          {rewardTokenVolumeInfo}
+          {rewardChainInfo}
+          {requiredNftInfo}
         </div>
 
-        <div className={`${classes.itemDesc}`}>
-          {/* {thumbImage} */}
-          {shortDesc}
-        </div>
+        <div className={`${classes.itemDesc}`}>{shortDesc}</div>
 
-        {/* <div className="flex items-center flex-wrap mb-4">
-          {nftCollectionInfo}
-        </div> */}
-
-        {editButton}
-
-        {/* <div className={classes.itemFoot}>
-          {storeInfo}
-          {discountAmountInfo}
-        </div> */}
+        {/*{editButton}*/}
 
         {/* <TextLink
           title={t('Join this quest')}

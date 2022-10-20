@@ -12,7 +12,8 @@ const RelatedNftInfo = (props) => {
     classes: propClasses,
     nftCollections,
     showChainName = true,
-    showCollectionLink = true
+    showCollectionLink = true,
+    showSmcAdd = true
   } = props;
 
   const classes = useStyle(defaultClasses, propClasses);
@@ -28,9 +29,6 @@ const RelatedNftInfo = (props) => {
         <div key={index} className={`${classes.nftCollectionWrap}`}>
           {showChainName ? (
             <span
-              className={`${
-                classes[nftCollection.nft_collection_id.chain_name]
-              }`}
               title={getChainName(nftCollection.nft_collection_id.chain_name)}
             >
               <span className={classes.chainName}>
@@ -44,18 +42,24 @@ const RelatedNftInfo = (props) => {
               className={classes.nftCollectionLink}
               href={`/nft-collection-details/${nftCollection.nft_collection_id.slug}`}
             >
-              <span className={`${classes.collectionName}`}>
+              <span
+                className={`${classes.collectionName} ${
+                  classes[nftCollection.nft_collection_id.chain_name]
+                }`}
+              >
                 {nftCollection.nft_collection_id.name}
-              </span>{' '}
-              <span className={classes.contractAdd}>
-                (
-                {ellipsify({
-                  str: nftCollection.nft_collection_id.contract_address,
-                  start: 4,
-                  end: 4
-                })}
-                )
-              </span>{' '}
+              </span>
+              {showSmcAdd ? (
+                <span className={classes.contractAdd}>
+                  (
+                  {ellipsify({
+                    str: nftCollection.nft_collection_id.contract_address,
+                    start: 4,
+                    end: 4
+                  })}
+                  )
+                </span>
+              ) : null}
             </TextLink>
           ) : null}
         </div>
@@ -71,7 +75,8 @@ RelatedNftInfo.propTypes = {
   }),
   nftCollections: array,
   showChainName: bool,
-  showCollectionLink: bool
+  showCollectionLink: bool,
+  showSmcAdd: bool
 };
 
 export default RelatedNftInfo;

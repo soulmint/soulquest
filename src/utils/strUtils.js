@@ -23,9 +23,9 @@ export const subStrWords = (
 export const capitalize = (s) => (s && s[0].toUpperCase() + s.slice(1)) || '';
 
 const chains = new Map()
-  .set('bsc', 'Binance Smart Chain')
-  .set('ethereum', 'Ethereum Chain')
-  .set('polygon', 'Polygon Chain')
+  .set('bsc', 'BSC')
+  .set('ethereum', 'Ethereum')
+  .set('polygon', 'Polygon')
   .set('solana', 'Solana');
 export const getChainName = (chainKey) =>
   (chainKey && chains.get(chainKey)) || chainKey;
