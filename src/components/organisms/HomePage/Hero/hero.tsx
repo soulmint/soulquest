@@ -20,7 +20,7 @@ const Hero = () => {
 
               <div className="flex items-center mt-12">
                 <a
-                  href="#"
+                  href="https://t.me/alexle_rada"
                   title="Create Campaign"
                   target="_blank"
                   className="bg-violet-600 hover:bg-violet-700 text-white inline-block rounded-xl py-3 px-6 text-lg font-medium tracking-wide shadow hover:shadow-xl border-2 border-transparent transition-all duration-300"
@@ -31,7 +31,7 @@ const Hero = () => {
                   href="//soulmint.notion.site/SoulMint-e036b079a12b41ee8bf150689ff4af22"
                   title=""
                   target="_blank"
-                  className="text-lg text-slate-800 font-medium rounded-xl py-3 px-6 ml-4 tracking-wide transition-all duration-300 border-2 border-slate-800"
+                  className="hover:bg-slate-800 text-lg text-slate-800 hover:text-white font-medium rounded-xl py-3 px-6 ml-4 tracking-wide transition-all duration-300 border-2 border-slate-800"
                   rel="noreferrer"
                 >
                   More info...

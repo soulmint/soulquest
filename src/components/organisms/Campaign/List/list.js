@@ -74,7 +74,7 @@ const List = (props) => {
           <TextLink
             title={t('Create a quest')}
             className={classes.btnCreateQuest}
-            href="/"
+            href="https://t.me/alexle_rada"
           >
             <span>{t('Create a quest')}</span>
           </TextLink>
