@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import Moment from 'moment';
 import { toast } from 'react-toastify';
 import defaultClasses from './quest.module.css';
 import { useStyle } from 'src/components/classify';
@@ -51,6 +52,9 @@ const Quest = (props) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let twSocialLinked = null;
+
+  const endDate = Moment(campaign.date_end);
+  const now = Moment();
 
   const {
     localQuesterIdKey,
@@ -628,7 +632,9 @@ const Quest = (props) => {
   };
 
   const canSubmit =
-    userState.wallet_address && isFinishedTasks() && !isSoul ? true : false;
+    userState.wallet_address && (now <= endDate) & isFinishedTasks() && !isSoul
+      ? true
+      : false;
   const btnClaimReward = (
     <div className={`${classes.btnClaimRewardWrap}`}>
       <Button
