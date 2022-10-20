@@ -1,4 +1,5 @@
 .root {
+
 }
 
 .rootDark {
@@ -11,3 +12,7 @@
 .rewardOverview p {
     @apply mb-0;
   }
+
+.pair-value--logo {
+  @apply p-4;
+}

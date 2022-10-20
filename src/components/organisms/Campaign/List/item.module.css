@@ -80,21 +80,5 @@
 	@apply flex w-full items-center justify-center;
 }
 
-.storeLink img {
-	position: relative;
-	height: auto;
-	max-width: 50%;
-}
-
 .storeName {
 }
-
-/*
-.dateStart:not(:empty)::before {
-	@apply bg-green-500 content-[''] inline-block h-1.5 w-1.5 mr-1.5 mb-0.5;
-}
-
-.dateEnd:not(:empty)::before {
-	@apply bg-red-500 content-[''] inline-block h-1.5 w-1.5 mr-1.5 mb-0.5;
-}
-*/
