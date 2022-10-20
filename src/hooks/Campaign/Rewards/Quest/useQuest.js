@@ -145,7 +145,6 @@ export default (props) => {
       // Saving quester
       const questerId = storage.getItem(localQuesterIdKey);
       const questerState = storage.getItem(localQuesterStateKey);
-      console.log('questerState:', questerState);
       if (questerState !== 'approved') {
         await saveQuester({
           variables: {
