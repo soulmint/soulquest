@@ -70,7 +70,6 @@ export default (props) => {
 
   // Add twitter retweet task
   if (campaign.twitter_tweet) {
-    console.log('campaign.twitter_tweet_id:', campaign.twitter_tweet_id);
     if (!campaign.twitter_tweet_id) {
       let tweetUrl = campaign.twitter_tweet;
       if (campaign.twitter_tweet.indexOf('?') > -1) {
@@ -78,7 +77,6 @@ export default (props) => {
       }
       const tweetId = tweetUrl.split('/').pop();
       campaign.twitter_tweet_id = tweetId;
-      console.log('campaign.twitter_tweet_id:', campaign.twitter_tweet_id);
     }
     tasks.ck_twitter_retweet = {
       id: ++taskTotal,
