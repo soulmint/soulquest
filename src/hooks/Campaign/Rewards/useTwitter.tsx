@@ -25,7 +25,7 @@ const getFollow = async (props: any) => {
     .then((data) => {
       if (data.tw_token) {
         Cookies.set('tw_token', data.tw_token, {
-          expires: 24,
+          expires: 30,
           path: '/',
           sameSite: 'lax'
         });
@@ -60,7 +60,7 @@ const getReTweets = async (props: any) => {
     .then((data) => {
       if (data.tw_token) {
         Cookies.set('tw_token', data.tw_token, {
-          expires: 24,
+          expires: 30,
           path: '/',
           sameSite: 'lax'
         });
@@ -72,8 +72,6 @@ const getReTweets = async (props: any) => {
 };
 const getFollowLookup = async (props: any) => {
   const { user_id, owner_id } = props;
-  if (!user_id || !owner_id)
-    return toast.warning('Invalid user id or tweet id');
   let checked = false;
   await fetch(
     '/api/twitter/user?task=follow-lookup&user_id=' +
@@ -85,7 +83,7 @@ const getFollowLookup = async (props: any) => {
     .then((data) => {
       if (data.tw_token) {
         Cookies.set('tw_token', data.tw_token, {
-          expires: 24,
+          expires: 30,
           path: '/',
           sameSite: 'lax'
         });
@@ -110,7 +108,7 @@ const getTweetLookup = async (props: any) => {
     .then((data) => {
       if (data.tw_token) {
         Cookies.set('tw_token', data.tw_token, {
-          expires: 24,
+          expires: 30,
           path: '/',
           sameSite: 'lax'
         });

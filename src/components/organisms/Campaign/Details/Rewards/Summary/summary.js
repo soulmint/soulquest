@@ -18,12 +18,12 @@ const Summary = (props) => {
   let child = null;
 
   //Build store/campaign owner info
+  const storeName = campaign.store_name ? campaign.store_name : null;
   const storeLogo = campaign.store_logo_url ? (
     <span className="pair-value--logo">
-      <img src={`${campaign.store_logo_url}`} title={'SidedFinance'} />
+      <img src={`${campaign.store_logo_url}`} title={storeName} />
     </span>
   ) : null;
-  const storeName = campaign.store_name ? campaign.store_name : null;
   const storeInfoLine =
     storeName || storeLogo ? (
       <span className="pair-value">
@@ -55,16 +55,17 @@ const Summary = (props) => {
     </div>
   ) : null;
   // Build related chain info
-  const chainInfo = campaign.nft_collection_ids.length ? (
-    <RelatedNftInfo
-      nftCollections={campaign.nft_collection_ids}
-      showCollectionLink={false}
-    />
-  ) : null;
-  const rewardChainInfo = chainInfo ? (
+  const rewardChainInfo = campaign.nft_collection_ids.length ? (
     <div className="list-pair--item">
-      <div className="pair-title">Chain</div>
-      <div className="pair-value">{chainInfo}</div>
+      <div className="pair-title">{t('Chain')}</div>
+      <div className="pair-value">
+        <RelatedNftInfo
+          nftCollections={campaign.nft_collection_ids}
+          showChainName={true}
+          showCollectionLink={false}
+          showSmcAdd={false}
+        />
+      </div>
     </div>
   ) : null;
 

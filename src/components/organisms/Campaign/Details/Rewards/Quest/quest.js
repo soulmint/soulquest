@@ -129,7 +129,7 @@ const Quest = (props) => {
         const uid = id;
         if (tw_token) {
           Cookies.set('tw_token', tw_token, {
-            expires: 24,
+            expires: 30,
             path: '/',
             sameSite: 'lax'
           });
@@ -392,7 +392,9 @@ const Quest = (props) => {
     if (!tasks.ck_twitter_login.uid) {
       return toast.warning(t('You must login Twitter before do this task!'));
     }
-
+    if (!tasks.ck_twitter_follow.owner_id) {
+      return toast.warning(t('Invalid Owner id!'));
+    }
     setTwitterFollowState('loading');
 
     // checking twitter follow here...
@@ -500,6 +502,9 @@ const Quest = (props) => {
       return toast.warning(t('You must login twitter before do this task!'));
     }
 
+    if (!tasks.ck_twitter_retweet.tweet_id) {
+      return toast.warning(t('Invalid tweet id!'));
+    }
     setTwitterReTweetState('loading');
 
     twSocialLinked = storage.getItem(localTwSocialLinkKey);
