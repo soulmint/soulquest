@@ -77,18 +77,18 @@ export default (props) => {
 
   // Add twitter retweet task
   if (campaign.twitter_tweet) {
-    if (!campaign.twitter_tweet_id) {
+    let tweetId = campaign.twitter_tweet_id;
+    if (!tweetId) {
       let tweetUrl = campaign.twitter_tweet;
       if (campaign.twitter_tweet.indexOf('?') > -1) {
         tweetUrl = campaign.twitter_tweet.split('?')[0];
       }
-      const tweetId = tweetUrl.split('/').pop();
-      campaign.twitter_tweet_id = tweetId;
+      tweetId = tweetUrl.split('/').pop();
     }
     tasks.ck_twitter_retweet = {
       id: ++taskTotal,
       tweet_url: campaign.twitter_tweet,
-      tweet_id: campaign.twitter_tweet_id,
+      tweet_id: tweetId,
       status:
         submittedTasks && submittedTasks.ck_twitter_retweet !== undefined
           ? submittedTasks.ck_twitter_retweet
