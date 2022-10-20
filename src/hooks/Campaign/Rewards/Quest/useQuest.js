@@ -8,6 +8,7 @@ import { useTranslation } from 'next-i18next';
 import { useSelector } from 'react-redux';
 import BrowserPersistence from 'src/utils/simplePersistence';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
+import { base64URLEncode } from 'src/utils/strUtils';
 
 export default (props) => {
   const { campaign, setIsSoul } = props;
@@ -52,10 +53,13 @@ export default (props) => {
 
   // Add twitter follow task
   if (campaign.twitter_username) {
+    const twOwnerId = storage.getItem(
+      base64URLEncode(campaign.twitter_username)
+    );
     tasks.ck_twitter_follow = {
       id: ++taskTotal,
       username: campaign.twitter_username,
-      owner_id: '',
+      owner_id: twOwnerId ? twOwnerId : null,
       status:
         submittedTasks && submittedTasks.ck_twitter_follow !== undefined
           ? submittedTasks.ck_twitter_follow
@@ -66,6 +70,7 @@ export default (props) => {
 
   // Add twitter retweet task
   if (campaign.twitter_tweet) {
+    console.log('campaign.twitter_tweet_id:', campaign.twitter_tweet_id);
     if (!campaign.twitter_tweet_id) {
       let tweetUrl = campaign.twitter_tweet;
       if (campaign.twitter_tweet.indexOf('?') > -1) {
@@ -73,6 +78,7 @@ export default (props) => {
       }
       const tweetId = tweetUrl.split('/').pop();
       campaign.twitter_tweet_id = tweetId;
+      console.log('campaign.twitter_tweet_id:', campaign.twitter_tweet_id);
     }
     tasks.ck_twitter_retweet = {
       id: ++taskTotal,

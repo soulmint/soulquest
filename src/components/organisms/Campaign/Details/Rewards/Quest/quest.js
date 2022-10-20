@@ -392,6 +392,7 @@ const Quest = (props) => {
     if (!tasks.ck_twitter_login.uid) {
       return toast.warning(t('You must login Twitter before do this task!'));
     }
+
     if (!tasks.ck_twitter_follow.owner_id) {
       return toast.warning(t('Invalid Owner id!'));
     }
