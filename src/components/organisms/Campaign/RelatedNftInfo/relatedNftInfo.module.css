@@ -6,29 +6,35 @@
 }
 
 .chain {
-  @apply bg-gray-100 inline-block rounded-full w-6 h-6 indent-96 overflow-hidden bg-cover;
+  @apply flex items-center inline-block relative;
+}
+
+.collectionName {
+  @apply flex items-center;
+}
+
+.collectionName::before {
+  @apply bg-gray-100 bg-cover content-[''] block w-6 h-6 mr-2 rounded-full;
 }
 
 .chainName {
 }
 
-.bsc {
-  composes: chain;
+.bsc::before {
+  /* composes: chain; */
   @apply bg-[url('/chains/bsc.svg')];
 }
 
-.ethereum {
-  composes: chain;
+.ethereum::before {
+  /* composes: chain; */
   @apply bg-[url('/chains/ethereum.svg')];
 }
 
-.polygon {
-  composes: chain;
+.polygon::before {
   @apply bg-[url('/chains/polygon.svg')];
 }
 
-.solana {
-  composes: chain;
+.solana::before {
   @apply bg-[url('/chains/solana.svg')];
 }
 

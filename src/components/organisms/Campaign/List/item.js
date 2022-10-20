@@ -103,13 +103,13 @@ const Item = (props) => {
   //Build store/campaign owner info
   const storeName = data.store_name ? data.store_name : null;
   const storeLogo = data.store_logo_url ? (
-    <span className="pair-value--logo">
+    <span className="pair-value--logo !p-0 flex items-center justify-center">
       <img src={`${data.store_logo_url}`} title={storeName} />
     </span>
   ) : null;
   const storeInfoLine =
     storeName || storeLogo ? (
-      <span className="pair-value">
+      <span className="pair-value ml-auto">
         {storeLogo}
         {storeName}
       </span>
