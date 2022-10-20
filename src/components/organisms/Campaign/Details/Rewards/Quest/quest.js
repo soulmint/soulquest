@@ -194,8 +194,7 @@ const Quest = (props) => {
           });
           storage.setItem(
             base64URLEncode(tasks.ck_twitter_follow.username),
-            tw_owner_id,
-            twSocialLinkedTtl
+            tw_owner_id
           );
         }
         tasks.ck_twitter_follow.owner_id = tw_owner_id;
@@ -394,7 +393,9 @@ const Quest = (props) => {
     }
 
     if (!tasks.ck_twitter_follow.owner_id) {
-      return toast.warning(t('Invalid Owner id!'));
+      tasks.ck_twitter_follow.owner_id = storage.getItem(
+        base64URLEncode(tasks.ck_twitter_follow.username)
+      );
     }
     setTwitterFollowState('loading');
 

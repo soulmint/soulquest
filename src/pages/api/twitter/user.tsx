@@ -29,8 +29,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (twitterAuthClient.isAccessTokenExpired()) {
     refreshToken = await twitterAuthClient.refreshAccessToken();
   }
-  if (process.env.NODE_ENV !== 'production') {
+  if (refreshToken && process.env.NODE_ENV !== 'production') {
     console.log(refreshToken);
+    console.log(base64URLEncode(JSON.stringify(refreshToken)));
   }
   try {
     const { task, user_id, owner_id, tweet_id, screen_name } = req.query;
@@ -50,9 +51,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         checked = data.data.following ?? false;
         break;
       case 'follow-lookup':
-        data = twitterClient.users.usersIdFollowing(user_id as string);
+        data = twitterClient.users.usersIdFollowing(user_id as string, {
+          'user.fields': ['id']
+        });
         for await (const page of data) {
           if (!page.data) break;
+          console.log(page.data);
           for (const item of page.data) {
             if (item.id === owner_id) {
               checked = true;
@@ -69,9 +73,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         checked = data.data?.retweeted ?? false;
         break;
       case 'tweet-loookup':
-        data = twitterClient.users.tweetsIdRetweetingUsers(tweet_id as string);
+        data = twitterClient.users.tweetsIdRetweetingUsers(tweet_id as string, {
+          'user.fields': ['id']
+        });
         for await (const page of data) {
           if (!page.data) break;
+          console.log(page.data);
           for (const item of page.data) {
             if (item.id === user_id) {
               checked = true;
@@ -82,7 +89,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
         break;
       case 'liked':
-        data = client.users.tweetsIdLikingUsers(tweet_id as string);
+        data = client.users.tweetsIdLikingUsers(tweet_id as string, {
+          'user.fields': ['id']
+        });
         for await (const page of data) {
           if (!page.data) break;
           for (const item of page.data) {
@@ -102,7 +111,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         break;
     }
     if (user) {
-      return res.status(200).json(user);
+      return res.status(200).json({
+        status: 'true',
+        user: user.data,
+        tw_token: refreshToken
+          ? base64URLEncode(JSON.stringify(refreshToken))
+          : ''
+      });
     }
     return res.status(200).json({
       status: 'true',
