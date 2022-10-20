@@ -29,10 +29,10 @@
 }
 
 .btnConnectWallet span {
-  @apply justify-end;
+  @apply justify-end text-slate-500;
 }
 
-.connectWalletTask:hover button {
+.connectWalletTask:hover button span {
   @apply text-slate-600;
 }
 

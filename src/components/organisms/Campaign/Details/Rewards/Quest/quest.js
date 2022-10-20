@@ -204,7 +204,7 @@ const Quest = (props) => {
   }, [router.isReady]);
 
   let walletConnect = userState.wallet_address ? (
-    <span className="flex items-center flex-row text-sm font-bold text-slate-400">
+    <span className="flex items-center flex-row text-sm font-bold text-slate-500">
       {ellipsify({
         str: userState.wallet_address,
         start: 4,
@@ -255,7 +255,7 @@ const Quest = (props) => {
           type="button"
           onPress={() => handleTwitterLogin()}
         />
-        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto group-hover:text-slate-600 transition-color duration-300">
+        <span className="flex items-center flex-row text-sm font-bold text-slate-500 ml-auto group-hover:text-slate-600 transition-color duration-300">
           {t('Login')}&nbsp;
           <FaAngleRight className="text-lg" />
         </span>
@@ -329,7 +329,7 @@ const Quest = (props) => {
             : ''}
         </span>
         {!tasks.ck_twitter_follow.status ? (
-          <span className="flex items-center flex-row text-sm font-bold text-slate-400 group-hover:text-slate-600 transition-color duration-300">
+          <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
             {t('Verify')}&nbsp;
             <FaAngleRight className="text-lg" />
           </span>
@@ -440,7 +440,7 @@ const Quest = (props) => {
             ? TaskFailIcon
             : ''}
           {!tasks.ck_twitter_retweet.status ? (
-            <span className="flex items-center flex-row text-sm font-bold text-slate-400 group-hover:text-slate-600 transition-color duration-300">
+            <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
               {t('Verify')}&nbsp;
               <FaAngleRight className="text-lg" />
             </span>
@@ -547,7 +547,7 @@ const Quest = (props) => {
             ? TaskFailIcon
             : ''}
           {!tasks.ck_nft_ownership.status ? (
-            <span className="flex items-center flex-row text-sm font-bold text-slate-400 group-hover:text-slate-600 transition-color duration-300">
+            <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
               {t('Verify')}&nbsp;
               <FaAngleRight className="text-lg" />
             </span>
