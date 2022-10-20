@@ -18,7 +18,7 @@ const Hero = () => {
                 earn.
               </p>
 
-              <div className="flex items-center mt-12">
+              <div className="flex items-center justify-center lg:justify-start mt-12">
                 <a
                   href="https://t.me/alexle_rada"
                   title="Create Campaign"
