@@ -88,7 +88,7 @@ const Item = (props) => {
       <span className={``}>{t('Ended')}</span>
     ) : (
       <div className="shadow bg-green-300 text-slate-800 rounded-full py-1 px-3 text-sm font-bold mr-4">
-        <span className={``}>{t('Ongoing')}</span>
+        <span className={``}>{t('ongoing')}</span>
       </div>
     );
 
@@ -101,7 +101,7 @@ const Item = (props) => {
   ) : null;
 
   //Build store/campaign owner info
-  const storeName = data.store_name ? data.store_name : null;
+  const storeName = data.store_name ? data.store_name : 'N/A';
   const storeLogo = data.store_logo_url ? (
     <span className="pair-value--logo">
       <img src={`${data.store_logo_url}`} title={storeName} />
@@ -131,41 +131,51 @@ const Item = (props) => {
       {providerInfo}
     </div>
   ) : null;
-  const rewardTokenVolumeInfo = data.reward_token_volume ? (
+  const rewardTokenVolumeInfo = (
     <div className="list-pair--item">
       <div className="pair-title">{t('Rewards')}</div>
-      <div className="pair-value">{data.reward_token_volume}</div>
+      <div className="pair-value">
+        {data.reward_token_volume ? data.reward_token_volume : 'N/A'}
+      </div>
     </div>
-  ) : null;
+  );
 
   // Build related chain info
-  const rewardChainInfo = data.nft_collection_ids.length ? (
+  const rewardChainInfo = (
     <div className="list-pair--item">
       <div className="pair-title">{t('Chain')}</div>
       <div className="pair-value">
-        <RelatedNftInfo
-          nftCollections={data.nft_collection_ids}
-          showChainName={true}
-          showCollectionLink={false}
-          showSmcAdd={false}
-        />
+        {data.nft_collection_ids.length ? (
+          <RelatedNftInfo
+            nftCollections={data.nft_collection_ids}
+            showChainName={true}
+            showCollectionLink={false}
+            showSmcAdd={false}
+          />
+        ) : (
+          'N/A'
+        )}
       </div>
     </div>
-  ) : null;
+  );
 
-  const requiredNftInfo = data.nft_collection_ids.length ? (
+  const requiredNftInfo = (
     <div className="list-pair--item">
-      <div className="pair-title">{t('Rquired NFTs')}</div>
+      <div className="pair-title">{t('Required NFTs')}</div>
       <div className="pair-value">
-        <RelatedNftInfo
-          nftCollections={data.nft_collection_ids}
-          showChainName={false}
-          showCollectionLink={true}
-          showSmcAdd={false}
-        />
+        {data.nft_collection_ids.length ? (
+          <RelatedNftInfo
+            nftCollections={data.nft_collection_ids}
+            showChainName={false}
+            showCollectionLink={true}
+            showSmcAdd={false}
+          />
+        ) : (
+          'N/A'
+        )}
       </div>
     </div>
-  ) : null;
+  );
 
   return (
     <div className={`${classes[rootClassName]}`}>

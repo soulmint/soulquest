@@ -2,13 +2,13 @@ import React from 'react';
 import { shape, string, number } from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'next-i18next';
-import { Heading } from '../../../atoms/Heading';
+import { Heading } from 'src/components/atoms/Heading';
 import classes from './list.module.css';
-import TextLink from '../../../atoms/TextLink';
-import useThemes from '../../../../hooks/useThemes';
-import { useList } from '../../../../hooks/Campaign';
+import TextLink from 'src/components/atoms/TextLink';
+import useThemes from 'src/hooks/useThemes';
+import { useList } from 'src/hooks/Campaign';
 import Item from './item';
-import Sort from '../../Campaign/Sort';
+import Sort from 'src/components/organisms/Campaign/Sort';
 
 const List = (props) => {
   const { t } = useTranslation('list_campaign');
