@@ -11,7 +11,7 @@ import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 import { base64URLEncode } from 'src/utils/strUtils';
 
 export default (props) => {
-  const { campaign, setIsSoul } = props;
+  const { campaign, souldUp, setSoulUp } = props;
 
   const { createQuester, updateQuester } = API;
 
@@ -26,12 +26,19 @@ export default (props) => {
   const tasks = {};
   let taskTotal = 0;
 
-  const localQuesterKey = `${add}_${campaign.id}_quester_id`;
-  const localSubmittedTasksKey = `${add}_${campaign.id}_submitted_tasks`;
+  const localQuesterIdKey = `${add}_${campaign.id}_quester_id`;
+  const localQuesterStateKey = `${add}_${campaign.id}_quester_state`;
+  const localQuesterTasksKey = `${add}_${campaign.id}_quester_tasks`;
+
   const localTwSocialLinkKey = `${add}_twSocialLinked`;
   const twSocialLinkedTtl = 24 * 60 * 60; // 1days
 
-  let submittedTasks = storage.getItem(localSubmittedTasksKey);
+  let submittedTasks = storage.getItem(localQuesterTasksKey);
+
+  const questerState = storage.getItem(localQuesterStateKey);
+  const [isSoul, setIsSoul] = useState(
+    questerState === 'approved' ? true : false
+  );
 
   // Add connect wallet task
   tasks.ck_connect_wallet = {
@@ -128,25 +135,29 @@ export default (props) => {
 
   const handleUpdateSubmittedTasks = useCallback(
     async (key, value) => {
-      let submittedTasks = storage.getItem(localSubmittedTasksKey);
+      let submittedTasks = storage.getItem(localQuesterTasksKey);
       if (submittedTasks === undefined) {
         submittedTasks = {};
       }
       submittedTasks[key] = value;
-      storage.setItem(localSubmittedTasksKey, submittedTasks);
+      storage.setItem(localQuesterTasksKey, submittedTasks);
 
       // Saving quester
-      const questerId = storage.getItem(localQuesterKey);
-      await saveQuester({
-        variables: {
-          id: questerId !== undefined ? parseInt(questerId) : null,
-          campaign_id: campaign.id,
-          tasks: JSON.stringify(submittedTasks),
-          status: 'pending'
-        }
-      });
+      const questerId = storage.getItem(localQuesterIdKey);
+      const questerState = storage.getItem(localQuesterStateKey);
+      console.log('questerState:', questerState);
+      if (questerState !== 'approved') {
+        await saveQuester({
+          variables: {
+            id: questerId !== undefined ? parseInt(questerId) : null,
+            campaign_id: campaign.id,
+            tasks: JSON.stringify(submittedTasks),
+            status: 'pending'
+          }
+        });
+      }
     },
-    [localSubmittedTasksKey]
+    [localQuesterTasksKey]
   );
 
   // Checking via Moralis APIs: https://docs.moralis.io/reference/getnftsforcontract
@@ -210,7 +221,7 @@ export default (props) => {
     return isNFTOwnership;
   }, [campaign, userState]);
 
-  const questerId = storage.getItem(localQuesterKey);
+  const questerId = storage.getItem(localQuesterIdKey);
   const [
     saveQuester,
     {
@@ -262,9 +273,14 @@ export default (props) => {
         : null;
 
       if (questerId) {
-        storage.setItem(localQuesterKey, questerId);
+        storage.setItem(localQuesterIdKey, questerId);
         if (status === 'approved') {
           setIsSoul(true);
+
+          setSoulUp(!souldUp);
+
+          storage.setItem(localQuesterStateKey, 'approved');
+
           return toast.success(t('Submitted.'));
         }
       }
@@ -287,13 +303,15 @@ export default (props) => {
   }, [saveQuestResult, saveQuesterError, t]);
 
   return {
-    localQuesterKey,
-    localSubmittedTasksKey,
+    localQuesterIdKey,
+    localQuesterTasksKey,
     localTwSocialLinkKey,
     twSocialLinkedTtl,
     userState,
     tasks,
     isFinishedTasks,
+    isSoul,
+    setIsSoul,
     handleUpdateSubmittedTasks,
     handleSubmit,
     handleVerifyNftOwnership,

@@ -2,7 +2,6 @@ import React from 'react';
 import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import classes from './rewards.module.css';
-// import Coupon from './Coupon';
 import Quest from './Quest';
 import Questers from './Questers';
 import HowClaim from './HowClaim';
@@ -10,13 +9,14 @@ import Summary from './Summary';
 import useThemes from 'src/hooks/useThemes';
 import Image from 'src/components/atoms/Image';
 import Screen from 'src/utils/responsive';
+// import Coupon from './Coupon';
 
 const Rewards = (props) => {
   const { campaign } = props;
 
   const { rootClassName } = useThemes();
 
-  const { t } = useTranslation('campaign_details');
+  // const { t } = useTranslation('campaign_details');
 
   const shortDesc = campaign.short_desc ? (
     <div
@@ -55,19 +55,18 @@ const Rewards = (props) => {
         alt={`cover_${campaign.title}`}
       />
     ) : null;
-  /*
-  const thumbOptions = 'fit=cover';
-  const thumbImage =
-    campaign.thumb_image && campaign.thumb_image.id ? (
-      <Image
-        layout="fill"
-        className={`${classes.campaignThumb}`}
-        placeholder="blur"
-        src={`${assetsBaseUrl}/${campaign.thumb_image.id}?${thumbOptions}`}
-        alt={`cover_${campaign.title}`}
-      />
-    ) : null;*/
 
+  // const thumbOptions = 'fit=cover';
+  // const thumbImage =
+  //   campaign.thumb_image && campaign.thumb_image.id ? (
+  //     <Image
+  //       layout="fill"
+  //       className={`${classes.campaignThumb}`}
+  //       placeholder="blur"
+  //       src={`${assetsBaseUrl}/${campaign.thumb_image.id}?${thumbOptions}`}
+  //       alt={`cover_${campaign.title}`}
+  //     />
+  //   ) : null;
   //const coupon = campaign.coupon ? <Coupon campaign={campaign} /> : null; //coming soon
 
   return (

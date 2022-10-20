@@ -51,23 +51,22 @@ const Quest = (props) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let twSocialLinked = null;
-  const [isSoul, setIsSoul] = useState(false);
-  const [hasSubmit, setHasSubmit] = useState(false);
 
   const {
-    localQuesterKey,
-    localSubmittedTasksKey,
+    localQuesterIdKey,
+    localQuesterTasksKey,
     localTwSocialLinkKey,
     twSocialLinkedTtl,
     userState,
     tasks,
     isFinishedTasks,
+    isSoul,
+    setIsSoul,
     handleUpdateSubmittedTasks,
     handleSubmit,
     handleVerifyNftOwnership
   } = useQuest({
-    campaign,
-    setIsSoul
+    campaign
   });
 
   const add = userState.wallet_address ? userState.wallet_address : null;
@@ -94,10 +93,10 @@ const Quest = (props) => {
         { email: { _eq: userState.wallet_address } }
       );
       if (quester) {
-        storage.setItem(localQuesterKey, quester.id);
+        storage.setItem(localQuesterIdKey, quester.id);
 
         const submittedTasks = quester.tasks ? JSON.parse(quester.tasks) : {};
-        storage.setItem(localSubmittedTasksKey, submittedTasks);
+        storage.setItem(localQuesterTasksKey, submittedTasks);
 
         //update task status
         const taskKeys = Object.keys(submittedTasks);
@@ -109,8 +108,6 @@ const Quest = (props) => {
 
         if (quester.status === 'approved') {
           setIsSoul(true);
-        } else {
-          setHasSubmit(true);
         }
       }
     }
@@ -650,8 +647,8 @@ const Quest = (props) => {
             ? () =>
                 handleSubmit({
                   status: 'approved',
-                  quester_id: storage.getItem(localQuesterKey),
-                  submitted_tasks: storage.getItem(localSubmittedTasksKey)
+                  quester_id: storage.getItem(localQuesterIdKey),
+                  submitted_tasks: storage.getItem(localQuesterTasksKey)
                 })
             : null
         }

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { shape, string } from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'next-i18next';

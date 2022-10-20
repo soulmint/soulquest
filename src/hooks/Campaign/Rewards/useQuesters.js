@@ -3,9 +3,9 @@ import API from './api.gql';
 import { useState, useMemo, useEffect } from 'react';
 
 export default (props) => {
-  const { getQuesters, getTotalQuesters, getNextQuestersFunc } = API;
-
   const { campaignId } = props;
+
+  const { getQuesters, getTotalQuesters, getNextQuestersFunc } = API;
 
   //vars for infinite loading
   const [page, setPage] = useState(2);
