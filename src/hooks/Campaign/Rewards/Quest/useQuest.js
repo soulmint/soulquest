@@ -11,7 +11,7 @@ import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 import { base64URLEncode } from 'src/utils/strUtils';
 
 export default (props) => {
-  const { campaign, souldUp, setSoulUp } = props;
+  const { campaign } = props;
 
   const { createQuester, updateQuester } = API;
 
@@ -275,8 +275,6 @@ export default (props) => {
         storage.setItem(localQuesterIdKey, questerId);
         if (status === 'approved') {
           setIsSoul(true);
-
-          setSoulUp(!souldUp);
 
           storage.setItem(localQuesterStateKey, 'approved');
 
