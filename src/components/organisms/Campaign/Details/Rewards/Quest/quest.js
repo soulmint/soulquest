@@ -433,14 +433,14 @@ const Quest = (props) => {
     ) : null;
     const twReTweetStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`ml-auto`}>
+        <span className={`flex items-center ml-auto`}>
           {tasks.ck_twitter_retweet.status === true
             ? t('Verified')
             : tasks.ck_twitter_retweet.status === false
             ? TaskFailIcon
             : ''}
           {!tasks.ck_twitter_retweet.status ? (
-            <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
+            <span className="flex items-center flex-row text-sm font-bold text-slate-500 ml-2 group-hover:text-slate-600 transition-color duration-300">
               {t('Verify')}&nbsp;
               <FaAngleRight className="text-lg" />
             </span>
