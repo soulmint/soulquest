@@ -179,22 +179,22 @@ const Quest = (props) => {
 
           setTwitterLoginState(true);
         }
-      }
-      // check twitter userid
-      if (tasks.ck_twitter_follow && !tasks.ck_twitter_follow.owner_id) {
-        let tw_owner_id = storage.getItem(
-          base64URLEncode(tasks.ck_twitter_follow.username)
-        );
-        if (!tw_owner_id) {
-          tw_owner_id = await getTwitterUserIdByUsermame({
-            screen_name: tasks.ck_twitter_follow.username
-          });
-          storage.setItem(
-            base64URLEncode(tasks.ck_twitter_follow.username),
-            tw_owner_id
+        // check twitter userid
+        if (tasks.ck_twitter_follow && !tasks.ck_twitter_follow.owner_id) {
+          let tw_owner_id = storage.getItem(
+            base64URLEncode(tasks.ck_twitter_follow.username)
           );
+          if (!tw_owner_id) {
+            tw_owner_id = await getTwitterUserIdByUsermame({
+              screen_name: tasks.ck_twitter_follow.username
+            });
+            storage.setItem(
+              base64URLEncode(tasks.ck_twitter_follow.username),
+              tw_owner_id
+            );
+          }
+          tasks.ck_twitter_follow.owner_id = tw_owner_id;
         }
-        tasks.ck_twitter_follow.owner_id = tw_owner_id;
       }
     }
   }, [router.isReady]);
