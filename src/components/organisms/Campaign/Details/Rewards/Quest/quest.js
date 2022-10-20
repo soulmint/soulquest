@@ -173,7 +173,9 @@ const Quest = (props) => {
 
       //if has tw social linked
       if (twSocialLinked) {
-        if (tasks.ck_twitter_login) {
+        //check twitter login
+        const tw_token = Cookies.get('tw_token');
+        if (tasks.ck_twitter_login && tw_token) {
           tasks.ck_twitter_login.status = true;
           tasks.ck_twitter_login.uid = twSocialLinked.uid;
           tasks.ck_twitter_login.screen_name = twSocialLinked.username;

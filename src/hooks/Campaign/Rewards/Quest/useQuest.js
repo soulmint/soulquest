@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import BrowserPersistence from 'src/utils/simplePersistence';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 import { base64URLEncode } from 'src/utils/strUtils';
+import Cookies from 'js-cookie';
 
 export default (props) => {
   const { campaign } = props;
@@ -49,11 +50,12 @@ export default (props) => {
   // Add twitter login task
   if (campaign.twitter_tweet || campaign.twitter_username) {
     const twSocialLinked = storage.getItem(localTwSocialLinkKey);
+    const tw_token = Cookies.get('tw_token');
     tasks.ck_twitter_login = {
       id: ++taskTotal,
-      status: twSocialLinked ? true : null,
-      uid: twSocialLinked ? twSocialLinked.uid : null,
-      screen_name: twSocialLinked ? twSocialLinked.username : null,
+      status: twSocialLinked && tw_token ? true : null,
+      uid: twSocialLinked && tw_token ? twSocialLinked.uid : null,
+      screen_name: twSocialLinked && tw_token ? twSocialLinked.username : null,
       msg: null
     };
   }
