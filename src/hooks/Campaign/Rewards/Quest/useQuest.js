@@ -92,7 +92,8 @@ export default (props) => {
       <RelatedNftInfo
         nftCollections={campaign.nft_collection_ids}
         showCollectionLink={true}
-        showChainName={true}
+        showChainName={false}
+        showSmcAdd={false}
       />
     );
     tasks.ck_nft_ownership = {
@@ -270,6 +271,15 @@ export default (props) => {
       }
       return toast.error(t('Something went wrong. Please try again!'));
     }
+
+    return () => {
+      if (saveQuestResult && saveQuestResult.create_quester_item) {
+        saveQuestResult.create_quester_item = null;
+      }
+      if (saveQuestResult && saveQuestResult.update_quester_item) {
+        saveQuestResult.update_quester_item = null;
+      }
+    };
   }, [saveQuestResult, saveQuesterError, t]);
 
   return {
