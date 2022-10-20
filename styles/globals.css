@@ -107,15 +107,15 @@ List pair
 }
 
 .pair-title {
-  @apply font-bold text-sm text-slate-400 w-1/2;
+  @apply font-bold text-sm text-slate-400 w-auto;
 }
 
 .pair-value {
-  @apply flex items-center font-bold text-base text-right;
+  @apply flex items-center font-bold text-base text-right ml-auto;
 }
 
 .pair-value--logo {
-  @apply w-6 h-6 bg-slate-700 rounded mr-2;
+  @apply w-6 h-6 bg-slate-700 rounded mr-2 !p-0 flex items-center justify-center;
   padding: 3px 6px 6px 6px;
 }
 
