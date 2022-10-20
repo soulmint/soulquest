@@ -5,7 +5,7 @@ const Hero = () => {
   return (
     <Fragment>
       <div className={`${classes.root} bg-teal-400 relative`}>
-        <div className="container max-w-screen-xl mx-auto px-4 z-10">
+        <div className="container max-w-screen-xl mx-auto py-12 lg:py-0 px-8 lg:px-4 z-10">
           <div className="flex flex-wrap items-center">
             <div className="basis-full lg:basis-7/12 text-center lg:text-left lg:pr-16">
               <h1 className="text-4xl lg:text-5xl font-bold text-slate-800 !leading-tight mt-0 mb-4 lg:mb-6">
@@ -18,7 +18,7 @@ const Hero = () => {
                 earn.
               </p>
 
-              <div className="flex items-center mt-12">
+              <div className="flex items-center justify-center lg:justify-start mt-12">
                 <a
                   href="https://t.me/alexle_rada"
                   title="Create Campaign"
