@@ -1,5 +1,4 @@
 .root {
-
 }
 
 .rootDark {
@@ -10,7 +9,7 @@
 }
 
 .rewardOverview p {
-    @apply mb-0;
+    @apply mb-0 leading-relaxed;
   }
 
 .pair-value--logo {
