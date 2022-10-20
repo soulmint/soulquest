@@ -41,7 +41,14 @@ const getTwitterUserIdByUsermame = async (props: any) => {
   await fetch('/api/twitter/user?task=getid&screen_name=' + screen_name)
     .then((res) => res.json())
     .then((data) => {
-      id = data?.data?.id;
+      if (data.tw_token) {
+        Cookies.set('tw_token', data.tw_token, {
+          expires: 30,
+          path: '/',
+          sameSite: 'lax'
+        });
+      }
+      id = data?.user?.id;
     });
   return id;
 };
