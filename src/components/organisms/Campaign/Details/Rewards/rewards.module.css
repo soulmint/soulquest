@@ -38,11 +38,9 @@
 }
 
 .campaignCover {
-  position: relative !important;
+  @apply !relative !w-auto !h-auto;
   min-width: auto !important;
   min-height: auto !important;
-  height: auto !important;
-  width: auto !important;
 }
 
 .campaignThumb {
@@ -54,16 +52,19 @@
 
 .rewardWrapper {
 }
+
 .rewardOverview {
-    @apply border-t border-slate-200 pt-4 mt-4;
+  @apply border-t border-slate-200 pt-4 mt-4;
 }
+
 .rewardOverview p {
-  @apply my-0;
+  @apply my-0 leading-normal;
 }
 
 .rewardOverview p + p {
-    @apply mt-4;
+  @apply mt-4;
 }
+
 .storeLink {
 
 }

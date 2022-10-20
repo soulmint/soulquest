@@ -19,3 +19,7 @@
 .howToClaim p + p {
   @apply mt-3;
 }
+
+.howToClaim ul {
+  @apply my-0 ml-4 p-0 leading-normal;
+}
