@@ -89,7 +89,7 @@ const Rewards = (props) => {
         </div>
       </div>
       <div className={`${classes.pageSidebar}`}>
-        {claimInfo}
+        {/*{claimInfo}*/}
         <Screen from="lg">{summary}</Screen>
         {questers}
         {howToClaim}
