@@ -56,7 +56,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         });
         for await (const page of data) {
           if (!page.data) break;
-          console.log(page.data);
           for (const item of page.data) {
             if (item.id === owner_id) {
               checked = true;
@@ -78,7 +77,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         });
         for await (const page of data) {
           if (!page.data) break;
-          console.log(page.data);
           for (const item of page.data) {
             if (item.id === user_id) {
               checked = true;

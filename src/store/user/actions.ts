@@ -38,11 +38,22 @@ export const setWalletAddressAction = (add: any) => {
   };
 };
 
+export const setSoulsUpAction = (value: boolean) => {
+  //saving to local for init state
+  storage.setItem('souls_up', value);
+
+  return {
+    type: UserActionType.setSoulsUp,
+    payload: value
+  };
+};
+
 export const logOut = () => {
   //clean related local storage vars
   storage.removeItem('user_id');
   storage.removeItem('access_token');
   storage.removeItem('wallet_address');
+  storage.removeItem('souls_up');
 
   // next-auth > logout
   setTimeout(function () {

@@ -8,12 +8,29 @@ import defaultClasses from './questers.module.css';
 import { useStyle } from '../../../../../classify';
 import { ellipsify } from '../../../../../../utils/strUtils';
 import Avatar from 'boring-avatars';
+import { useSelector } from 'react-redux';
 
 const Questers = (props) => {
   const { classes: propClasses, campaignId } = props;
   const classes = useStyle(defaultClasses, propClasses);
   const { t } = useTranslation('campaign_details');
   const { rootClassName } = useThemes();
+
+  const soulsUp = useSelector((state) => state.user.souls_up);
+
+  /*const [, updateState] = React.useState();
+  const forceUpdate = React.useCallback(() => updateState({}), []);*/
+  // const [hasSoulsUp, setHasSoulsUp] = useState(null);
+
+  console.log('Souls rendering...');
+
+  /*useEffect(() => {
+    console.log('soulsUp:', soulsUp);
+
+    // setHasSoulsUp(soulsUp);
+    /!*forceUpdate();*!/
+
+  }, [soulsUp]);*/
 
   const {
     data,

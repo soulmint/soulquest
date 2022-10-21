@@ -4,12 +4,14 @@ export type UserState = {
   id?: any;
   token?: any;
   wallet_address?: any;
+  souls_up?: boolean;
 };
 
 export const UserActionType = {
   setId: 'setId',
   setToken: 'setToken',
   setWalletAddress: 'setWalletAddress',
+  setSoulsUp: 'setSoulsUp',
   logOut: 'logOut'
 };
 

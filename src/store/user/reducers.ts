@@ -18,10 +18,16 @@ const getToken = () => {
   return accessToken;
 };
 
+const getSoulsUp = () => {
+  const soulsUp = storage.getItem('souls_up');
+  return soulsUp ? soulsUp : false;
+};
+
 export const initialState: UserState = {
   id: getId(),
   token: getToken(),
-  wallet_address: getWalletAddress()
+  wallet_address: getWalletAddress(),
+  souls_up: getSoulsUp()
 };
 
 const reducer = (
@@ -43,6 +49,11 @@ const reducer = (
       return {
         ...state,
         wallet_address: action.payload
+      };
+    case UserActionType.setSoulsUp:
+      return {
+        ...state,
+        souls_up: action.payload
       };
     case UserActionType.logOut:
       return {

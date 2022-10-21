@@ -76,6 +76,8 @@ export default (props) => {
     }
   }, [data, totalItems]);
 
+  console.log('totalSouls:', totalItems);
+
   //return data
   return {
     data,

@@ -10,6 +10,8 @@ import BrowserPersistence from 'src/utils/simplePersistence';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 import { base64URLEncode } from 'src/utils/strUtils';
 import Cookies from 'js-cookie';
+import { useDispatch } from 'react-redux';
+import { setSoulsUp } from 'src/store/user/operations';
 
 export default (props) => {
   const { campaign } = props;
@@ -17,6 +19,8 @@ export default (props) => {
   const { createQuester, updateQuester } = API;
 
   const { t } = useTranslation('campaign_details');
+
+  const dispatch = useDispatch();
 
   const storage = new BrowserPersistence();
 
@@ -279,6 +283,8 @@ export default (props) => {
           setIsSoul(true);
 
           storage.setItem(localQuesterStateKey, 'approved');
+
+          setSoulsUp(dispatch, true);
 
           return toast.success(t('Submitted.'));
         }

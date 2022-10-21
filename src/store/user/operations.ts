@@ -32,6 +32,16 @@ export const setToken = (dispatch: Dispatch<UserAction>, token: any) => {
   }
 };
 
+export const setSoulsUp = (dispatch: Dispatch<UserAction>, value: boolean) => {
+  try {
+    dispatch(actions.setSoulsUpAction(value));
+  } catch (e) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(e);
+    }
+  }
+};
+
 export const logOut = async (dispatch: Dispatch<UserAction>) => {
   try {
     dispatch(actions.logOut());
