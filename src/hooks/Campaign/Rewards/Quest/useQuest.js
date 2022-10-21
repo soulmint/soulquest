@@ -296,8 +296,7 @@ export default (props) => {
           setIsSoul(true);
 
           storage.setItem(localQuesterStateKey, 'approved');
-
-          setSoulsUp(dispatch, true);
+          setSoulsUp(dispatch, !userState.souls_up);
 
           return toast.success(t('Submitted.'));
         }

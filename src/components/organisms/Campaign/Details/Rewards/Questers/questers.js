@@ -34,7 +34,8 @@ const Questers = (props) => {
     setInfiniteHasMore,
     firstPageData
   } = useQuesters({
-    campaignId
+    campaignId,
+    soulsUp
   });
 
   useEffect(async () => {
@@ -43,11 +44,7 @@ const Questers = (props) => {
         setInfiniteItems(data.quester);
       }
     }
-    if (soulsUp) {
-      await firstPageData();
-      setSoulsUp(dispatch, false);
-    }
-  }, [data, firstPageData, setInfiniteItems, soulsUp]);
+  }, [data, firstPageData, setInfiniteItems]);
 
   const blockHeading = (
     <h3 className="">
@@ -133,7 +130,7 @@ const Questers = (props) => {
     <Fragment>
       <div className={`card mt-6 ${classes[rootClassName]}`}>
         <div className="card-header">{blockHeading}</div>
-        <div className={`card-body ${classes.questers}`}>{child}</div>
+        <div className={`card-body text-sm ${classes.questers}`}>{child}</div>
       </div>
     </Fragment>
   );

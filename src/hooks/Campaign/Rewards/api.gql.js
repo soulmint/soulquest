@@ -160,6 +160,29 @@ export const getFirstPageData = async (props) => {
 
   return rs;
 };
+export const getTotalItems = async (props) => {
+  const { filter } = props;
+  const client = initializeApollo();
+  let rs;
+  try {
+    const { data, loading, error } = await client.query({
+      query: GET_TOTAL_QUESTER,
+      variables: {
+        filter
+      },
+      fetchPolicy: 'no-cache'
+    });
+    rs = { data, loading, error };
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(error);
+    }
+
+    return error;
+  }
+
+  return rs;
+};
 
 export default {
   createQuester: CREATE_QUESTER,
@@ -167,6 +190,7 @@ export default {
   isQuesterExistsFunc: isQuesterExists,
   getQuesters: GET_QUESTERS,
   getTotalQuesters: GET_TOTAL_QUESTER,
+  getTotalItems,
   getNextQuestersFunc: getNextQuesters,
   getFirstQuestersDataFunc: getFirstPageData
 };

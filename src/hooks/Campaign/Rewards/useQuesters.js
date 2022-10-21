@@ -3,10 +3,9 @@ import API from './api.gql';
 import { useState, useMemo, useEffect } from 'react';
 
 export default (props) => {
-  const { campaignId } = props;
+  const { campaignId, soulsUp } = props;
 
-  const { getTotalQuesters, getNextQuestersFunc, getFirstQuestersDataFunc } =
-    API;
+  const { getTotalItems, getNextQuestersFunc, getFirstQuestersDataFunc } = API;
 
   //vars for infinite loading
   const [page, setPage] = useState(2);
@@ -26,6 +25,9 @@ export default (props) => {
   const [pageData, setPageData] = useState();
   const [pageLoading, setPageLoading] = useState();
   const [pageError, setPageError] = useState();
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalItemsLoading, setTotalItemsLoading] = useState();
+  const [totalItemsError, setTotalItemsError] = useState();
   const getNextItems = async () => {
     const nextItems = await getNextQuestersFunc({
       filter,
@@ -44,33 +46,41 @@ export default (props) => {
       page: 1,
       sort
     });
-    if (data) setPageData(data);
-    if (loading) setPageLoading(loading);
-    if (error) setPageError(error);
+    setPageData(data);
+    setPageLoading(loading);
+    setPageError(error);
   };
-
+  const TotalItems = async () => {
+    const { data, loading, error } = await getTotalItems({
+      filter
+    });
+    setTotalItems(data.quester.length);
+    setTotalItemsLoading(loading);
+    setTotalItemsError(error);
+  };
   // Get current total of items
-  const { data: allItemsData, loading: totalItemsLoading } = useQuery(
-    getTotalQuesters,
-    {
-      fetchPolicy: 'cache-and-network',
-      nextFetchPolicy: 'cache-first',
-      variables: {
-        filter
-      }
-    }
-  );
-  const totalItems = useMemo(() => {
-    return allItemsData ? allItemsData.quester.length : 0;
-  }, [allItemsData]);
+  // const { data: allItemsData, loading: totalItemsLoading } = useQuery(
+  //   getTotalQuesters,
+  //   {
+  //     fetchPolicy: 'cache-and-network',
+  //     nextFetchPolicy: 'cache-first',
+  //     variables: {
+  //       filter
+  //     }
+  //   }
+  // );
+  // const totalItems = useMemo(() => {
+  //   return allItemsData ? allItemsData.quester.length : 0;
+  // }, [allItemsData]);
 
   // Loading items in first page
+  useEffect(async () => {
+    await firstPageData();
+    await TotalItems();
+  }, [soulsUp]);
 
   // set infinite items from the first page
   useEffect(async () => {
-    if (!pageData) {
-      await firstPageData();
-    }
     if (pageData) {
       const size = pageData.quester.length;
       if (size) {
@@ -88,7 +98,7 @@ export default (props) => {
   return {
     data: pageData ? pageData : null,
     loading: pageLoading || totalItemsLoading ? true : false,
-    error: pageError ? pageError : null,
+    error: pageError || totalItemsError ? true : null,
     page,
     setPage,
     totalItems,
