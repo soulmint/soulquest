@@ -596,8 +596,10 @@ const Quest = (props) => {
             >
               {t('Task')} {tasks.ck_nft_ownership.id}
             </span>
-            <h4 className="mt-0 mb-0">{t('Must hold:')}</h4>
-            {tasks.ck_nft_ownership.nftCollectionInfo}
+            <div className="flex items-center">
+              <h4 className="my-0 mr-1">{t('Must hold:')}</h4>
+              {tasks.ck_nft_ownership.nftCollectionInfo}
+            </div>
           </div>
         </div>
         {nftOwnershipStatus}

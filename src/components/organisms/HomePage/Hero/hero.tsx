@@ -25,7 +25,7 @@ const Hero = () => {
                   target="_blank"
                   className="bg-violet-600 hover:bg-violet-700 text-white inline-block rounded-xl py-3 px-6 text-lg font-medium tracking-wide shadow hover:shadow-xl border-2 border-transparent transition-all duration-300"
                 >
-                  Create Campaign
+                  Create a Quest
                 </a>
                 <a
                   href="//soulmint.notion.site/SoulMint-e036b079a12b41ee8bf150689ff4af22"
