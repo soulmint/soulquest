@@ -133,7 +133,7 @@ export const getNextQuesters = async (props) => {
 
   return rs;
 };
-export const getFirstPagesData = async (props) => {
+export const getFirstPageData = async (props) => {
   const { search, filter, limit, page, sort } = props;
   const client = initializeApollo();
   let rs;
@@ -168,5 +168,5 @@ export default {
   getQuesters: GET_QUESTERS,
   getTotalQuesters: GET_TOTAL_QUESTER,
   getNextQuestersFunc: getNextQuesters,
-  getFirstQuestersDataFunc: getFirstPagesData
+  getFirstQuestersDataFunc: getFirstPageData
 };
