@@ -124,6 +124,19 @@ export default (props) => {
     };
   }
 
+  // Add POW Submit URL task
+  if (campaign.pow_submit_url_note) {
+    tasks.ck_pow_submit_url = {
+      id: ++taskTotal,
+      note: campaign.pow_submit_url_note,
+      status:
+        submittedTasks && submittedTasks.ck_pow_submit_url !== undefined
+          ? submittedTasks.ck_pow_submit_url
+          : null,
+      msg: null
+    };
+  }
+
   const isFinishedTasks = useCallback(() => {
     let rs = true;
     const keys = Object.keys(tasks);

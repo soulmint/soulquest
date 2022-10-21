@@ -34,6 +34,7 @@ export const LOAD_CAMPAIGN_BY_SLUG = gql`
       twitter_owner_id
       twitter_tweet
       twitter_tweet_id
+      pow_submit_url_note
       discount_value
       store_name
       store_logo_url

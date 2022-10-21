@@ -14,6 +14,7 @@ import {
   FaTwitter,
   FaUserPlus,
   FaRetweet,
+  FaRegFile,
   FaCheck,
   FaAngleRight
 } from 'react-icons/fa';
@@ -31,7 +32,8 @@ import { TaskFailIcon } from 'src/components/organisms/Svg/SvgIcons';
 import {
   base64URLDecode,
   base64URLEncode,
-  ellipsify
+  ellipsify,
+  validURL
 } from 'src/utils/strUtils';
 import {
   checkExistsSocialLink,
@@ -40,6 +42,7 @@ import {
 import { isQuesterExists } from 'src/hooks/Campaign/Rewards/api.gql';
 import Cookies from 'js-cookie';
 import { useQuest } from 'src/hooks/Campaign/Rewards';
+import classes from '../../../List/list.module.css';
 
 const Quest = (props) => {
   const { classes: propClasses, campaign } = props;
@@ -87,6 +90,9 @@ const Quest = (props) => {
   );
   const [nftOwnershipState, setNftOwnershipState] = useState(
     tasks.ck_nft_ownership ? tasks.ck_nft_ownership.status : null
+  );
+  const [powSubmitUrlState, setPOWSubmitUrlState] = useState(
+    tasks.ck_pow_submit_url ? tasks.ck_pow_submit_url.status : null
   );
 
   useEffect(async () => {
@@ -635,6 +641,110 @@ const Quest = (props) => {
     );
   };
 
+  let powSubmitUrlTask = null;
+  if (tasks.ck_pow_submit_url) {
+    /*const btnVerifyPOWSubmitUrl = !tasks.ck_pow_submit_url.status ? (
+      <Button
+        id={`btn-verify-pow-submit-url`}
+        priority="high"
+        classes={{ root_highPriority: classes.btnVerifyPOWSubmitUrl }}
+        type="button"
+        onPress={() => handleCheckPOWSubmitUrl('pow_submit_url')}
+      />
+    ) : null;*/
+
+    const powSubmitUrlStatus = (
+      <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
+        <span className={`flex items-center ml-auto`}>
+          {tasks.ck_pow_submit_url.status
+            ? t('Under review')
+            : tasks.ck_pow_submit_url.status === false
+            ? TaskFailIcon
+            : ''}
+          {/*{!tasks.ck_pow_submit_url.status ? (
+            <span className="flex items-center flex-row text-sm font-bold text-slate-500 ml-2 group-hover:text-slate-600 transition-color duration-300">
+              {t('Verify')}&nbsp;
+              <FaAngleRight className="text-lg" />
+            </span>
+          ) : null}*/}
+        </span>
+      </span>
+    );
+    const powSubmitUrlIconLeft = tasks.ck_pow_submit_url ? (
+      <div
+        className={`${classes.questItemIcon} ${
+          tasks.ck_pow_submit_url.status
+            ? 'bg-green-300 text-slate-800'
+            : 'bg-cyan-400 text-white'
+        }`}
+      >
+        {tasks.ck_pow_submit_url.status ? <FaCheck /> : <FaRegFile />}
+      </div>
+    ) : null;
+    let powSubmitUrlTaskClasses = [classes.questItem, classes.powSubmitUrlTask];
+    powSubmitUrlTaskClasses.push(
+      twitterReTweetState === 'loading' ? classes.taskLoading : null
+    );
+    powSubmitUrlTask = (
+      <div className={`${powSubmitUrlTaskClasses.join(' ')} relative group`}>
+        {powSubmitUrlIconLeft}
+        <div className="z-20">
+          <span
+            className={`${classes.taskIndex} ${
+              tasks.ck_pow_submit_url.status ? classes.taskSuccess : ''
+            }`}
+          >
+            {t('Task')} {tasks.ck_pow_submit_url.id}
+          </span>
+          <span className={`${classes.taskTitle}`}>{t('Must submit URL')}</span>
+          <span className={`${classes.taskTip}`}>
+            {tasks.ck_pow_submit_url.note}
+          </span>
+          <input
+            autoComplete="off"
+            className={classes.powSubmitUrlInput}
+            type="text"
+            id="pow_submit_url"
+            name="pow_submit_url"
+            onBlur={() => handleCheckPOWSubmitUrl('pow_submit_url')}
+            placeholder={tasks.ck_pow_submit_url.note}
+          />
+        </div>
+        {powSubmitUrlStatus}
+      </div>
+    );
+  }
+
+  const handleCheckPOWSubmitUrl = async (inputId) => {
+    if (userState.wallet_address === undefined) {
+      return toast.warning(
+        t('You must connect your wallet before do this task!')
+      );
+    }
+
+    setPOWSubmitUrlState('loading');
+
+    const powSubmitUrl = document.getElementById(inputId);
+
+    const status = validURL(powSubmitUrl.value);
+
+    // update state
+    tasks.ck_pow_submit_url.status = status;
+
+    //trigger to re-render
+    setNftOwnershipState(tasks.ck_pow_submit_url.status);
+
+    // update submitted tasks to local storage
+    await handleUpdateSubmittedTasks(
+      'ck_pow_submit_url',
+      status ? powSubmitUrl.value : false
+    );
+
+    if (!tasks.ck_pow_submit_url.status) {
+      toast.error(t('Invalid submit URL'));
+    }
+  };
+
   const canSubmit =
     userState.wallet_address && (now <= endDate) & isFinishedTasks() && !isSoul
       ? true
@@ -683,6 +793,7 @@ const Quest = (props) => {
         {twFollowTask}
         {twReTweetTask}
         {nftOwnershipTask}
+        {powSubmitUrlTask}
         {btnClaimReward}
       </div>
     </Fragment>
