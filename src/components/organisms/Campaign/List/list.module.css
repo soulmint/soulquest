@@ -47,7 +47,7 @@
 }
 
 .infiniteFinished {
-	@apply border-2 border-slate-800 text-slate-800 cursor-pointer lg:max-w-xs rounded-md col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center font-medium mt-4 py-4 px-8 lg:px-20 hover:px-24 mx-auto transition-all duration-300;
+	@apply border-2 border-slate-800 text-slate-800 cursor-pointer lg:max-w-xs rounded-xl col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center font-medium mt-4 py-4 px-8 lg:px-20 hover:px-24 mx-auto transition-all duration-300;
 }
 
 .rootDark .infiniteFinished {

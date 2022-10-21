@@ -57,6 +57,10 @@ ol li p {
   @apply my-0;
 }
 
+button {
+  @apply ring-0 outline-none;
+}
+
 
 /* Improve style for Web3 modal */
 .web3modal-modal-lightbox {
@@ -107,7 +111,7 @@ List pair
 }
 
 .pair-title {
-  @apply font-bold text-sm text-slate-400 w-auto;
+  @apply font-semibold text-sm text-slate-400 w-auto;
 }
 
 .pair-value {

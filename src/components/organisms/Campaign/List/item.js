@@ -85,10 +85,10 @@ const Item = (props) => {
   const now = Moment();
   let stateInfo =
     now > endDate ? (
-      <span className={``}>{t('Ended')}</span>
+      <span className={`text-slate-400`}>{t('Ended')}</span>
     ) : (
-      <div className="shadow bg-green-300 text-slate-800 rounded-full py-1 px-3 text-sm font-bold mr-4">
-        <span className={``}>{t('ongoing')}</span>
+      <div className="">
+        <span className={``}>{t('Ongoing')}</span>
       </div>
     );
 

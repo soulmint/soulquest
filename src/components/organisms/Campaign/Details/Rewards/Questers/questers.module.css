@@ -45,7 +45,7 @@
 }
 
 .infiniteFinished {
-  @apply hidden text-gray-600 rounded-md col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center pt-3 pb-3;
+  @apply hidden text-gray-600 rounded-xl col-start-1 col-end-1 md:col-end-3 lg:col-end-4 text-center pt-3 pb-3;
 }
 
 .rootDark .infiniteFinished {

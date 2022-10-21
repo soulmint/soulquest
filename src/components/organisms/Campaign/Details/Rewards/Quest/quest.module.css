@@ -12,7 +12,7 @@
 }
 
 .taskIndex {
-  @apply text-xs tracking-widest text-slate-400 font-semibold block uppercase py-0.5 text-left;
+  @apply text-xs tracking-wide text-slate-400 font-semibold block uppercase pt-0.5 text-left;
 }
 
 .taskSuccess {
