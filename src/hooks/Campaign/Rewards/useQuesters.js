@@ -5,7 +5,8 @@ import { useState, useMemo, useEffect } from 'react';
 export default (props) => {
   const { campaignId } = props;
 
-  const { getQuesters, getTotalQuesters, getNextQuestersFunc } = API;
+  const { getTotalQuesters, getNextQuestersFunc, getFirstQuestersDataFunc } =
+    API;
 
   //vars for infinite loading
   const [page, setPage] = useState(2);
@@ -22,7 +23,9 @@ export default (props) => {
   // vars for filter toolbar
   const [filter, setFilter] = useState(defaultFilter);
   const [limit, setLimit] = useState(defaultLimit);
-
+  const [pageData, setPageData] = useState();
+  const [pageLoading, setPageLoading] = useState();
+  const [pageError, setPageError] = useState();
   const getNextItems = async () => {
     const nextItems = await getNextQuestersFunc({
       filter,
@@ -32,6 +35,18 @@ export default (props) => {
     });
 
     return nextItems;
+  };
+  // Loading items in first page
+  const firstPageData = async () => {
+    const { data, loading, error } = await getFirstQuestersDataFunc({
+      filter,
+      limit,
+      page: 1,
+      sort
+    });
+    if (data) setPageData(data);
+    if (loading) setPageLoading(loading);
+    if (error) setPageError(error);
   };
 
   // Get current total of items
@@ -50,23 +65,16 @@ export default (props) => {
   }, [allItemsData]);
 
   // Loading items in first page
-  const { data, loading, error } = useQuery(getQuesters, {
-    fetchPolicy: 'cache-and-network',
-    nextFetchPolicy: 'cache-first',
-    variables: {
-      filter,
-      limit,
-      page: 1,
-      sort
-    }
-  });
 
   // set infinite items from the first page
-  useEffect(() => {
-    if (data) {
-      const size = data.quester.length;
+  useEffect(async () => {
+    if (!pageData) {
+      await firstPageData();
+    }
+    if (pageData) {
+      const size = pageData.quester.length;
       if (size) {
-        setInfiniteItems(data.quester);
+        setInfiniteItems(pageData.quester);
         if (size < totalItems) {
           setInfiniteHasMore(true);
         } else {
@@ -74,15 +82,15 @@ export default (props) => {
         }
       }
     }
-  }, [data, totalItems]);
+  }, [pageData, totalItems]);
 
   console.log('totalSouls:', totalItems);
 
   //return data
   return {
-    data,
-    loading: loading || totalItemsLoading ? true : false,
-    error,
+    data: pageData ? pageData : null,
+    loading: pageLoading || totalItemsLoading ? true : false,
+    error: pageError ? pageError : null,
     page,
     setPage,
     totalItems,
@@ -90,6 +98,7 @@ export default (props) => {
     infiniteItems,
     setInfiniteItems,
     infiniteHasMore,
+    firstPageData,
     setInfiniteHasMore
   };
 };
