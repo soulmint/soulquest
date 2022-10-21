@@ -2,14 +2,13 @@ import React, { Fragment, useEffect } from 'react';
 import { shape, string } from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'next-i18next';
-import useThemes from '../../../../../../hooks/useThemes';
-import { useQuesters } from '../../../../../../hooks/Campaign/Rewards';
+import useThemes from 'src/hooks/useThemes';
+import { useQuesters } from 'src/hooks/Campaign/Rewards';
 import defaultClasses from './questers.module.css';
-import { useStyle } from '../../../../../classify';
-import { ellipsify } from '../../../../../../utils/strUtils';
+import { useStyle } from 'src/components/classify';
+import { ellipsify } from 'src/utils/strUtils';
 import Avatar from 'boring-avatars';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSoulsUp } from 'src/store/user/operations';
 
 const Questers = (props) => {
   const { classes: propClasses, campaignId } = props;
@@ -18,7 +17,6 @@ const Questers = (props) => {
   const { rootClassName } = useThemes();
 
   const soulsUp = useSelector((state) => state.user.souls_up);
-  const dispatch = useDispatch();
 
   const {
     data,
@@ -31,8 +29,7 @@ const Questers = (props) => {
     infiniteItems,
     setInfiniteItems,
     infiniteHasMore,
-    setInfiniteHasMore,
-    firstPageData
+    setInfiniteHasMore
   } = useQuesters({
     campaignId,
     soulsUp
@@ -44,7 +41,7 @@ const Questers = (props) => {
         setInfiniteItems(data.quester);
       }
     }
-  }, [data, firstPageData, setInfiniteItems]);
+  }, [data, setInfiniteItems]);
 
   const blockHeading = (
     <h3 className="">

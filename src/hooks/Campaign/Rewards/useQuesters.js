@@ -1,11 +1,10 @@
-import { useQuery } from '@apollo/client';
 import API from './api.gql';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 export default (props) => {
   const { campaignId, soulsUp } = props;
 
-  const { getTotalItems, getNextQuestersFunc, getFirstQuestersDataFunc } = API;
+  const { getTotalItemsFunc, getNextQuestersFunc, getFirstQuestersFunc } = API;
 
   //vars for infinite loading
   const [page, setPage] = useState(2);
@@ -22,12 +21,28 @@ export default (props) => {
   // vars for filter toolbar
   const [filter, setFilter] = useState(defaultFilter);
   const [limit, setLimit] = useState(defaultLimit);
+
   const [pageData, setPageData] = useState();
   const [pageLoading, setPageLoading] = useState();
   const [pageError, setPageError] = useState();
+
   const [totalItems, setTotalItems] = useState(0);
   const [totalItemsLoading, setTotalItemsLoading] = useState();
   const [totalItemsError, setTotalItemsError] = useState();
+
+  // Loading items in first page
+  const getFirstItems = async () => {
+    const { data, loading, error } = await getFirstQuestersFunc({
+      filter,
+      limit,
+      page: 1,
+      sort
+    });
+    setPageData(data);
+    setPageLoading(loading);
+    setPageError(error);
+  };
+
   const getNextItems = async () => {
     const nextItems = await getNextQuestersFunc({
       filter,
@@ -38,45 +53,21 @@ export default (props) => {
 
     return nextItems;
   };
-  // Loading items in first page
-  const firstPageData = async () => {
-    const { data, loading, error } = await getFirstQuestersDataFunc({
-      filter,
-      limit,
-      page: 1,
-      sort
-    });
-    setPageData(data);
-    setPageLoading(loading);
-    setPageError(error);
-  };
-  const TotalItems = async () => {
-    const { data, loading, error } = await getTotalItems({
+
+  const getTotalItems = async () => {
+    const { data, loading, error } = await getTotalItemsFunc({
       filter
     });
     setTotalItems(data.quester.length);
     setTotalItemsLoading(loading);
     setTotalItemsError(error);
   };
-  // Get current total of items
-  // const { data: allItemsData, loading: totalItemsLoading } = useQuery(
-  //   getTotalQuesters,
-  //   {
-  //     fetchPolicy: 'cache-and-network',
-  //     nextFetchPolicy: 'cache-first',
-  //     variables: {
-  //       filter
-  //     }
-  //   }
-  // );
-  // const totalItems = useMemo(() => {
-  //   return allItemsData ? allItemsData.quester.length : 0;
-  // }, [allItemsData]);
 
-  // Loading items in first page
   useEffect(async () => {
-    await firstPageData();
-    await TotalItems();
+    // Load total items
+    await getTotalItems();
+    // Loading items in first page
+    await getFirstItems();
   }, [soulsUp]);
 
   // set infinite items from the first page
@@ -106,7 +97,6 @@ export default (props) => {
     infiniteItems,
     setInfiniteItems,
     infiniteHasMore,
-    firstPageData,
     setInfiniteHasMore
   };
 };
