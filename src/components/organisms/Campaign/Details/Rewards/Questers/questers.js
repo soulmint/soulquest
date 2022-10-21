@@ -19,19 +19,6 @@ const Questers = (props) => {
 
   const soulsUp = useSelector((state) => state.user.souls_up);
   const dispatch = useDispatch();
-  /*const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);*/
-  // const [hasSoulsUp, setHasSoulsUp] = useState(null);
-
-  console.log('Souls rendering...');
-
-  /*useEffect(() => {
-    console.log('soulsUp:', soulsUp);
-
-    // setHasSoulsUp(soulsUp);
-    /!*forceUpdate();*!/
-
-  }, [soulsUp]);*/
 
   const {
     data,
