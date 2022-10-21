@@ -65,8 +65,29 @@
   @apply bg-gray-100 mt-2 p-4 rounded-lg;
 }
 
-.btnVerifyTwitter {
+.btnVerify {
   @apply absolute left-0 top-0 right-0 bottom-0 w-full;
+}
+
+.btnVerifyTwitter {
+  composes: btnVerify;
+}
+
+.btnVerifyPOWSubmitUrl {
+  composes: btnVerify;
+}
+
+.powSubmitUrlInput {
+  @apply border border-2 border-gray-300 ring-0 focus:ring-0 rounded-lg mr-2;
+}
+
+.taskTitle {
+
+}
+
+.taskTip {
+  font-size: 10px;
+  display: block;
 }
 
 .soulBoundTokenTask {

@@ -30,12 +30,27 @@ const chains = new Map()
 export const getChainName = (chainKey) =>
   (chainKey && chains.get(chainKey)) || chainKey;
 
+export const validURL = (url) => {
+  const pattern = new RegExp(
+    '^(https?:\\/\\/)?' + // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+      '(\\#[-a-z\\d_]*)?$',
+    'i'
+  ); // fragment locator
+
+  return !!pattern.test(url);
+};
+
 export default {
   ellipsify,
   toHTML,
   subStrWords,
   capitalize,
-  getChainName
+  getChainName,
+  validURL
 };
 export const base64URLDecode = (str) =>
   Buffer.from(str, 'base64').toString('binary');

@@ -1,6 +1,6 @@
 import React from 'react';
 import { shape, string } from 'prop-types';
-import { useTranslation } from 'next-i18next';
+// import { useTranslation } from 'next-i18next';
 import classes from './rewards.module.css';
 import Quest from './Quest';
 import Questers from './Questers';
