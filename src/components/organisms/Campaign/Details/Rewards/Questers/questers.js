@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { shape, string } from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'next-i18next';
@@ -8,7 +8,8 @@ import defaultClasses from './questers.module.css';
 import { useStyle } from '../../../../../classify';
 import { ellipsify } from '../../../../../../utils/strUtils';
 import Avatar from 'boring-avatars';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSoulsUp } from 'src/store/user/operations';
 
 const Questers = (props) => {
   const { classes: propClasses, campaignId } = props;
@@ -17,20 +18,7 @@ const Questers = (props) => {
   const { rootClassName } = useThemes();
 
   const soulsUp = useSelector((state) => state.user.souls_up);
-
-  /*const [, updateState] = React.useState();
-  const forceUpdate = React.useCallback(() => updateState({}), []);*/
-  // const [hasSoulsUp, setHasSoulsUp] = useState(null);
-
-  console.log('Souls rendering...');
-
-  /*useEffect(() => {
-    console.log('soulsUp:', soulsUp);
-
-    // setHasSoulsUp(soulsUp);
-    /!*forceUpdate();*!/
-
-  }, [soulsUp]);*/
+  const dispatch = useDispatch();
 
   const {
     data,
@@ -43,18 +31,23 @@ const Questers = (props) => {
     infiniteItems,
     setInfiniteItems,
     infiniteHasMore,
-    setInfiniteHasMore
+    setInfiniteHasMore,
+    firstPageData
   } = useQuesters({
     campaignId
   });
 
-  useEffect(() => {
+  useEffect(async () => {
     if (data) {
       if (data.quester.length) {
         setInfiniteItems(data.quester);
       }
     }
-  }, [data, setInfiniteItems]);
+    if (soulsUp) {
+      await firstPageData();
+      setSoulsUp(dispatch, false);
+    }
+  }, [data, firstPageData, setInfiniteItems, soulsUp]);
 
   const blockHeading = (
     <h3 className="">

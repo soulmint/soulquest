@@ -102,21 +102,20 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
   ) : (
     <>
       {/* <Modal connect={connect} /> */}
-      {beforeIcon}
       <Button
         type="button"
         priority="high"
         classes={
           classes && classes.root_highPriority
-            ? { root_highPriority: classes.root_highPriority }
-            : null
+          ? { root_highPriority: classes.root_highPriority }
+          : null
         }
         onPress={() => connect()}
-      >
-        <FaWallet className="mr-2" />
+        >
+        {beforeIcon}
         {t('Connect wallet')}
+        {afterIcon}
       </Button>
-      {afterIcon}
     </>
   );
 
