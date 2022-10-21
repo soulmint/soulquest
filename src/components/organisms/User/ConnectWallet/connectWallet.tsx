@@ -21,6 +21,8 @@ export type ConnectWalletProps = {
   classes?: {
     root_highPriority?: any;
   };
+  beforeIcon: any;
+  afterIcon: any;
 };
 
 const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
@@ -28,7 +30,7 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
 ) => {
   const dispatch = useDispatch();
 
-  const { classes } = props;
+  const { classes, beforeIcon, afterIcon } = props;
 
   const { t } = useTranslation('common');
 
@@ -100,6 +102,7 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
   ) : (
     <>
       {/* <Modal connect={connect} /> */}
+      {beforeIcon}
       <Button
         type="button"
         priority="high"
@@ -113,6 +116,7 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
         <FaWallet className="mr-2" />
         {t('Connect wallet')}
       </Button>
+      {afterIcon}
     </>
   );
 

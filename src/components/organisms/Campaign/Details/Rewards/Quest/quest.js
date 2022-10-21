@@ -42,7 +42,6 @@ import {
 import { isQuesterExists } from 'src/hooks/Campaign/Rewards/api.gql';
 import Cookies from 'js-cookie';
 import { useQuest } from 'src/hooks/Campaign/Rewards';
-import classes from '../../../List/list.module.css';
 
 const Quest = (props) => {
   const { classes: propClasses, campaign } = props;
@@ -58,6 +57,7 @@ const Quest = (props) => {
 
   const endDate = Moment(campaign.date_end);
   const now = Moment();
+  const isEnded = now > endDate ? true : false;
 
   const {
     localQuesterIdKey,
@@ -220,7 +220,10 @@ const Quest = (props) => {
       })}
     </span>
   ) : (
-    <ConnectWallet classes={{ root_highPriority: classes.btnConnectWallet }} />
+    <ConnectWallet
+      classes={{ root_highPriority: classes.btnConnectWallet }}
+      afterIcon={<FaAngleRight className="text-lg" />}
+    />
   );
 
   const connectWalletStatus = userState.wallet_address ? (
@@ -233,10 +236,11 @@ const Quest = (props) => {
     </div>
   );
 
+  let connectWalletTaskClasses = [classes.questItem, classes.connectWalletTask];
+  connectWalletTaskClasses.push(isEnded ? classes.disabled : null);
   const connectWalletTask = (
-    <div className={`${classes.questItem} ${classes.connectWalletTask}`}>
+    <div className={connectWalletTaskClasses.join(' ')}>
       {connectWalletStatus}
-
       <div className="flex items-center justify-between flex-1">
         <div className="">
           <span
@@ -284,12 +288,11 @@ const Quest = (props) => {
       </div>
     );
 
+    const twLoginTaskClasses = [classes.questItem, classes.twitterLoginTask];
+    twLoginTaskClasses.push(isEnded ? classes.disabled : null);
     twitterLoginTask = (
-      <div
-        className={`${classes.questItem} ${classes.twitterLoginTask} relative group`}
-      >
+      <div className={`${twLoginTaskClasses.join(' ')} relative group`}>
         {twitterLoginIconStatus}
-
         <div className="flex items-center flex-1">
           <div className="flex-1">
             <span
@@ -302,7 +305,6 @@ const Quest = (props) => {
             {t('Login Twitter')}
           </div>
         </div>
-
         {twitterLoginStatus}
       </div>
     );
@@ -359,6 +361,9 @@ const Quest = (props) => {
     twFollowTaskClasses.push(
       twitterFollowState === 'loading' ? classes.taskLoading : null
     );
+    if (isEnded) {
+      twFollowTaskClasses.push(classes.disabled);
+    }
     twFollowTask = (
       <div
         className={`${twFollowTaskClasses.join(' ')} ${
@@ -476,6 +481,9 @@ const Quest = (props) => {
     twReTeetTaskClasses.push(
       twitterReTweetState === 'loading' ? classes.taskLoading : null
     );
+    if (isEnded) {
+      twReTeetTaskClasses.push(classes.disabled);
+    }
     twReTweetTask = (
       <div className={`${twReTeetTaskClasses.join(' ')} relative group`}>
         {twReTweetIconLeft}
@@ -487,7 +495,7 @@ const Quest = (props) => {
           >
             {t('Task')} {tasks.ck_twitter_retweet.id}
           </span>
-          {t('Must')}&nbsp;{t('Retweet')}&nbsp;
+          {t('Retweet')}&nbsp;
           <TextLink
             target="_blank"
             title={t('Open this tweet.')}
@@ -575,6 +583,9 @@ const Quest = (props) => {
     nftTaskClasses.push(
       nftOwnershipState === 'loading' ? classes.taskLoading : null
     );
+    if (isEnded) {
+      nftTaskClasses.push(classes.disabled);
+    }
     const nftOwnershipIconStatus = tasks.ck_nft_ownership.status ? (
       <div
         className={`relative ${classes.questItemIcon} bg-green-300 text-slate-800`}
@@ -603,8 +614,8 @@ const Quest = (props) => {
               {t('Task')} {tasks.ck_nft_ownership.id}
             </span>
             <div className="flex items-center">
-              <h4 className="my-0 mr-1">{t('Must hold:')}</h4>
               {tasks.ck_nft_ownership.nftCollectionInfo}
+              <h4 className="my-0 ml-1">{t('Holder')}</h4>
             </div>
           </div>
         </div>
@@ -685,6 +696,9 @@ const Quest = (props) => {
     powSubmitUrlTaskClasses.push(
       twitterReTweetState === 'loading' ? classes.taskLoading : null
     );
+    if (isEnded) {
+      powSubmitUrlTaskClasses.push(classes.disabled);
+    }
     powSubmitUrlTask = (
       <div className={`${powSubmitUrlTaskClasses.join(' ')} relative group`}>
         {powSubmitUrlIconLeft}
@@ -696,7 +710,9 @@ const Quest = (props) => {
           >
             {t('Task')} {tasks.ck_pow_submit_url.id}
           </span>
-          <span className={`${classes.taskTitle}`}>{t('Must submit URL')}</span>
+          <span className={`${classes.taskTitle}`}>
+            {t('Proof-of-Work URL')}
+          </span>
           <span className={`${classes.taskTip}`}>
             {tasks.ck_pow_submit_url.note}
           </span>
@@ -746,7 +762,7 @@ const Quest = (props) => {
   };
 
   const canSubmit =
-    userState.wallet_address && (now <= endDate) & isFinishedTasks() && !isSoul
+    userState.wallet_address && !isEnded & isFinishedTasks() && !isSoul
       ? true
       : false;
   const btnClaimReward = (
@@ -773,7 +789,11 @@ const Quest = (props) => {
             : null
         }
       >
-        {!isSoul ? t('Submit') : t('Submission Completed.')}
+        {!isSoul
+          ? !isEnded
+            ? t('Submit')
+            : t('This quest has ended.')
+          : t('Submission Completed.')}
       </Button>
     </div>
   );
