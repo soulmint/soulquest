@@ -72,11 +72,11 @@ const List = (props) => {
       const endMessage = (
         <div className={classes.infiniteFinished}>
           <TextLink
-            title={t('Create a quest')}
+            title={t('Create a Quest')}
             className={classes.btnCreateQuest}
             href="https://t.me/alexle_rada"
           >
-            <span>{t('Create a quest')}</span>
+            <span>{t('Create a Quest')}</span>
           </TextLink>
         </div>
       );
