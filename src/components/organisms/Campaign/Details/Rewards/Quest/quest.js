@@ -655,16 +655,6 @@ const Quest = (props) => {
 
   let powSubmitUrlTask = null;
   if (tasks.ck_pow_submit_url) {
-    /*const btnVerifyPOWSubmitUrl = !tasks.ck_pow_submit_url.status ? (
-      <Button
-        id={`btn-verify-pow-submit-url`}
-        priority="high"
-        classes={{ root_highPriority: classes.btnVerifyPOWSubmitUrl }}
-        type="button"
-        onPress={() => handleCheckPOWSubmitUrl('pow_submit_url')}
-      />
-    ) : null;*/
-
     const powSubmitUrlStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
         <span className={`flex items-center ml-auto`}>
@@ -673,12 +663,6 @@ const Quest = (props) => {
             : tasks.ck_pow_submit_url.status === false
             ? TaskFailIcon
             : ''}
-          {/*{!tasks.ck_pow_submit_url.status ? (
-            <span className="flex items-center flex-row text-sm font-bold text-slate-500 ml-2 group-hover:text-slate-600 transition-color duration-300">
-              {t('Verify')}&nbsp;
-              <FaAngleRight className="text-lg" />
-            </span>
-          ) : null}*/}
         </span>
       </span>
     );
@@ -760,7 +744,7 @@ const Quest = (props) => {
     );
 
     if (!tasks.ck_pow_submit_url.status) {
-      toast.error(t('Invalid submit URL'));
+      toast.error(t('Invalid Proof-of-Work URL'));
     }
   };
 
