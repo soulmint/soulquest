@@ -130,7 +130,7 @@ const Questers = (props) => {
     <Fragment>
       <div className={`card mt-6 ${classes[rootClassName]}`}>
         <div className="card-header">{blockHeading}</div>
-        <div className={`card-body ${classes.questers}`}>{child}</div>
+        <div className={`card-body text-sm ${classes.questers}`}>{child}</div>
       </div>
     </Fragment>
   );
