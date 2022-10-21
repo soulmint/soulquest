@@ -223,7 +223,7 @@ const Quest = (props) => {
   ) : (
     <ConnectWallet
       classes={{ root_highPriority: classes.btnConnectWallet }}
-      afterIcon={<FaAngleRight className="text-lg" />}
+      afterIcon={<FaAngleRight className="text-lg ml-1" />}
     />
   );
 

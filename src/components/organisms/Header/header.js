@@ -8,6 +8,9 @@ import ConnectWallet from '../User/ConnectWallet';
 import { useTranslation } from 'next-i18next';
 import { DEFAULT_LINKS } from './menuItems';
 import useThemes from '../../../hooks/useThemes';
+import {
+  FaWallet
+} from 'react-icons/fa';
 // import ToggleTheme from '../ToggleTheme';
 const Header = (props) => {
   const { links } = props;
@@ -83,7 +86,10 @@ const Header = (props) => {
             {menuItems}
           </div>
           {/* <ToggleTheme /> */}
-          <ConnectWallet />
+          <ConnectWallet
+            beforeIcon={<FaWallet className="mr-2" />}
+            classes={{ root_highPriority: classes.btnConnectWallet }}
+          />
           {/* <button
             data-collapse-toggle="navbar-default"
             type="button"
