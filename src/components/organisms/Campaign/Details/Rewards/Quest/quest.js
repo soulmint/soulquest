@@ -16,7 +16,8 @@ import {
   FaRetweet,
   FaRegFile,
   FaCheck,
-  FaAngleRight
+  FaAngleRight,
+  FaLink
 } from 'react-icons/fa';
 
 import {
@@ -614,8 +615,8 @@ const Quest = (props) => {
               {t('Task')} {tasks.ck_nft_ownership.id}
             </span>
             <div className="flex items-center">
+              <h4 className="my-0 ml-1">{t('Holder')}:</h4>
               {tasks.ck_nft_ownership.nftCollectionInfo}
-              <h4 className="my-0 ml-1">{t('Holder')}</h4>
             </div>
           </div>
         </div>
@@ -689,7 +690,7 @@ const Quest = (props) => {
             : 'bg-cyan-400 text-white'
         }`}
       >
-        {tasks.ck_pow_submit_url.status ? <FaCheck /> : <FaRegFile />}
+        {tasks.ck_pow_submit_url.status ? <FaCheck /> : <FaLink />}
       </div>
     ) : null;
     let powSubmitUrlTaskClasses = [classes.questItem, classes.powSubmitUrlTask];
@@ -702,7 +703,7 @@ const Quest = (props) => {
     powSubmitUrlTask = (
       <div className={`${powSubmitUrlTaskClasses.join(' ')} relative group`}>
         {powSubmitUrlIconLeft}
-        <div className="z-20">
+        <div className="flex-1 z-20">
           <span
             className={`${classes.taskIndex} ${
               tasks.ck_pow_submit_url.status ? classes.taskSuccess : ''
@@ -710,21 +711,23 @@ const Quest = (props) => {
           >
             {t('Task')} {tasks.ck_pow_submit_url.id}
           </span>
-          <span className={`${classes.taskTitle}`}>
-            {t('Proof-of-Work URL')}
-          </span>
+          <div className="flex flex-wrap flex-col md:flex-row md:items-center">
+            <span className={`${classes.taskTitle} mr-2`}>
+              {t('Proof-of-Work URL')}:
+            </span>
+            <input
+              autoComplete="off"
+              className={classes.powSubmitUrlInput}
+              type="text"
+              id="pow_submit_url"
+              name="pow_submit_url"
+              onBlur={() => handleCheckPOWSubmitUrl('pow_submit_url')}
+              placeholder={tasks.ck_pow_submit_url.note}
+            />
+          </div>
           <span className={`${classes.taskTip}`}>
             {tasks.ck_pow_submit_url.note}
           </span>
-          <input
-            autoComplete="off"
-            className={classes.powSubmitUrlInput}
-            type="text"
-            id="pow_submit_url"
-            name="pow_submit_url"
-            onBlur={() => handleCheckPOWSubmitUrl('pow_submit_url')}
-            placeholder={tasks.ck_pow_submit_url.note}
-          />
         </div>
         {powSubmitUrlStatus}
       </div>

@@ -78,7 +78,7 @@
 }
 
 .powSubmitUrlInput {
-  @apply border border-2 border-gray-300 ring-0 focus:ring-0 rounded-lg mr-2;
+  @apply border border-slate-200 focus:border-violet-500 active:border-violet-500 ring-0 focus:ring-0 rounded-lg mr-2 w-full flex-1 font-normal placeholder-slate-500;
 }
 
 .taskTitle {
