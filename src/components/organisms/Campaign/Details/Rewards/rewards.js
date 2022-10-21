@@ -103,7 +103,7 @@ const Rewards = (props) => {
                 Time
               </div>
               <div className="text-right pr-2 font-medium text-slate-400 w-7/12">
-                Soul Name
+                Soul Address
               </div>
             </div>
             <div className="flex items-center text-sm space-x-4 justify-between mb-2">
@@ -471,8 +471,8 @@ const Rewards = (props) => {
         {/* End Concept: Winner List */}
 
         <Screen from="lg">{summary}</Screen>
-        {howToClaim}
         {questers}
+        {howToClaim}
         {/*{coupon}*/}
       </div>
     </div>
