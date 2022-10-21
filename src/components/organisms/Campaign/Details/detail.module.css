@@ -1,9 +1,4 @@
 .root {
-  @apply bg-gray-50;
-}
-
-.rootDark {
-  @apply bg-gray-900;
 }
 
 /*.pageWrap {*/
@@ -58,52 +53,4 @@
 
 .dateEnd {
   @apply pl-2;
-}
-
-/* Sidebar list coupon */
-.Box {
-  @apply bg-gray-50 border border-gray-200 rounded-lg;
-}
-
-.Box + .Box {
-  @apply mt-6;
-}
-
-.boxHilite {
-  @apply border border-2 border-violet-600 rounded-lg mb-5;
-}
-
-.rootDark .Box {
-  @apply bg-gray-800 border border-gray-700;
-}
-
-.boxTitle {
-  @apply border-b border-gray-200 font-medium text-gray-800 text-lg m-0 py-3 px-4;
-}
-
-.rootDark .boxTitle {
-  @apply border-b border-gray-700 text-white;
-}
-
-.boxHilite .boxTitle {
-}
-
-.boxBody {
-  @apply py-6 px-4;
-}
-
-.itemMeta {
-  @apply text-xs text-gray-500 mb-2;
-}
-
-.rootDark .itemMeta {
-  @apply text-gray-300;
-}
-
-.storeLogo {
-  @apply mx-auto;
-  max-width: 50%;  
-}
-
-.storeInfo {
 }
