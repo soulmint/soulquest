@@ -23,11 +23,11 @@ export default (props) => {
   const [limit, setLimit] = useState(defaultLimit);
 
   const [pageData, setPageData] = useState();
-  const [pageLoading, setPageLoading] = useState();
+  const [pageLoading, setPageLoading] = useState(true);
   const [pageError, setPageError] = useState();
 
   const [totalItems, setTotalItems] = useState(0);
-  const [totalItemsLoading, setTotalItemsLoading] = useState();
+  const [totalItemsLoading, setTotalItemsLoading] = useState(true);
   const [totalItemsError, setTotalItemsError] = useState();
 
   // Loading items in first page
