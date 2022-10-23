@@ -8,7 +8,7 @@ import defaultClasses from './questers.module.css';
 import { useStyle } from 'src/components/classify';
 import { ellipsify } from 'src/utils/strUtils';
 import Avatar from 'boring-avatars';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const Questers = (props) => {
   const { classes: propClasses, campaignId } = props;

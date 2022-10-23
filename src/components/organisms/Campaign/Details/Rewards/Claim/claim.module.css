@@ -4,3 +4,8 @@
 .rootDark {
 }
 
+.btnClaim {
+    @apply rounded-xl font-semibold bg-violet-600 text-white px-4 py-3 w-full hover:bg-violet-700 shadow;
+}
+
+.btnClaim span {display: inline-block}

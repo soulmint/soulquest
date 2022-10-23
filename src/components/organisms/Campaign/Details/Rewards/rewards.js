@@ -1,6 +1,7 @@
 import React from 'react';
 import { shape, string } from 'prop-types';
 // import { useTranslation } from 'next-i18next';
+import Moment from 'moment';
 import classes from './rewards.module.css';
 import Quest from './Quest';
 import Questers from './Questers';
@@ -11,7 +12,7 @@ import Image from 'src/components/atoms/Image';
 import Screen from 'src/utils/responsive';
 // import Coupon from './Coupon';
 import Claim from './Claim';
-import Moment from 'moment';
+import Winners from './Winners';
 
 const Rewards = (props) => {
   const { campaign } = props;
@@ -48,7 +49,17 @@ const Rewards = (props) => {
 
   const questers = <Questers campaignId={campaign.id} />;
 
-  const claimInfo = isEnded ? <Claim /> : null;
+  const claimInfo = (
+    <Claim
+      is_ended={isEnded}
+      campaign_id={campaign.id}
+      reward_method={campaign.reward_method}
+      reward_token_volume={campaign.reward_token_volume}
+      reward_number={campaign.reward_number}
+    />
+  );
+
+  const windersInfo = isEnded ? <Winners campaignId={campaign.id} /> : null;
 
   // Build cover and thumb images
   const assetsBaseUrl = process.env.MEDIA_BASE_URL;
@@ -89,11 +100,13 @@ const Rewards = (props) => {
         </div>
       </div>
       <div className={`${classes.pageSidebar}`}>
-        {/*{claimInfo}*/}
+        {claimInfo}
+        {windersInfo}
+
         <Screen from="lg">{summary}</Screen>
+
         {questers}
         {howToClaim}
-        {/*{coupon}*/}
       </div>
     </div>
   );

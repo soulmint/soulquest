@@ -13,8 +13,7 @@ import DropDownMenu from './../DropdownMenu';
 import Button from 'src/components/atoms/Button';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-
-import { FaWallet } from 'react-icons/fa';
+// import { FaWallet } from 'react-icons/fa';
 
 export type ConnectWalletProps = {
   name?: string;
@@ -107,11 +106,11 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
         priority="high"
         classes={
           classes && classes.root_highPriority
-          ? { root_highPriority: classes.root_highPriority }
-          : null
+            ? { root_highPriority: classes.root_highPriority }
+            : null
         }
         onPress={() => connect()}
-        >
+      >
         {beforeIcon}
         {t('Connect wallet')}
         {afterIcon}

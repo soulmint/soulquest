@@ -28,8 +28,6 @@ export const LOAD_CAMPAIGN_BY_SLUG = gql`
         title
         #          filename_download
       }
-      reward_overview
-      reward_token_volume
       twitter_username
       twitter_owner_id
       twitter_tweet
@@ -45,6 +43,10 @@ export const LOAD_CAMPAIGN_BY_SLUG = gql`
         id
       }
       how_to_claim
+      reward_overview
+      reward_method
+      reward_number
+      reward_token_volume
     }
   }
 `;
