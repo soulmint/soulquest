@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
+import Moment from 'moment';
 import { shape, string } from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'next-i18next';
@@ -115,7 +116,9 @@ const Winners = (props) => {
                   {parseInt(idx) + 1}
                 </div>
                 <div className="font-medium text-slate-400 text-left w-4/12">
-                  {quester.date_created}
+                  {quester.date_created
+                    ? Moment(quester.date_created).format('LT DD, MMM')
+                    : ''}
                 </div>
                 <div
                   className={`${classes.questerAvt} text-right text-md w-7/12`}
@@ -136,8 +139,8 @@ const Winners = (props) => {
                   </span>
                   {ellipsify({
                     str: quester.user_created.email,
-                    start: 4,
-                    end: 4
+                    start: 7,
+                    end: 8
                   })}
                 </div>
               </div>
