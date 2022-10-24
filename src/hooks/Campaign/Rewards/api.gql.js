@@ -96,6 +96,7 @@ export const GET_QUESTERS = gql`
     ) {
       id
       campaign_id
+      date_created
       user_created {
         id
         email

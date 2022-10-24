@@ -35,12 +35,15 @@ const Questers = (props) => {
     soulsUp
   });
 
-  useEffect(async () => {
-    if (data) {
-      if (data.quester.length) {
-        setInfiniteItems(data.quester);
+  useEffect(() => {
+    const getQuesterItem = async () => {
+      if (data) {
+        if (data.quester.length) {
+          setInfiniteItems(data.quester);
+        }
       }
-    }
+    };
+    getQuesterItem();
   }, [data, setInfiniteItems]);
 
   const blockHeading = (

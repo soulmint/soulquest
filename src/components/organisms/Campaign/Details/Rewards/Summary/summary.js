@@ -78,7 +78,7 @@ const Summary = (props) => {
 
   child =
     rewardOwnerInfo || rewardTokenVolumeInfo || rewardChainInfo ? (
-      <div className={`card mb-6`}>
+      <div className={`card mt-6 ${classes[rootClassName]}`}>
         <div className="card-header">
           <h3 className="">{t('Rewards Info')}</h3>
         </div>
@@ -93,7 +93,7 @@ const Summary = (props) => {
       </div>
     ) : null;
 
-  return <div className={`${classes[rootClassName]}`}>{child}</div>;
+  return child;
 };
 
 Summary.propTypes = {

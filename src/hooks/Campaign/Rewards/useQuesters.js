@@ -2,7 +2,7 @@ import API from './api.gql';
 import { useState, useEffect } from 'react';
 
 export default (props) => {
-  const { campaignId, soulsUp } = props;
+  const { campaignId, soulsUp, filters } = props;
 
   const { getTotalItemsFunc, getNextQuestersFunc, getFirstQuestersFunc } = API;
 
@@ -19,7 +19,7 @@ export default (props) => {
   let sort = ['-date_created'];
 
   // vars for filter toolbar
-  const [filter, setFilter] = useState(defaultFilter);
+  const [filter, setFilter] = useState(filters ? filters : defaultFilter);
   const [limit, setLimit] = useState(defaultLimit);
 
   const [pageData, setPageData] = useState();
@@ -58,7 +58,7 @@ export default (props) => {
     const { data, loading, error } = await getTotalItemsFunc({
       filter
     });
-    setTotalItems(data.quester.length);
+    data && data.quester.length && setTotalItems(data.quester.length);
     setTotalItemsLoading(loading);
     setTotalItemsError(error);
   };
@@ -92,6 +92,7 @@ export default (props) => {
     error: pageError || totalItemsError ? true : null,
     page,
     setPage,
+    setFilter,
     totalItems,
     getNextItems,
     infiniteItems,

@@ -4,3 +4,7 @@
 .rootDark {
 }
 
+
+.questerAvt {
+  @apply rounded-full inline-flex flex-wrap items-center justify-center py-1 pl-1 pr-2 font-bold bg-slate-100;
+}

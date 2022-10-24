@@ -24,10 +24,12 @@ const Claim = (props) => {
   //coming soon
   let isWinner = true; //is soul and is winner
 
-  const tokenIcon = reward_token_volume.toLowerCase().includes('usdc') ? (
-    <img src="/symbols/usdc.svg" className="w-7 h-7 m-2" />
-  ) : reward_token_volume.toLowerCase().includes('usdt') ? (
-    <img src="/symbols/usdt.svg" className="w-7 h-7 m-2" />
+  const tokenIcon = reward_token_volume ? (
+    reward_token_volume.toLowerCase().includes('usdc') ? (
+      <img src="/symbols/usdc.svg" className="w-7 h-7 m-2" />
+    ) : reward_token_volume.toLowerCase().includes('usdt') ? (
+      <img src="/symbols/usdt.svg" className="w-7 h-7 m-2" />
+    ) : null
   ) : null;
   let content = (
     <div className="bg-slate-100 rounded-xl border-l-0 border-r-0 p-6 text-center">
