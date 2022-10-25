@@ -1,5 +1,5 @@
 import React from 'react';
-import { shape, string } from 'prop-types';
+import { bool, shape, string } from 'prop-types';
 // import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
 import classes from './rewards.module.css';

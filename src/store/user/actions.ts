@@ -48,12 +48,23 @@ export const setSoulsUpAction = (value: boolean) => {
   };
 };
 
+export const setIsWhitelistedAction = (value: boolean) => {
+  //saving to local for init state
+  storage.setItem('is_whitelisted', value);
+
+  return {
+    type: UserActionType.setIsWhitelisted,
+    payload: value
+  };
+};
+
 export const logOut = () => {
   //clean related local storage vars
   storage.removeItem('user_id');
   storage.removeItem('access_token');
   storage.removeItem('wallet_address');
   storage.removeItem('souls_up');
+  storage.removeItem('is_whitelisted');
 
   // next-auth > logout
   setTimeout(function () {

@@ -47,6 +47,8 @@ export const LOAD_CAMPAIGN_BY_SLUG = gql`
       reward_method
       reward_number
       reward_token_volume
+      whitelist_spreadsheet_id
+      whitelist_sheet_id
     }
   }
 `;

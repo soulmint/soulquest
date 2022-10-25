@@ -4,6 +4,7 @@ export type UserState = {
   id?: any;
   token?: any;
   wallet_address?: any;
+  is_whitelisted?: boolean;
   souls_up?: boolean;
 };
 
@@ -12,6 +13,7 @@ export const UserActionType = {
   setToken: 'setToken',
   setWalletAddress: 'setWalletAddress',
   setSoulsUp: 'setSoulsUp',
+  setIsWhitelisted: 'setIsWhitelisted',
   logOut: 'logOut'
 };
 

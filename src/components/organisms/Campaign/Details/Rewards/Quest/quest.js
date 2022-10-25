@@ -227,32 +227,88 @@ const Quest = (props) => {
     />
   );
 
-  const connectWalletStatus = userState.wallet_address ? (
-    <div className={`${classes.questItemIcon} bg-green-300 text-slate-800`}>
-      <FaCheck />
-    </div>
-  ) : (
-    <div className={`${classes.questItemIcon} bg-violet-600 text-white`}>
-      <FaWallet />
-    </div>
-  );
+  const getConnectWalletStatus = () => {
+    let rs = null;
+    if (userState.wallet_address) {
+      // If has specific whitelist
+      if (
+        campaign.whitelist_spreadsheet_id &&
+        campaign.whitelist_sheet_id &&
+        !userState.is_whitelisted
+      ) {
+        //has not whitelist case
 
+        rs = (
+          <div className={`${classes.questItemIcon} bg-red-300 text-slate-800`}>
+            <span className={classes.statusWithTip}>
+              <span data-tip data-for="whitelistError">
+                {TaskFailIcon}
+              </span>
+              <ReactTooltip
+                id="whitelistError"
+                type="error"
+                className={classes.errorTip}
+                backgroundColor={'#dc2626'}
+              >
+                <span>{t('You have not whitelisted yet.')}</span>
+              </ReactTooltip>
+            </span>
+          </div>
+        );
+      } else {
+        rs = (
+          <div
+            className={`${classes.questItemIcon} bg-green-300 text-slate-800`}
+          >
+            <FaCheck />
+          </div>
+        );
+      }
+    } else {
+      rs = (
+        <div className={`${classes.questItemIcon} bg-violet-600 text-white`}>
+          <FaWallet />
+        </div>
+      );
+    }
+
+    return rs;
+  };
+  const connectWalletStatus = getConnectWalletStatus();
+
+  const getConnectWalletTitle = () => {
+    let rs = null;
+    const titleClasses = [classes.taskIndex];
+    if (userState.wallet_address) {
+      if (
+        campaign.whitelist_spreadsheet_id &&
+        campaign.whitelist_sheet_id &&
+        !userState.is_whitelisted
+      ) {
+        titleClasses.push(classes.taskError);
+      } else {
+        titleClasses.push(classes.taskSuccess);
+      }
+    }
+    rs = (
+      <div>
+        <span className={titleClasses.join(' ')}>
+          {t('Task')} {tasks.ck_connect_wallet.id}
+        </span>
+        {t('Connect Wallet')}
+      </div>
+    );
+
+    return rs;
+  };
+  const connectWalletTitle = getConnectWalletTitle();
   let connectWalletTaskClasses = [classes.questItem, classes.connectWalletTask];
   connectWalletTaskClasses.push(isEnded ? classes.disabled : null);
   const connectWalletTask = (
     <div className={connectWalletTaskClasses.join(' ')}>
       {connectWalletStatus}
       <div className="flex items-center justify-between flex-1">
-        <div className="">
-          <span
-            className={`${classes.taskIndex} ${
-              userState.wallet_address ? classes.taskSuccess : ''
-            }`}
-          >
-            {t('Task')} {tasks.ck_connect_wallet.id}
-          </span>
-          {t('Connect Wallet')}
-        </div>
+        {connectWalletTitle}
         {walletConnect}
       </div>
     </div>
@@ -576,6 +632,7 @@ const Quest = (props) => {
               <ReactTooltip
                 id="nftOwnerShipError"
                 type="error"
+                className={classes.errorTip}
                 backgroundColor={'#dc2626'}
               >
                 <span>{tasks.ck_nft_ownership.msg}</span>
@@ -765,10 +822,29 @@ const Quest = (props) => {
     }
   };
 
-  const canSubmit =
-    userState.wallet_address && !isEnded & isFinishedTasks() && !isSoul
-      ? true
-      : false;
+  const checkCanSubmit = () => {
+    let rs = false;
+    if (userState.wallet_address) {
+      // if has specific whitelist
+      if (campaign.whitelist_spreadsheet_id && campaign.whitelist_sheet_id) {
+        if (
+          userState.is_whitelisted &&
+          !isEnded &&
+          isFinishedTasks() &&
+          !isSoul
+        ) {
+          rs = true;
+        }
+      } else {
+        if (!isEnded && !isSoul && isFinishedTasks()) {
+          rs = true;
+        }
+      }
+    }
+
+    return rs;
+  };
+  const canSubmit = checkCanSubmit();
   const btnClaimReward = (
     <div className={`${classes.btnClaimRewardWrap}`}>
       <Button

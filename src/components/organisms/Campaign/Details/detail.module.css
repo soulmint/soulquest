@@ -54,3 +54,18 @@
 .dateEnd {
   @apply pl-2;
 }
+
+.whitelistInfo {
+  @apply flex flex-wrap items-center justify-start pl-2;
+}
+.whitelistInfo span {
+  @apply pl-2;
+}
+.whitelistLock {
+  composes: whitelistInfo;
+  color: #dc2626;
+}
+.whitelistLockOpen {
+  composes: whitelistInfo;
+  color: green;
+}

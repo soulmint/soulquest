@@ -18,6 +18,9 @@
 .taskSuccess {
   @apply /*border border-green-600*/ text-green-600;
 }
+.taskError {
+  @apply text-red-600;
+}
 
 /* Step 1 */
 .connectWalletTask {
@@ -132,4 +135,8 @@
 .soulAvatar {
   margin: 0px 5px 0px 0px;
 }
+.whitelistError {
+
+}
+
 

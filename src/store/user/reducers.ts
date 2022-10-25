@@ -23,11 +23,17 @@ const getSoulsUp = () => {
   return soulsUp ? soulsUp : false;
 };
 
+const getIsWhitelisted = () => {
+  const is_whitelisted = storage.getItem('is_whitelisted');
+  return is_whitelisted ? is_whitelisted : false;
+};
+
 export const initialState: UserState = {
   id: getId(),
   token: getToken(),
   wallet_address: getWalletAddress(),
-  souls_up: getSoulsUp()
+  souls_up: getSoulsUp(),
+  is_whitelisted: getIsWhitelisted()
 };
 
 const reducer = (
@@ -54,6 +60,11 @@ const reducer = (
       return {
         ...state,
         souls_up: action.payload
+      };
+    case UserActionType.setIsWhitelisted:
+      return {
+        ...state,
+        is_whitelisted: action.payload
       };
     case UserActionType.logOut:
       return {
