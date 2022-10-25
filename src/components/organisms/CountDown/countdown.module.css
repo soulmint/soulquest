@@ -1,9 +1,12 @@
 .root{
-	@apply mt-2 md:mt-20;
+	@apply mt-2 md:mt-1;
 }
 .rootDark{
 	compses: root;
 }
 .timerRoot{
 	@apply flex flex-col items-center;
+}
+.timerContainer{
+	@apply  mt-8 flex items-center justify-center space-x-6;
 }

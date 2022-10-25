@@ -14,20 +14,20 @@ const Claim = (props) => {
     reward_method,
     reward_token_volume,
     date_ends,
+    reward_number,
     is_ended
   } = props;
 
   const classes = useStyle(defaultClasses, propClasses);
-  console.log('====================================');
-  console.log('is_ended', is_ended);
-  console.log('====================================');
   const { t } = useTranslation('campaign_details');
 
   let icon = null;
 
   //coming soon
   let isWinner = false; //is soul and is winner
-
+  if ((!reward_method || reward_method === 'fcfs') && !is_ended) {
+    return null;
+  }
   const tokenIcon = reward_token_volume ? (
     reward_token_volume.toLowerCase().includes('usdc') ? (
       <img src="/symbols/usdc.svg" className="w-7 h-7 m-2" />
@@ -70,24 +70,6 @@ const Claim = (props) => {
           <div className="bg-slate-100 rounded-xl border-l-0 border-r-0 p-6 text-center">
             <div className="font-semibold">{t('Lucky Draw in')}:</div>
             <CountDown date={date_ends} />
-            <div className="mt-8 flex items-center justify-center space-x-6">
-              <div className="flex flex-col">
-                <span className="text-3xl font-bold">2</span>
-                <span className="text-sm">DAYS</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-3xl font-bold">18</span>
-                <span className="text-sm">HOURS</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-3xl font-bold">05</span>
-                <span className="text-sm">MINUTES</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-3xl font-bold">55</span>
-                <span className="text-sm">SECONDS</span>
-              </div>
-            </div>
           </div>
         </>
       );
@@ -97,11 +79,14 @@ const Claim = (props) => {
   const claim = () => {
     console.log('Claim())');
   };
-
+  const claimCount = reward_number && is_ended ? 0 / { reward_number } : '';
   return (
     <div className="card mb-6">
       <div className="card-header flex justify-between">
-        <h3 className="">{t('Claim your Rewards')}</h3>
+        <h3 className="">
+          {t('Claim your Rewards')}
+          {claimCount}
+        </h3>
         {icon}
       </div>
       <div className="card-body">

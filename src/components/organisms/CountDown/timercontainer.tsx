@@ -71,11 +71,8 @@ export const TimerContainer = ({
     <div className={`${classes.timerRoot}`}>
       <div className={`${classes.timerContainer}`}>
         <NumberBox num={days} unit="Days" flip={daysFlip} />
-        <span className="text-gray-50 ">:</span>
         <NumberBox num={hours} unit="Hours" flip={hoursFlip} />
-        <span className="text-gray-50 ">:</span>
         <NumberBox num={minutes} unit="Minutes" flip={minutesFlip} />
-        <span className="text-gray-50 ">:</span>
         <NumberBox num={seconds} unit="Seconds" flip={secondsFlip} />
       </div>
     </div>
