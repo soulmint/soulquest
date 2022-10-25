@@ -56,6 +56,7 @@ const Rewards = (props) => {
       reward_method={campaign.reward_method}
       reward_token_volume={campaign.reward_token_volume}
       reward_number={campaign.reward_number}
+      date_ends={campaign.date_end}
     />
   );
 
