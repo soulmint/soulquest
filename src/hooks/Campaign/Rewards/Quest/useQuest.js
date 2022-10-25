@@ -113,14 +113,18 @@ export default (props) => {
         showSmcAdd={false}
       />
     );
+    const nftOwnershipStatus =
+      submittedTasks && submittedTasks.ck_nft_ownership !== undefined
+        ? submittedTasks.ck_nft_ownership
+        : null;
     tasks.ck_nft_ownership = {
       id: ++taskTotal,
       nftCollectionInfo,
-      status:
-        submittedTasks && submittedTasks.ck_nft_ownership !== undefined
-          ? submittedTasks.ck_nft_ownership
-          : null,
-      msg: null
+      status: nftOwnershipStatus,
+      msg:
+        nftOwnershipStatus === false
+          ? t('You are not owner of any SoulBound Token!')
+          : null
     };
   }
 

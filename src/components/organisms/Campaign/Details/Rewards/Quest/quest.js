@@ -14,7 +14,6 @@ import {
   FaTwitter,
   FaUserPlus,
   FaRetweet,
-  FaRegFile,
   FaCheck,
   FaAngleRight,
   FaLink
@@ -42,6 +41,7 @@ import {
 } from 'src/hooks/User/useSocial';
 import { isQuesterExists } from 'src/hooks/Campaign/Rewards/api.gql';
 import Cookies from 'js-cookie';
+import ReactTooltip from 'react-tooltip';
 import { useQuest } from 'src/hooks/Campaign/Rewards';
 
 const Quest = (props) => {
@@ -566,11 +566,24 @@ const Quest = (props) => {
     const nftOwnershipStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
         <span className={`ml-auto`}>
-          {tasks.ck_nft_ownership.status === true
-            ? t('Verified')
-            : tasks.ck_nft_ownership.status === false
-            ? TaskFailIcon
-            : ''}
+          {tasks.ck_nft_ownership.status === true ? (
+            t('Verified')
+          ) : tasks.ck_nft_ownership.status === false ? (
+            <span className={classes.statusWithTip}>
+              <span data-tip data-for="nftOwnerShipError">
+                {TaskFailIcon}
+              </span>
+              <ReactTooltip
+                id="nftOwnerShipError"
+                type="error"
+                backgroundColor={'#dc2626'}
+              >
+                <span>{tasks.ck_nft_ownership.msg}</span>
+              </ReactTooltip>
+            </span>
+          ) : (
+            ''
+          )}
           {!tasks.ck_nft_ownership.status ? (
             <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
               {t('Verify')}&nbsp;
@@ -643,7 +656,11 @@ const Quest = (props) => {
     //trigger to re-render
     setNftOwnershipState(tasks.ck_nft_ownership.status);
     if (!tasks.ck_nft_ownership.status) {
-      toast.error(t('You are not owner of any SoulBound Token!'));
+      const msg = t('You are not owner of any SoulBound Token!');
+      tasks.ck_nft_ownership.msg = msg;
+      toast.error(msg);
+    } else {
+      tasks.ck_nft_ownership.msg = null;
     }
 
     // update submitted tasks to local storage
