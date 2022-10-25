@@ -26,11 +26,11 @@
 }
 
 .pageHeader {
-  @apply mb-12;
+  @apply mb-6 md:mb-12;
 }
 
 .pageContainer {
-  @apply container mx-auto max-w-screen-xl py-12 px-4;
+  @apply py-6 md:py-12;
 }
 
 .campaignMeta {

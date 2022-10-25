@@ -76,6 +76,11 @@ button {
 /* Components 
 /* -------------------------*/
 
+
+.container {
+  @apply max-w-screen-xl mx-auto px-2 md:px-6;  
+}
+
 /* 
 Cards
 -------------------------*/
@@ -88,7 +93,7 @@ Cards
 }
 
 .card-header {
-  @apply pt-6 pb-6 px-6;
+  @apply pt-4 pb-4 px-4 md:pt-6 md:pb-6 md:px-6;
 }
 
 .card-header h3 {
@@ -96,7 +101,7 @@ Cards
 }
 
 .card-body {
-  @apply pb-6 px-6;
+  @apply pb-4 px-4 md:pb-6 md:px-6;
 }
 
 /* 

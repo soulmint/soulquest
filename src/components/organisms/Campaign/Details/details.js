@@ -80,7 +80,7 @@ const Details = (props) => {
 
       child = (
         <div className={`${classes.pageWrapper}`}>
-          <div className={`${classes.pageContainer}`}>
+          <div className={`container ${classes.pageContainer}`}>
             <div className={`${classes.pageHeader}`}>
               {pageTitleInfo}
               {metaInfo}
