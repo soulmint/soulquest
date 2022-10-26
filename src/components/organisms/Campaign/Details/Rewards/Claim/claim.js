@@ -7,7 +7,7 @@ import { CountDown } from 'src/components/organisms/CountDown';
 import { useSelector } from 'react-redux';
 import { FaClock, FaDice } from 'react-icons/fa';
 import Button from 'src/components/atoms/Button';
-import { getClaimed } from 'src/hooks/Campaign/Rewards';
+import { getClaimed } from 'src/hooks/Campaign/Rewards/Claimed/useClaimed';
 
 const Claim = (props) => {
   const {
