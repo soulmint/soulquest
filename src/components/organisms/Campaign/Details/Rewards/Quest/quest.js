@@ -241,7 +241,7 @@ const Quest = (props) => {
         rs = (
           <div className={`${classes.questItemIcon} bg-red-300 text-slate-800`}>
             <span className={classes.statusWithTip}>
-              <span data-tip data-for="whitelistError">
+              <span data-tip data-for="whitelistError" className="z-20">
                 {TaskFailIcon}
               </span>
               <ReactTooltip
@@ -626,7 +626,7 @@ const Quest = (props) => {
             t('Verified')
           ) : tasks.ck_nft_ownership.status === false ? (
             <span className={`${classes.statusWithTip} flex items-center`}>
-              <span data-tip data-for="nftOwnerShipError" className="mr-1">
+              <span data-tip data-for="nftOwnerShipError" className="mr-1 z-20">
                 {TaskFailIcon}
               </span>
               <ReactTooltip
