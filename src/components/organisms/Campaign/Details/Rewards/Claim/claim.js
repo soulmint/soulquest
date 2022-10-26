@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { bool, shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import defaultClasses from './claim.module.css';
 import { useStyle } from 'src/components/classify';
 import { CountDown } from 'src/components/organisms/CountDown';
+import { useSelector } from 'react-redux';
 import { FaClock, FaDice } from 'react-icons/fa';
 import Button from 'src/components/atoms/Button';
+import { getClaimed } from 'src/hooks/Campaign/Rewards';
 
 const Claim = (props) => {
   const {
@@ -17,14 +19,30 @@ const Claim = (props) => {
     reward_number,
     is_ended
   } = props;
-
   const classes = useStyle(defaultClasses, propClasses);
   const { t } = useTranslation('campaign_details');
-
+  const userState = useSelector((state) => state.user);
+  const [claimed, setClaimed] = React.useState(false);
+  const [isWinner, setIsWinner] = React.useState(false);
   let icon = null;
+  useEffect(() => {
+    async function getClaimedData() {
+      const rs = await getClaimed({
+        campaign_id,
+        wallet: userState.wallet_address
+      });
+      if (rs && rs.is_claimed) {
+        setClaimed(true);
+      }
+      if (rs && rs.is_winner) {
+        setIsWinner(true);
+      }
+    }
+    getClaimedData();
+  }, [campaign_id, userState]);
 
   //coming soon
-  let isWinner = false; //is soul and is winner
+  // let isWinner = true; //is soul and is winner
   if ((!reward_method || reward_method === 'fcfs') && !is_ended) {
     return null;
   }
@@ -79,6 +97,24 @@ const Claim = (props) => {
   const claim = () => {
     console.log('Claim())');
   };
+  const claimButton = !claimed ? (
+    <Button
+      type="button"
+      priority="high"
+      classes={{ root_highPriority: classes.btnClaim }}
+      onPress={() => claim()}
+    >
+      {t('Claim')}
+    </Button>
+  ) : (
+    <Button
+      type="button"
+      priority="high"
+      classes={{ root_highPriority: classes.btnClaim }}
+    >
+      {t('Claimed rewards')}
+    </Button>
+  );
   const claimCount = reward_number && is_ended ? 0 / { reward_number } : '';
   return (
     <div className="card mb-6">
@@ -91,18 +127,7 @@ const Claim = (props) => {
       </div>
       <div className="card-body">
         {content}
-        {is_ended && isWinner ? (
-          <div className="mt-4">
-            <Button
-              type="button"
-              priority="high"
-              classes={{ root_highPriority: classes.btnClaim }}
-              onPress={() => claim()}
-            >
-              {t('Claim')}
-            </Button>
-          </div>
-        ) : null}
+        {is_ended && isWinner ? claimButton : null}
       </div>
     </div>
   );
