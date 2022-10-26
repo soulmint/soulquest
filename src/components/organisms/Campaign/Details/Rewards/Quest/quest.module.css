@@ -68,15 +68,11 @@
   @apply absolute left-0 top-0 right-0 bottom-0 w-full;
 }
 
-.btnVerifyTwitter {
-  composes: btnVerify;
+.powUrlTask {
+
 }
 
-.btnVerifyPOWSubmitUrl {
-  composes: btnVerify;
-}
-
-.powSubmitUrlInput {
+.powUrlInput {
   @apply border border-slate-200 focus:border-violet-500 active:border-violet-500 ring-0 focus:ring-0 rounded-lg mr-2 w-full flex-1 font-normal placeholder-slate-500;
 }
 
@@ -89,7 +85,7 @@
   display: block;
 }
 
-.soulBoundTokenTask {
+.nftOwnershipTask {
   @apply bg-amber-50 hover:bg-amber-100 relative pt-4 transition-all duration-300;
 }
 

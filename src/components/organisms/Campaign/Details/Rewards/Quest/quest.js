@@ -28,7 +28,7 @@ import {
   // getFollow
 } from 'src/hooks/Campaign/Rewards/useTwitter';
 import ConnectWallet from 'src/components/organisms/User/ConnectWallet';
-import { TaskFailIcon } from 'src/components/organisms/Svg/SvgIcons';
+import { StatusIcon } from 'src/components/organisms/Svg/SvgIcons';
 import {
   base64URLDecode,
   base64URLEncode,
@@ -92,7 +92,7 @@ const Quest = (props) => {
   const [nftOwnershipState, setNftOwnershipState] = useState(
     tasks.ck_nft_ownership ? tasks.ck_nft_ownership.status : null
   );
-  const [powSubmitUrlState, setPOWSubmitUrlState] = useState(
+  const [powUrlState, setPOWSubmitUrlState] = useState(
     tasks.ck_pow_submit_url ? tasks.ck_pow_submit_url.status : null
   );
 
@@ -226,8 +226,7 @@ const Quest = (props) => {
       afterIcon={<FaAngleRight className="text-lg ml-1" />}
     />
   );
-
-  const getConnectWalletStatus = () => {
+  const connectWalletStatus = () => {
     let rs = null;
     if (userState.wallet_address) {
       // If has specific whitelist
@@ -237,22 +236,18 @@ const Quest = (props) => {
         !userState.is_whitelisted
       ) {
         //has not whitelist case
-
         rs = (
-          <div className={`${classes.questItemIcon} bg-red-300 text-slate-800`}>
-            <span className={classes.statusWithTip}>
-              <span data-tip data-for="whitelistError" className="z-20">
-                {TaskFailIcon}
-              </span>
-              <ReactTooltip
-                id="whitelistError"
-                type="error"
-                className={classes.errorTip}
-                backgroundColor={'#dc2626'}
-              >
-                <span>{t('You have not whitelisted yet.')}</span>
-              </ReactTooltip>
+          <div className={`${classes.questItemIcon} text-slate-800`}>
+            <span data-tip data-for="whitelistError">
+              {StatusIcon(40, 40, '#FCA5A5')}
             </span>
+            <ReactTooltip
+              id="whitelistError"
+              type="error"
+              backgroundColor={'#dc2626'}
+            >
+              <span>{t('You have not whitelisted yet.')}</span>
+            </ReactTooltip>
           </div>
         );
       } else {
@@ -274,9 +269,7 @@ const Quest = (props) => {
 
     return rs;
   };
-  const connectWalletStatus = getConnectWalletStatus();
-
-  const getConnectWalletTitle = () => {
+  const connectWalletTitle = () => {
     let rs = null;
     const titleClasses = [classes.taskIndex];
     if (userState.wallet_address) {
@@ -301,119 +294,260 @@ const Quest = (props) => {
 
     return rs;
   };
-  const connectWalletTitle = getConnectWalletTitle();
+
   let connectWalletTaskClasses = [classes.questItem, classes.connectWalletTask];
   connectWalletTaskClasses.push(isEnded ? classes.disabled : null);
   const connectWalletTask = (
     <div className={connectWalletTaskClasses.join(' ')}>
-      {connectWalletStatus}
+      {connectWalletStatus()}
       <div className="flex items-center justify-between flex-1">
-        {connectWalletTitle}
+        {connectWalletTitle()}
         {walletConnect}
       </div>
     </div>
   );
-  let twitterLoginTask = null;
+
+  let twLoginTask = null;
   if (tasks.ck_twitter_login) {
-    const twitterLoginStatus = !tasks.ck_twitter_login.status ? (
-      <>
-        <Button
-          id={`btn-twitter-login`}
-          priority="high"
-          classes={{ root_highPriority: classes.btnTwitterLogin }}
-          type="button"
-          onPress={() => handleTwitterLogin()}
-        />
-        <span className="flex items-center flex-row text-sm font-bold text-slate-500 ml-auto group-hover:text-slate-600 transition-color duration-300">
-          {t('Login')}&nbsp;
-          <FaAngleRight className="text-lg" />
-        </span>
-      </>
-    ) : (
-      <span className={`ml-auto text-sky-600`}>
-        @{tasks.ck_twitter_login.screen_name}
-      </span>
-    );
+    const twLoginTaskIcon = () => {
+      let rs = null;
+      if (tasks.ck_twitter_login.status) {
+        rs = (
+          <div
+            className={`${classes.questItemIcon} bg-green-300 text-slate-800`}
+          >
+            <FaCheck />
+          </div>
+        );
+      } else if (tasks.ck_twitter_login.status === false) {
+        rs = (
+          <div className={`${classes.questItemIcon} text-slate-800`}>
+            <span data-tip data-for="twLoginError" className={`z-40`}>
+              {StatusIcon(40, 40, '#FCA5A5')}
+            </span>
+            <ReactTooltip
+              id="twLoginError"
+              type="error"
+              backgroundColor={'#dc2626'}
+            >
+              <span>
+                {t('You have not done a twitter login successfully yet!')}
+              </span>
+            </ReactTooltip>
+          </div>
+        );
+      } else {
+        rs = (
+          <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
+            <FaTwitter />
+          </div>
+        );
+      }
 
-    const twitterLoginIconStatus = tasks.ck_twitter_login.status ? (
-      <div className={`${classes.questItemIcon} bg-green-300 text-slate-800`}>
-        <FaCheck />
-      </div>
-    ) : (
-      <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
-        <FaTwitter />
-      </div>
-    );
+      return rs;
+    };
+    const twLoginTaskTitle = () => {
+      const titleClasses = [classes.taskIndex];
+      if (tasks.ck_twitter_login.status) {
+        titleClasses.push(classes.taskSuccess);
+      } else if (tasks.ck_twitter_login.status === false) {
+        titleClasses.push(classes.taskError);
+      }
 
-    const twLoginTaskClasses = [classes.questItem, classes.twitterLoginTask];
-    twLoginTaskClasses.push(isEnded ? classes.disabled : null);
-    twitterLoginTask = (
-      <div className={`${twLoginTaskClasses.join(' ')} relative group`}>
-        {twitterLoginIconStatus}
+      return (
         <div className="flex items-center flex-1">
           <div className="flex-1">
-            <span
-              className={`${classes.taskIndex} ${
-                tasks.ck_twitter_login.status ? classes.taskSuccess : ''
-              }`}
-            >
+            <span className={titleClasses.join(' ')}>
               Task {tasks.ck_twitter_login.id}
             </span>
             {t('Login Twitter')}
           </div>
         </div>
-        {twitterLoginStatus}
+      );
+    };
+    const twLoginTaskContent = () => {
+      return !tasks.ck_twitter_login.status ? (
+        <>
+          <Button
+            id={`btn-twitter-login`}
+            priority="high"
+            classes={{ root_highPriority: classes.btnTwitterLogin }}
+            type="button"
+            onPress={() => handleTwitterLogin()}
+          />
+          <span className="flex items-center flex-row text-sm font-bold text-slate-500 ml-auto group-hover:text-slate-600 transition-color duration-300">
+            {t('Login')}&nbsp;
+            <FaAngleRight className="text-lg" />
+          </span>
+        </>
+      ) : (
+        <span className={`ml-auto text-sky-600`}>
+          @{tasks.ck_twitter_login.screen_name}
+        </span>
+      );
+    };
+    const handleTwitterLogin = async () => {
+      if (userState.wallet_address == undefined) {
+        return toast.warning(
+          t('You must connect your wallet before do this task!')
+        );
+      }
+
+      // update submitted tasks to local storage
+      await handleUpdateSubmittedTasks('ck_twitter_login', false);
+
+      // status will update after login process success
+      await TwitterLogin({ reference_url: router.asPath });
+    };
+
+    const twLoginTaskClasses = [classes.questItem, classes.twitterLoginTask];
+    twLoginTaskClasses.push(isEnded ? classes.disabled : null);
+    twLoginTask = (
+      <div className={`${twLoginTaskClasses.join(' ')} relative group`}>
+        {twLoginTaskIcon()}
+        {twLoginTaskTitle()}
+        {twLoginTaskContent()}
       </div>
     );
   }
-  const handleTwitterLogin = async () => {
-    if (userState.wallet_address == undefined) {
-      return toast.warning(
-        t('You must connect your wallet before do this task!')
-      );
-    }
-    await TwitterLogin({ reference_url: router.asPath });
-  };
 
   let twFollowTask = null;
   if (tasks.ck_twitter_follow) {
-    const btnVerifyTwitterFollow = !tasks.ck_twitter_follow.status ? (
-      <Button
-        id={`btn-verify-twitter-follow`}
-        priority="high"
-        classes={{ root_highPriority: classes.btnVerifyTwitter }}
-        type="button"
-        onPress={() => handleCheckTwitterFollow()}
-      />
-    ) : null;
-    const twFollowStatus = (
-      <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`flex items-center ml-auto`}>
-          {tasks.ck_twitter_follow.status === true
-            ? t('Verified')
-            : tasks.ck_twitter_follow.status === false
-            ? TaskFailIcon
-            : ''}
+    const twFollowAction = () => {
+      return (
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
+          {!tasks.ck_twitter_follow.status ? (
+            <span>
+              <Button
+                id={`btn-verify-twitter-follow`}
+                priority="high"
+                classes={{ root_highPriority: classes.btnVerify }}
+                type="button"
+                onPress={() => handleCheckTwitterFollow()}
+              />
+              <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
+                {t('Verify')}&nbsp;
+                <FaAngleRight className="text-lg" />
+              </span>
+            </span>
+          ) : (
+            <span className={`flex items-center ml-auto`}>{t('Verified')}</span>
+          )}
         </span>
-        {!tasks.ck_twitter_follow.status ? (
-          <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
-            {t('Verify')}&nbsp;
-            <FaAngleRight className="text-lg" />
+      );
+    };
+    const twFollowTaskIcon = () => {
+      let rs = null;
+      if (tasks.ck_twitter_follow.status) {
+        rs = (
+          <div
+            className={`${classes.questItemIcon} bg-green-300 text-slate-800`}
+          >
+            <FaCheck />
+          </div>
+        );
+      } else if (tasks.ck_twitter_follow.status === false) {
+        rs = (
+          <div className={`${classes.questItemIcon} text-white`}>
+            <span data-tip data-for="twFollowError" className={`z-40`}>
+              {StatusIcon(40, 40, '#FCA5A5')}
+            </span>
+            <ReactTooltip
+              id="twFollowError"
+              type="error"
+              backgroundColor={'#dc2626'}
+            >
+              <span>{tasks.ck_twitter_follow.msg}</span>
+            </ReactTooltip>
+          </div>
+        );
+      } else {
+        rs = (
+          <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
+            <FaUserPlus />
+          </div>
+        );
+      }
+
+      return rs;
+    };
+    const twFollowTaskTitle = () => {
+      let rs = null;
+      const titleClasses = [classes.taskIndex];
+      if (tasks.ck_twitter_follow.status) {
+        titleClasses.push(classes.taskSuccess);
+      } else if (tasks.ck_twitter_follow.status === false) {
+        titleClasses.push(classes.taskError);
+      }
+      rs = (
+        <span>
+          <span className={titleClasses.join(' ')}>
+            {t('Task')} {tasks.ck_twitter_follow.id}
           </span>
-        ) : null}
-      </span>
-    );
-    const twFollowIconLeft = (
-      <div
-        className={`${classes.questItemIcon} ${
-          tasks.ck_twitter_follow.status
-            ? 'bg-green-300 text-slate-800'
-            : 'bg-cyan-400 text-white'
-        }`}
-      >
-        {tasks.ck_twitter_follow.status ? <FaCheck /> : <FaUserPlus />}
-      </div>
-    );
+        </span>
+      );
+
+      return rs;
+    };
+    const twFollowTaskContent = () => {
+      return (
+        <span>
+          {t('Follow')}&nbsp;
+          <TextLink
+            target="_blank"
+            title={t('Go to this Twitter channel.')}
+            href={`https://twitter.com/${tasks.ck_twitter_follow.username}`}
+            className="border-b border-dotted hover:border-solid border-b-sky-500 hover:border-b-sky-600 text-sky-500 font-semibold"
+          >
+            @{tasks.ck_twitter_follow.username}
+          </TextLink>
+          &nbsp;
+          {t('on Twitter')}
+        </span>
+      );
+    };
+    const handleCheckTwitterFollow = async () => {
+      if (userState.wallet_address === undefined) {
+        return toast.warning(
+          t('You must connect your wallet before do this task!')
+        );
+      }
+      if (!tasks.ck_twitter_login.uid) {
+        return toast.warning(t('You must login Twitter before do this task!'));
+      }
+
+      if (!tasks.ck_twitter_follow.owner_id) {
+        tasks.ck_twitter_follow.owner_id = storage.getItem(
+          base64URLEncode(tasks.ck_twitter_follow.username)
+        );
+      }
+      setTwitterFollowState('loading');
+
+      // checking twitter follow here...
+      const tw_follower_status = await getFollowLookup({
+        user_id: tasks.ck_twitter_login.uid,
+        owner_id: tasks.ck_twitter_follow.owner_id
+      });
+      if (tw_follower_status) {
+        tasks.ck_twitter_follow.status = true;
+        //trigger to re-render
+        setTwitterFollowState(tasks.ck_twitter_follow.status);
+      } else {
+        tasks.ck_twitter_follow.status = false;
+        //trigger to re-render
+        setTwitterFollowState(tasks.ck_twitter_follow.status);
+        toast.error(
+          t('You have not completed this task yet.  Please try again later!')
+        );
+      }
+
+      // update submitted tasks to local storage
+      await handleUpdateSubmittedTasks(
+        'ck_twitter_follow',
+        tasks.ck_twitter_follow.status
+      );
+    };
+
     let twFollowTaskClasses = [classes.questItem, classes.twFollowTask];
     twFollowTaskClasses.push(
       twitterFollowState === 'loading' ? classes.taskLoading : null
@@ -427,131 +561,74 @@ const Quest = (props) => {
           classes.twitterFollowTask
         } relative group`}
       >
-        {twFollowIconLeft}
+        {twFollowTaskIcon()}
         <div className="z-20">
-          <span
-            className={`${classes.taskIndex} ${
-              tasks.ck_twitter_follow.status ? classes.taskSuccess : ''
-            }`}
-          >
-            {t('Task')} {tasks.ck_twitter_follow.id}
-          </span>
-          {t('Follow')}&nbsp;
-          <TextLink
-            target="_blank"
-            title={t('Go to this Twitter channel.')}
-            href={`https://twitter.com/${tasks.ck_twitter_follow.username}`}
-            className="border-b border-dotted hover:border-solid border-b-sky-500 hover:border-b-sky-600 text-sky-500 font-semibold"
-          >
-            @{tasks.ck_twitter_follow.username}
-          </TextLink>
-          &nbsp;
-          {t('on Twitter')}
+          {twFollowTaskTitle()}
+          {twFollowTaskContent()}
         </div>
-        {twFollowStatus}
-        {btnVerifyTwitterFollow}
+        {twFollowAction()}
       </div>
     );
   }
-  const handleCheckTwitterFollow = async () => {
-    if (userState.wallet_address === undefined) {
-      return toast.warning(
-        t('You must connect your wallet before do this task!')
-      );
-    }
-    if (!tasks.ck_twitter_login.uid) {
-      return toast.warning(t('You must login Twitter before do this task!'));
-    }
-
-    if (!tasks.ck_twitter_follow.owner_id) {
-      tasks.ck_twitter_follow.owner_id = storage.getItem(
-        base64URLEncode(tasks.ck_twitter_follow.username)
-      );
-    }
-    setTwitterFollowState('loading');
-
-    // checking twitter follow here...
-    const tw_follower_status = await getFollowLookup({
-      user_id: tasks.ck_twitter_login.uid,
-      owner_id: tasks.ck_twitter_follow.owner_id
-    });
-    if (tw_follower_status) {
-      tasks.ck_twitter_follow.status = true;
-      //trigger to re-render
-      setTwitterFollowState(tasks.ck_twitter_follow.status);
-    } else {
-      tasks.ck_twitter_follow.status = false;
-      //trigger to re-render
-      setTwitterFollowState(tasks.ck_twitter_follow.status);
-      toast.error(
-        t('You have not completed this task yet.  Please try again later!')
-      );
-    }
-
-    // update submitted tasks to local storage
-    await handleUpdateSubmittedTasks(
-      'ck_twitter_follow',
-      tasks.ck_twitter_follow.status
-    );
-  };
 
   let twReTweetTask = null;
   if (tasks.ck_twitter_retweet) {
-    const btnVerifyTwitterReTweet = !tasks.ck_twitter_retweet.status ? (
-      <Button
-        id={`btn-verify-twitter-re-tweet`}
-        priority="high"
-        classes={{ root_highPriority: classes.btnVerifyTwitter }}
-        type="button"
-        onPress={() => handleCheckTwitterReTweet()}
-      />
-    ) : null;
-    const twReTweetStatus = (
-      <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`flex items-center ml-auto`}>
-          {tasks.ck_twitter_retweet.status === true
-            ? t('Verified')
-            : tasks.ck_twitter_retweet.status === false
-            ? TaskFailIcon
-            : ''}
-          {!tasks.ck_twitter_retweet.status ? (
-            <span className="flex items-center flex-row text-sm font-bold text-slate-500 ml-2 group-hover:text-slate-600 transition-color duration-300">
-              {t('Verify')}&nbsp;
-              <FaAngleRight className="text-lg" />
-            </span>
-          ) : null}
-        </span>
-      </span>
-    );
-    const twReTweetIconLeft = tasks.ck_twitter_retweet ? (
-      <div
-        className={`${classes.questItemIcon} ${
-          tasks.ck_twitter_retweet.status
-            ? 'bg-green-300 text-slate-800'
-            : 'bg-cyan-400 text-white'
-        }`}
-      >
-        {tasks.ck_twitter_retweet.status ? <FaCheck /> : <FaRetweet />}
-      </div>
-    ) : null;
-    let twReTeetTaskClasses = [classes.questItem, classes.twitterRetweetTask];
-    twReTeetTaskClasses.push(
-      twitterReTweetState === 'loading' ? classes.taskLoading : null
-    );
-    if (isEnded) {
-      twReTeetTaskClasses.push(classes.disabled);
-    }
-    twReTweetTask = (
-      <div className={`${twReTeetTaskClasses.join(' ')} relative group`}>
-        {twReTweetIconLeft}
-        <div className="z-20">
-          <span
-            className={`${classes.taskIndex} ${
-              tasks.ck_twitter_retweet.status ? classes.taskSuccess : ''
-            }`}
+    const twReTweetTaskIcon = () => {
+      let rs = null;
+      if (tasks.ck_twitter_retweet.status) {
+        rs = (
+          <div
+            className={`${classes.questItemIcon} bg-green-300 text-slate-800`}
           >
+            <FaCheck />
+          </div>
+        );
+      } else if (tasks.ck_twitter_retweet.status === false) {
+        rs = (
+          <div className={`${classes.questItemIcon} text-white`}>
+            <span data-tip data-for="twReTweetError" className={`z-40`}>
+              {StatusIcon(40, 40, '#FCA5A5')}
+            </span>
+            <ReactTooltip
+              id="twReTweetError"
+              type="error"
+              backgroundColor={'#dc2626'}
+            >
+              <span>{tasks.ck_twitter_retweet.msg}</span>
+            </ReactTooltip>
+          </div>
+        );
+      } else {
+        rs = (
+          <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
+            <FaRetweet />
+          </div>
+        );
+      }
+
+      return rs;
+    };
+    const twReTweetTaskTitle = () => {
+      let rs = null;
+      const titleClasses = [classes.taskIndex];
+      if (tasks.ck_twitter_retweet.status) {
+        titleClasses.push(classes.taskSuccess);
+      } else if (tasks.ck_twitter_retweet.status === false) {
+        titleClasses.push(classes.taskError);
+      }
+      rs = (
+        <span>
+          <span className={titleClasses.join(' ')}>
             {t('Task')} {tasks.ck_twitter_retweet.id}
           </span>
+        </span>
+      );
+
+      return rs;
+    };
+    const twReTweetTaskContent = () => {
+      return (
+        <span>
           {t('Retweet')}&nbsp;
           <TextLink
             target="_blank"
@@ -561,221 +638,299 @@ const Quest = (props) => {
           >
             {t('this tweet')}
           </TextLink>
+          &nbsp;
+          {t('on Twitter')}
+        </span>
+      );
+    };
+    const twReTweetAction = () => {
+      return (
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
+          {!tasks.ck_twitter_retweet.status ? (
+            <span>
+              <Button
+                id={`btn-verify-twitter-re-tweet`}
+                priority="high"
+                classes={{ root_highPriority: classes.btnVerify }}
+                type="button"
+                onPress={() => handleCheckTwitterReTweet()}
+              />
+              <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
+                {t('Verify')}&nbsp;
+                <FaAngleRight className="text-lg" />
+              </span>
+            </span>
+          ) : (
+            <span className={`flex items-center ml-auto`}>{t('Verified')}</span>
+          )}
+        </span>
+      );
+    };
+    const handleCheckTwitterReTweet = async () => {
+      if (userState.wallet_address === undefined) {
+        return toast.warning(
+          t('You must connect your wallet before do this task!')
+        );
+      }
+
+      if (!tasks.ck_twitter_login.uid) {
+        return toast.warning(t('You must login twitter before do this task!'));
+      }
+
+      if (!tasks.ck_twitter_retweet.tweet_id) {
+        return toast.warning(t('Invalid tweet id!'));
+      }
+      setTwitterReTweetState('loading');
+
+      twSocialLinked = storage.getItem(localTwSocialLinkKey);
+      const tw_tweet_status = await getTweetLookup({
+        user_id: twSocialLinked.uid,
+        tweet_id: tasks.ck_twitter_retweet.tweet_id
+      });
+      if (tw_tweet_status) {
+        tasks.ck_twitter_retweet.status = true;
+        //trigger to re-render
+        setTwitterReTweetState(tasks.ck_twitter_retweet.status);
+      } else {
+        tasks.ck_twitter_retweet.status = false;
+        //trigger to re-render
+        setTwitterReTweetState(tasks.ck_twitter_retweet.status);
+        toast.error(
+          t('You have not completed this task yet. Please try again later!')
+        );
+      }
+
+      // update submitted tasks to local storage
+      await handleUpdateSubmittedTasks(
+        'ck_twitter_retweet',
+        tasks.ck_twitter_retweet.status
+      );
+    };
+    let reTweetTaskClasses = [classes.questItem, classes.twitterRetweetTask];
+    reTweetTaskClasses.push(
+      twitterReTweetState === 'loading' ? classes.taskLoading : null
+    );
+    if (isEnded) {
+      reTweetTaskClasses.push(classes.disabled);
+    }
+    twReTweetTask = (
+      <div className={`${reTweetTaskClasses.join(' ')} relative group`}>
+        {twReTweetTaskIcon()}
+        <div className="z-20">
+          {twReTweetTaskTitle()}
+          {twReTweetTaskContent()}
         </div>
-        {twReTweetStatus}
-        {btnVerifyTwitterReTweet}
+        {twReTweetAction()}
       </div>
     );
   }
-  const handleCheckTwitterReTweet = async () => {
-    if (userState.wallet_address === undefined) {
-      return toast.warning(
-        t('You must connect your wallet before do this task!')
-      );
-    }
-
-    if (!tasks.ck_twitter_login.uid) {
-      return toast.warning(t('You must login twitter before do this task!'));
-    }
-
-    if (!tasks.ck_twitter_retweet.tweet_id) {
-      return toast.warning(t('Invalid tweet id!'));
-    }
-    setTwitterReTweetState('loading');
-
-    twSocialLinked = storage.getItem(localTwSocialLinkKey);
-    const tw_tweet_status = await getTweetLookup({
-      user_id: twSocialLinked.uid,
-      tweet_id: tasks.ck_twitter_retweet.tweet_id
-    });
-    if (tw_tweet_status) {
-      tasks.ck_twitter_retweet.status = true;
-      //trigger to re-render
-      setTwitterReTweetState(tasks.ck_twitter_retweet.status);
-    } else {
-      tasks.ck_twitter_retweet.status = false;
-      //trigger to re-render
-      setTwitterReTweetState(tasks.ck_twitter_retweet.status);
-      toast.error(
-        t('You have not completed this task yet. Please try again later!')
-      );
-    }
-
-    // update submitted tasks to local storage
-    await handleUpdateSubmittedTasks(
-      'ck_twitter_retweet',
-      tasks.ck_twitter_retweet.status
-    );
-  };
 
   let nftOwnershipTask = null;
   if (tasks.ck_nft_ownership) {
-    const btnVerifyNftOwnership = !tasks.ck_nft_ownership.status ? (
-      <Button
-        id={`btn-verify-nft-ownership`}
-        priority="high"
-        classes={{ root_highPriority: classes.btnVerifyTwitter }}
-        type="button"
-        onPress={() => handleCheckNftOwnership()}
-      />
-    ) : null;
-    const nftOwnershipStatus = (
-      <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`flex items-center ml-auto`}>
-          {tasks.ck_nft_ownership.status === true ? (
-            t('Verified')
-          ) : tasks.ck_nft_ownership.status === false ? (
-            <span className={`${classes.statusWithTip} flex items-center`}>
-              <span data-tip data-for="nftOwnerShipError" className="mr-1 z-20">
-                {TaskFailIcon}
+    const nftOwnershipTaskIcon = () => {
+      let rs = null;
+      if (tasks.ck_nft_ownership.status) {
+        rs = (
+          <div
+            className={`${classes.questItemIcon} bg-green-300 text-slate-800`}
+          >
+            <FaCheck />
+          </div>
+        );
+      } else if (tasks.ck_nft_ownership.status === false) {
+        rs = (
+          <div className={`${classes.questItemIcon} text-white`}>
+            <span data-tip data-for="nftOwnershipError" className={`z-40`}>
+              {StatusIcon(40, 40, '#FCA5A5')}
+            </span>
+            <ReactTooltip
+              id="nftOwnershipError"
+              type="error"
+              backgroundColor={'#dc2626'}
+            >
+              <span>{tasks.ck_nft_ownership.msg}</span>
+            </ReactTooltip>
+          </div>
+        );
+      } else {
+        rs = (
+          <div
+            className={`relative ${classes.questItemIcon} bg-slate-700 text-white`}
+          >
+            <span className={`${classes.nftOwnership}`}>
+              <img src="/icons/nft.svg" alt="NFT" />
+            </span>
+          </div>
+        );
+      }
+
+      return rs;
+    };
+    const nftOwnershipTaskTitle = () => {
+      let rs = null;
+      const titleClasses = [classes.taskIndex];
+      if (tasks.ck_nft_ownership.status) {
+        titleClasses.push(classes.taskSuccess);
+      } else if (tasks.ck_nft_ownership.status === false) {
+        titleClasses.push(classes.taskError);
+      }
+      rs = (
+        <span>
+          <span className={titleClasses.join(' ')}>
+            {t('Task')} {tasks.ck_nft_ownership.id}
+          </span>
+        </span>
+      );
+
+      return rs;
+    };
+    const nftOwnershipTaskContent = () => {
+      return (
+        <div className="flex items-center">
+          <h4 className="my-0 ml-1">{t('Holder')}:</h4>
+          {tasks.ck_nft_ownership.nftCollectionInfo}
+        </div>
+      );
+    };
+    const nftOwnershipAction = () => {
+      return (
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
+          {!tasks.ck_nft_ownership.status ? (
+            <span>
+              <Button
+                id={`btn-verify-nft-ownership`}
+                priority="high"
+                classes={{ root_highPriority: classes.btnVerify }}
+                type="button"
+                onPress={() => handleCheckNftOwnership()}
+              />
+              <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
+                {t('Verify')}&nbsp;
+                <FaAngleRight className="text-lg" />
               </span>
-              <ReactTooltip
-                id="nftOwnerShipError"
-                type="error"
-                className={classes.errorTip}
-                backgroundColor={'#dc2626'}
-              >
-                <span>{tasks.ck_nft_ownership.msg}</span>
-              </ReactTooltip>
             </span>
           ) : (
-            ''
+            <span className={`flex items-center ml-auto`}>{t('Verified')}</span>
           )}
-          {!tasks.ck_nft_ownership.status ? (
-            <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
-              {t('Verify')}&nbsp;
-              <FaAngleRight className="text-lg" />
-            </span>
-          ) : null}
         </span>
-      </span>
-    );
-    let nftTaskClasses = [classes.soulBoundTokenTask];
+      );
+    };
+    const handleCheckNftOwnership = async () => {
+      if (userState.wallet_address === undefined) {
+        return toast.warning(
+          t('You must connect your wallet before do this task!')
+        );
+      }
+
+      setNftOwnershipState('loading');
+
+      // submit to verify NFT ownership
+      const status = await handleVerifyNftOwnership();
+
+      // update state
+      tasks.ck_nft_ownership.status = status;
+
+      //trigger to re-render
+      setNftOwnershipState(tasks.ck_nft_ownership.status);
+      if (!tasks.ck_nft_ownership.status) {
+        const msg = t('You are not owner of any SoulBound Token!');
+        tasks.ck_nft_ownership.msg = msg;
+        toast.error(msg);
+      } else {
+        tasks.ck_nft_ownership.msg = null;
+      }
+
+      // update submitted tasks to local storage
+      await handleUpdateSubmittedTasks(
+        'ck_nft_ownership',
+        tasks.ck_nft_ownership.status
+      );
+    };
+
+    let nftTaskClasses = [classes.questItem, classes.nftOwnershipTask];
     nftTaskClasses.push(
       nftOwnershipState === 'loading' ? classes.taskLoading : null
     );
     if (isEnded) {
       nftTaskClasses.push(classes.disabled);
     }
-    const nftOwnershipIconStatus = tasks.ck_nft_ownership.status ? (
-      <div
-        className={`relative ${classes.questItemIcon} bg-green-300 text-slate-800`}
-      >
-        <FaCheck />
-      </div>
-    ) : (
-      <div
-        className={`relative ${classes.questItemIcon} bg-slate-700 text-white`}
-      >
-        <span className={`${classes.nftOwnership}`}>
-          <img src="/icons/nft.svg" alt="NFT" />
-        </span>
-      </div>
-    );
     nftOwnershipTask = (
-      <div className={`${classes.questItem} ${nftTaskClasses.join(' ')}`}>
-        {nftOwnershipIconStatus}
+      <div className={`${nftTaskClasses.join(' ')} relative group`}>
+        {nftOwnershipTaskIcon()}
         <div className="z-20">
-          <div className="relative">
-            <span
-              className={`${classes.taskIndex} ${
-                tasks.ck_nft_ownership.status ? classes.taskSuccess : ''
-              }`}
-            >
-              {t('Task')} {tasks.ck_nft_ownership.id}
-            </span>
-            <div className="flex items-center">
-              <h4 className="my-0 ml-1">{t('Holder')}:</h4>
-              {tasks.ck_nft_ownership.nftCollectionInfo}
-            </div>
-          </div>
+          {nftOwnershipTaskTitle()}
+          {nftOwnershipTaskContent()}
         </div>
-        {nftOwnershipStatus}
-        {btnVerifyNftOwnership}
+        {nftOwnershipAction()}
       </div>
     );
   }
-  const handleCheckNftOwnership = async () => {
-    if (userState.wallet_address === undefined) {
-      return toast.warning(
-        t('You must connect your wallet before do this task!')
-      );
-    }
 
-    setNftOwnershipState('loading');
-
-    // submit to verify NFT ownership
-    const status = await handleVerifyNftOwnership();
-
-    // update state
-    tasks.ck_nft_ownership.status = status;
-
-    //trigger to re-render
-    setNftOwnershipState(tasks.ck_nft_ownership.status);
-    if (!tasks.ck_nft_ownership.status) {
-      const msg = t('You are not owner of any SoulBound Token!');
-      tasks.ck_nft_ownership.msg = msg;
-      toast.error(msg);
-    } else {
-      tasks.ck_nft_ownership.msg = null;
-    }
-
-    // update submitted tasks to local storage
-    await handleUpdateSubmittedTasks(
-      'ck_nft_ownership',
-      tasks.ck_nft_ownership.status
-    );
-  };
-
-  let powSubmitUrlTask = null;
+  let powUrlTask = null;
   if (tasks.ck_pow_submit_url) {
-    const powSubmitUrlStatus = (
-      <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`flex items-center ml-auto`}>
-          {tasks.ck_pow_submit_url.status
-            ? t('Under review')
-            : tasks.ck_pow_submit_url.status === false
-            ? TaskFailIcon
-            : ''}
-        </span>
-      </span>
-    );
-    const powSubmitUrlIconLeft = tasks.ck_pow_submit_url ? (
-      <div
-        className={`${classes.questItemIcon} ${
-          tasks.ck_pow_submit_url.status
-            ? 'bg-green-300 text-slate-800'
-            : 'bg-cyan-400 text-white'
-        }`}
-      >
-        {tasks.ck_pow_submit_url.status ? <FaCheck /> : <FaLink />}
-      </div>
-    ) : null;
-    let powSubmitUrlTaskClasses = [classes.questItem, classes.powSubmitUrlTask];
-    powSubmitUrlTaskClasses.push(
-      twitterReTweetState === 'loading' ? classes.taskLoading : null
-    );
-    if (isEnded) {
-      powSubmitUrlTaskClasses.push(classes.disabled);
-    }
-    powSubmitUrlTask = (
-      <div className={`${powSubmitUrlTaskClasses.join(' ')} relative group`}>
-        {powSubmitUrlIconLeft}
-        <div className="flex-1 z-20">
-          <span
-            className={`${classes.taskIndex} ${
-              tasks.ck_pow_submit_url.status ? classes.taskSuccess : ''
-            }`}
+    const powUrlTaskIcon = () => {
+      let rs = null;
+      if (tasks.ck_pow_submit_url.status) {
+        rs = (
+          <div
+            className={`${classes.questItemIcon} bg-green-300 text-slate-800`}
           >
+            <FaCheck />
+          </div>
+        );
+      } else if (tasks.ck_pow_submit_url.status === false) {
+        rs = (
+          <div className={`${classes.questItemIcon} text-white`}>
+            <span data-tip data-for="powUrlError" className={`z-40`}>
+              {StatusIcon(40, 40, '#FCA5A5')}
+            </span>
+            <ReactTooltip
+              id="powUrlError"
+              type="error"
+              backgroundColor={'#dc2626'}
+            >
+              <span>{tasks.ck_pow_submit_url.msg}</span>
+            </ReactTooltip>
+          </div>
+        );
+      } else {
+        rs = (
+          <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
+            <FaLink />
+          </div>
+        );
+      }
+
+      return rs;
+    };
+    const powUrlTaskTitle = () => {
+      let rs = null;
+      const titleClasses = [classes.taskIndex];
+      if (tasks.ck_pow_submit_url.status) {
+        titleClasses.push(classes.taskSuccess);
+      } else if (tasks.ck_pow_submit_url.status === false) {
+        titleClasses.push(classes.taskError);
+      }
+      rs = (
+        <span>
+          <span className={titleClasses.join(' ')}>
             {t('Task')} {tasks.ck_pow_submit_url.id}
           </span>
+        </span>
+      );
+
+      return rs;
+    };
+    const powUrlTaskContent = () => {
+      return (
+        <Fragment>
           <div className="flex flex-wrap flex-col md:flex-row md:items-center">
             <span className={`${classes.taskTitle} mr-2`}>
               {t('Proof-of-Work URL')}:
             </span>
             <input
               autoComplete="off"
-              className={classes.powSubmitUrlInput}
+              className={classes.powUrlInput}
               type="text"
               id="pow_submit_url"
               name="pow_submit_url"
@@ -786,41 +941,66 @@ const Quest = (props) => {
           <span className={`${classes.taskTip}`}>
             {tasks.ck_pow_submit_url.note}
           </span>
+        </Fragment>
+      );
+    };
+    const powUrlStatus = () => {
+      return tasks.ck_pow_submit_url.status ? (
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
+          <span className={`flex items-center ml-auto`}>
+            {t('Under review')}
+          </span>
+        </span>
+      ) : null;
+    };
+    const handleCheckPOWSubmitUrl = async (inputId) => {
+      if (userState.wallet_address === undefined) {
+        return toast.warning(
+          t('You must connect your wallet before do this task!')
+        );
+      }
+
+      setPOWSubmitUrlState('loading');
+
+      const powUrl = document.getElementById(inputId);
+
+      const status = validURL(powUrl.value);
+
+      // update state
+      tasks.ck_pow_submit_url.status = status;
+
+      //trigger to re-render
+      setNftOwnershipState(tasks.ck_pow_submit_url.status);
+
+      // update submitted tasks to local storage
+      await handleUpdateSubmittedTasks(
+        'ck_pow_submit_url',
+        status ? powUrl.value : false
+      );
+
+      if (!tasks.ck_pow_submit_url.status) {
+        toast.error(t('Invalid Proof-of-Work URL!'));
+      }
+    };
+
+    let powUrlTaskClasses = [classes.questItem, classes.powUrlTask];
+    powUrlTaskClasses.push(
+      twitterReTweetState === 'loading' ? classes.taskLoading : null
+    );
+    if (isEnded) {
+      powUrlTaskClasses.push(classes.disabled);
+    }
+    powUrlTask = (
+      <div className={`${powUrlTaskClasses.join(' ')} relative group`}>
+        {powUrlTaskIcon()}
+        <div className="flex-1 z-20">
+          {powUrlTaskTitle()}
+          {powUrlTaskContent()}
         </div>
-        {powSubmitUrlStatus}
+        {powUrlStatus()}
       </div>
     );
   }
-
-  const handleCheckPOWSubmitUrl = async (inputId) => {
-    if (userState.wallet_address === undefined) {
-      return toast.warning(
-        t('You must connect your wallet before do this task!')
-      );
-    }
-
-    setPOWSubmitUrlState('loading');
-
-    const powSubmitUrl = document.getElementById(inputId);
-
-    const status = validURL(powSubmitUrl.value);
-
-    // update state
-    tasks.ck_pow_submit_url.status = status;
-
-    //trigger to re-render
-    setNftOwnershipState(tasks.ck_pow_submit_url.status);
-
-    // update submitted tasks to local storage
-    await handleUpdateSubmittedTasks(
-      'ck_pow_submit_url',
-      status ? powSubmitUrl.value : false
-    );
-
-    if (!tasks.ck_pow_submit_url.status) {
-      toast.error(t('Invalid Proof-of-Work URL'));
-    }
-  };
 
   const checkCanSubmit = () => {
     let rs = false;
@@ -889,11 +1069,11 @@ const Quest = (props) => {
 
       <div className="card-body">
         {connectWalletTask}
-        {twitterLoginTask}
+        {twLoginTask}
         {twFollowTask}
         {twReTweetTask}
         {nftOwnershipTask}
-        {powSubmitUrlTask}
+        {powUrlTask}
         {btnClaimReward}
       </div>
     </Fragment>

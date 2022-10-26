@@ -35,6 +35,10 @@ yarn-error.log*
 .vercel
 /.idea/*
 
+.firebase
+.firebaserc
+firebase.json
+
 /public/tinymce/
 yarn.lock
 public/uploads/*

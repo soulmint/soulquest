@@ -55,12 +55,24 @@ export default (props) => {
   if (campaign.twitter_tweet || campaign.twitter_username) {
     const twSocialLinked = storage.getItem(localTwSocialLinkKey);
     const tw_token = Cookies.get('tw_token');
+
+    const twLoginStatus =
+      submittedTasks && submittedTasks.ck_twitter_login !== undefined
+        ? submittedTasks.ck_twitter_login
+        : null;
     tasks.ck_twitter_login = {
       id: ++taskTotal,
-      status: twSocialLinked && tw_token ? true : null,
-      uid: twSocialLinked && tw_token ? twSocialLinked.uid : null,
-      screen_name: twSocialLinked && tw_token ? twSocialLinked.username : null,
-      msg: null
+      status: twLoginStatus,
+      uid:
+        twLoginStatus && twSocialLinked && tw_token ? twSocialLinked.uid : null,
+      screen_name:
+        twLoginStatus && twSocialLinked && tw_token
+          ? twSocialLinked.username
+          : null,
+      msg:
+        twLoginStatus === false
+          ? t('You have not finished this task yet!')
+          : null
     };
   }
 
@@ -69,15 +81,19 @@ export default (props) => {
     const twOwnerId = storage.getItem(
       base64URLEncode(campaign.twitter_username)
     );
+    const twFollowStatus =
+      submittedTasks && submittedTasks.ck_twitter_follow !== undefined
+        ? submittedTasks.ck_twitter_follow
+        : null;
     tasks.ck_twitter_follow = {
       id: ++taskTotal,
       username: campaign.twitter_username,
       owner_id: twOwnerId ? twOwnerId : null,
-      status:
-        submittedTasks && submittedTasks.ck_twitter_follow !== undefined
-          ? submittedTasks.ck_twitter_follow
-          : null,
-      msg: null
+      status: twFollowStatus,
+      msg:
+        twFollowStatus === false
+          ? t('You have not finished this task yet!')
+          : null
     };
   }
 
@@ -91,15 +107,19 @@ export default (props) => {
       }
       tweetId = tweetUrl.split('/').pop();
     }
+    const reTweetStatus =
+      submittedTasks && submittedTasks.ck_twitter_retweet !== undefined
+        ? submittedTasks.ck_twitter_retweet
+        : null;
     tasks.ck_twitter_retweet = {
       id: ++taskTotal,
       tweet_url: campaign.twitter_tweet,
       tweet_id: tweetId,
-      status:
-        submittedTasks && submittedTasks.ck_twitter_retweet !== undefined
-          ? submittedTasks.ck_twitter_retweet
-          : null,
-      msg: null
+      status: reTweetStatus,
+      msg:
+        reTweetStatus === false
+          ? t('You have not finished this task yet!')
+          : null
     };
   }
 
@@ -130,14 +150,15 @@ export default (props) => {
 
   // Add POW Submit URL task
   if (campaign.pow_submit_url_note) {
+    const powSubmitUrlStatus =
+      submittedTasks && submittedTasks.ck_pow_submit_url !== undefined
+        ? submittedTasks.ck_pow_submit_url
+        : null;
     tasks.ck_pow_submit_url = {
       id: ++taskTotal,
       note: campaign.pow_submit_url_note,
-      status:
-        submittedTasks && submittedTasks.ck_pow_submit_url !== undefined
-          ? submittedTasks.ck_pow_submit_url
-          : null,
-      msg: null
+      status: powSubmitUrlStatus,
+      msg: powSubmitUrlStatus === false ? t('Invalid Proof-of-Work URL!') : null
     };
   }
 
