@@ -51,7 +51,7 @@ const Details = (props) => {
         );
       const datesInfo =
         campaign.date_start || campaign.date_end ? (
-          <div className="shadow bg-slate-200 text-slate-800 rounded-full px-3 py-1 font-medium text-sm">
+          <div className="shadow bg-slate-200 text-slate-800 rounded-full px-3 py-1 font-medium text-sm mr-4">
             <span className={classes.dateStart}>
               {t('Start: ')}
               <span className="font-bold text-slate-800">
@@ -72,14 +72,14 @@ const Details = (props) => {
         let rs = null;
         if (campaign.whitelist_spreadsheet_id && campaign.whitelist_sheet_id) {
           rs = !userState.is_whitelisted ? (
-            <span className={classes.whitelistLock}>
+            <span className={`${classes.whitelistLock} flex items-center shadow bg-red-300 text-slate-800 rounded-full px-3 py-1 font-semibold text-sm`}>
               {' '}
-              <FaLock /> <span>{t('Whitelist')}</span>
+              <FaLock /> <span className="ml-1">{t('Whitelist')}</span>
             </span>
           ) : (
-            <span className={classes.whitelistLockOpen}>
+            <span className={`${classes.whitelistLockOpen} flex items-center shadow bg-violet-300 text-slate-800 rounded-full px-3 py-1 font-semibold text-sm`}>
               {' '}
-              <FaLockOpen /> <span>{t('Whitelist')}</span>
+              <FaLockOpen /> <span className="ml-1">{t('Whitelist')}</span>
             </span>
           );
         }
