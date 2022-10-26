@@ -388,7 +388,7 @@ const Quest = (props) => {
     ) : null;
     const twFollowStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`ml-auto`}>
+        <span className={`flex items-center ml-auto`}>
           {tasks.ck_twitter_follow.status === true
             ? t('Verified')
             : tasks.ck_twitter_follow.status === false
@@ -621,12 +621,12 @@ const Quest = (props) => {
     ) : null;
     const nftOwnershipStatus = (
       <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
-        <span className={`ml-auto`}>
+        <span className={`flex items-center ml-auto`}>
           {tasks.ck_nft_ownership.status === true ? (
             t('Verified')
           ) : tasks.ck_nft_ownership.status === false ? (
-            <span className={classes.statusWithTip}>
-              <span data-tip data-for="nftOwnerShipError">
+            <span className={`${classes.statusWithTip} flex items-center`}>
+              <span data-tip data-for="nftOwnerShipError" className="mr-1">
                 {TaskFailIcon}
               </span>
               <ReactTooltip

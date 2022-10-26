@@ -72,12 +72,12 @@ const Details = (props) => {
         let rs = null;
         if (campaign.whitelist_spreadsheet_id && campaign.whitelist_sheet_id) {
           rs = !userState.is_whitelisted ? (
-            <span className={`${classes.whitelistLock} flex items-center shadow bg-red-300 text-slate-800 rounded-full px-3 py-1 font-semibold text-sm`}>
+            <span className={`${classes.whitelistLock} flex items-center shadow bg-red-300 text-slate-800 rounded-full px-3 py-1 font-bold text-sm`}>
               {' '}
               <FaLock /> <span className="ml-1">{t('Whitelist')}</span>
             </span>
           ) : (
-            <span className={`${classes.whitelistLockOpen} flex items-center shadow bg-violet-300 text-slate-800 rounded-full px-3 py-1 font-semibold text-sm`}>
+            <span className={`${classes.whitelistLockOpen} flex items-center shadow bg-green-600 text-white rounded-full px-3 py-1 font-bold text-sm`}>
               {' '}
               <FaLockOpen /> <span className="ml-1">{t('Whitelist')}</span>
             </span>
