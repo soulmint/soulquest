@@ -24,7 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           await doc.loadInfo();
 
           // Load whitelist sheet
-          const sheetId = parseInt(sheet_id);
+          const sheetId = parseInt(sheet_id as string);
           const sheet = doc.sheetsById[sheetId];
 
           const rows = await sheet.getRows();

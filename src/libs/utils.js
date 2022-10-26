@@ -30,6 +30,34 @@ const utils = {
       return str.substring(0, 250) + '...';
     }
     return str;
+  },
+  generateNumbersArray: (totalNumbers) => {
+    const numbers = [];
+    for (let i = 1; i <= totalNumbers; i++) {
+      numbers.push(i);
+    }
+    return numbers;
+  },
+  generateWinningNumbers: (numbers) => {
+    const totalNumbers = [1, 2, 3, 4, 5, 6, 7];
+    const drawnNumbers = [];
+    totalNumbers?.forEach((num) => {
+      const numbersToDrawFrom = numbers?.filter(
+        (num) => !drawnNumbers?.includes(num)
+      );
+      const newRandNum = utils.generateRandomNumber(
+        numbersToDrawFrom.length,
+        numbersToDrawFrom
+      );
+      drawnNumbers.push(newRandNum);
+    });
+    if (drawnNumbers?.length >= 7) {
+      const sortedWinArray = utils.sortNumbers(drawnNumbers);
+    }
+  },
+  sortNumbers: (drawnNumbers) => {
+    const sortedWinArray = drawnNumbers?.sort((a, b) => a - b);
+    return sortedWinArray;
   }
 };
 export default utils;

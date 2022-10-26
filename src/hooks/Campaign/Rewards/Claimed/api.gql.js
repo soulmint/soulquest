@@ -30,11 +30,39 @@ export const GET_CLAIMED = gql`
     }
   }
 `;
+export const UPDATE_WINNER = gql`
+  mutation update_quester_items(
+    $filter: quester_filter
+    $sort: [String]
+    $limit: Int
+    $offset: Int
+    $page: Int
+    $search: String
+    $ids: [ID]!
+    $data: update_quester_input!
+  ) {
+    update_quester_items(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      offset: $offset
+      page: $page
+      search: $search
+      ids: $ids
+      data: $data
+    ) {
+      id
+      campaign_id
+      date_created
+      user_created {
+        id
+        email
+      }
+    }
+  }
+`;
 export const getClaimedFunc = async (props) => {
   const { campaign_id, wallet } = props;
-  console.log('====================================');
-  console.log('campaign_id', campaign_id);
-  console.log('====================================');
   if (!wallet) return null;
   const filters = {
     status: { _eq: 'approved' },
@@ -42,9 +70,6 @@ export const getClaimedFunc = async (props) => {
     is_winner: { _eq: true },
     user_created: { email: { _eq: wallet } }
   };
-  console.log('====================================');
-  console.log('filters:', filters);
-  console.log('====================================');
   let rs = null;
   const client = initializeApollo();
   try {
@@ -53,9 +78,6 @@ export const getClaimedFunc = async (props) => {
       variables: { filters },
       fetchPolicy: 'no-cache'
     });
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
     if (data.quester && data.quester[0]) {
       rs = data.quester[0];
     }
@@ -69,5 +91,6 @@ export const getClaimedFunc = async (props) => {
   return rs;
 };
 export default {
+  GET_CLAIMED,
   getClaimedFunc
 };

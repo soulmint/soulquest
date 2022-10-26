@@ -4,7 +4,12 @@ import { useState, useEffect } from 'react';
 export default (props) => {
   const { campaignId, soulsUp, filters } = props;
 
-  const { getTotalItemsFunc, getNextQuestersFunc, getFirstQuestersFunc } = API;
+  const {
+    getTotalItemsFunc,
+    getNextQuestersFunc,
+    getFirstQuestersFunc,
+    FCFSGenerateWinner
+  } = API;
 
   //vars for infinite loading
   const [page, setPage] = useState(2);
@@ -25,6 +30,7 @@ export default (props) => {
   const [pageData, setPageData] = useState();
   const [pageLoading, setPageLoading] = useState(true);
   const [pageError, setPageError] = useState();
+  const [allItems, setAllItems] = useState([]);
 
   const [totalItems, setTotalItems] = useState(0);
   const [totalItemsLoading, setTotalItemsLoading] = useState(true);
@@ -59,6 +65,7 @@ export default (props) => {
       filter
     });
     data && data.quester.length && setTotalItems(data.quester.length);
+    data && data.quester.length && setAllItems(data.quester);
     setTotalItemsLoading(loading);
     setTotalItemsError(error);
   };
@@ -84,7 +91,9 @@ export default (props) => {
       }
     }
   }, [pageData, totalItems]);
-
+  console.log('====================================');
+  console.log(allItems);
+  console.log('====================================');
   //return data
   return {
     data: pageData ? pageData : null,

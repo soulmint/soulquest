@@ -1,21 +1,26 @@
-import { GET_CLAIMED } from './api.gql';
+import { GET_CLAIMED, UPDATE_WINNER } from './api.gql';
 import { initializeApollo } from 'src/libs/apolloClient';
+import { useMutation } from '@apollo/client';
 
-export const getClaimed = async (props) => {
-  const { campaign_id, wallet } = props;
+export const getWinner = async (props) => {
+  const { campaign_id, rewards_method, wallet } = props;
   if (!wallet) return null;
   const filter = {
     status: { _eq: 'approved' },
-    campaign_id: { _eq: campaign_id },
-    is_winner: { _eq: true },
-    user_created: { email: { _eq: wallet } }
+    campaign_id: { _eq: campaign_id }
   };
   let rs = null;
+  let variables = {
+    filter
+  };
+  if (rewards_method === 'fcfs') {
+    variables.sort = ['date_created:asc'];
+  }
   const client = initializeApollo();
   try {
     const { data } = await client.query({
       query: GET_CLAIMED,
-      variables: { filter },
+      variables,
       fetchPolicy: 'no-cache'
     });
     if (data.quester && data.quester[0]) {
@@ -30,4 +35,4 @@ export const getClaimed = async (props) => {
 
   return rs;
 };
-export default getClaimed;
+export default getWinner;

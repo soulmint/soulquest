@@ -4,6 +4,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'next-i18next';
 import useThemes from 'src/hooks/useThemes';
 import { useQuesters } from 'src/hooks/Campaign/Rewards';
+import { useWinner } from 'src/hooks/Campaign/Rewards/Claimed';
 import defaultClasses from './questers.module.css';
 import { useStyle } from 'src/components/classify';
 import { ellipsify } from 'src/utils/strUtils';
