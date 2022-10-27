@@ -1,2 +1,1 @@
-export { default as useClaimed } from './useClaimed';
-export { default as useWinner } from './useWinner';
+export { default as getClaimed } from './useClaimed';

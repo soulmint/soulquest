@@ -23,8 +23,8 @@ const Rewards = (props) => {
 
   const endDate = Moment(campaign.date_end);
   const now = Moment();
-  const isEnded = now > endDate ? true : false;
-
+  const isEnded = now > endDate ? true : true;
+  const run_winnered = campaign.run_winnered;
   const shortDesc = campaign.short_desc ? (
     <div
       className={classes.shortDesc}
@@ -47,7 +47,15 @@ const Rewards = (props) => {
 
   const quest = <Quest campaign={campaign} />;
 
-  const questers = <Questers campaignId={campaign.id} />;
+  const questers = (
+    <Questers
+      campaignId={campaign.id}
+      winnered={run_winnered}
+      is_ended={isEnded}
+      rw_method={campaign.reward_method}
+      reward_number={campaign.reward_number}
+    />
+  );
 
   const claimInfo = (
     <Claim

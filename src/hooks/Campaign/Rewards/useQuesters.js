@@ -1,15 +1,11 @@
 import API from './api.gql';
 import { useState, useEffect } from 'react';
+import HandleGenerateWinner from './useWinner';
 
 export default (props) => {
-  const { campaignId, soulsUp, filters } = props;
+  const { campaignId, soulsUp, rw_method, is_ended, winnered, filters } = props;
 
-  const {
-    getTotalItemsFunc,
-    getNextQuestersFunc,
-    getFirstQuestersFunc,
-    FCFSGenerateWinner
-  } = API;
+  const { getTotalItemsFunc, getNextQuestersFunc, getFirstQuestersFunc } = API;
 
   //vars for infinite loading
   const [page, setPage] = useState(2);
@@ -69,7 +65,9 @@ export default (props) => {
     setTotalItemsLoading(loading);
     setTotalItemsError(error);
   };
-
+  console.log('====================================');
+  console.log(rw_method);
+  console.log('====================================');
   useEffect(async () => {
     // Load total items
     await getTotalItems();
@@ -91,9 +89,17 @@ export default (props) => {
       }
     }
   }, [pageData, totalItems]);
-  console.log('====================================');
-  console.log(allItems);
-  console.log('====================================');
+  useEffect(async () => {
+    if (!winnered && is_ended && rw_method) {
+      await HandleGenerateWinner({
+        campaignId,
+        rw_number: 2,
+        rw_method,
+        is_ended
+      });
+    }
+  }, [allItems, is_ended, rw_method]);
+
   //return data
   return {
     data: pageData ? pageData : null,

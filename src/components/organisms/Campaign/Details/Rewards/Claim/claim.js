@@ -7,7 +7,7 @@ import { CountDown } from 'src/components/organisms/CountDown';
 import { useSelector } from 'react-redux';
 import { FaClock, FaDice } from 'react-icons/fa';
 import Button from 'src/components/atoms/Button';
-import { getClaimed } from 'src/hooks/Campaign/Rewards/Claimed/useClaimed';
+import { getClaimed } from 'src/hooks/Campaign/Rewards/Claimed';
 
 const Claim = (props) => {
   const {
@@ -19,27 +19,26 @@ const Claim = (props) => {
     reward_number,
     is_ended
   } = props;
+
   const classes = useStyle(defaultClasses, propClasses);
   const { t } = useTranslation('campaign_details');
   const userState = useSelector((state) => state.user);
   const [claimed, setClaimed] = React.useState(false);
   const [isWinner, setIsWinner] = React.useState(false);
+
   let icon = null;
-  useEffect(() => {
-    async function getClaimedData() {
-      const rs = await getClaimed({
-        campaign_id,
-        wallet: userState.wallet_address
-      });
-      if (rs && rs.is_claimed) {
-        setClaimed(true);
-      }
-      if (rs && rs.is_winner) {
-        setIsWinner(true);
-      }
+  useEffect(async () => {
+    const rs = await getClaimed({
+      campaign_id,
+      wallet: userState.wallet_address
+    });
+    if (rs && rs.is_claimed) {
+      setClaimed(true);
     }
-    getClaimedData();
-  }, [campaign_id, userState]);
+    if (rs && rs.is_winner) {
+      setIsWinner(true);
+    }
+  }, [campaign_id, reward_method, userState]);
 
   //coming soon
   // let isWinner = true; //is soul and is winner

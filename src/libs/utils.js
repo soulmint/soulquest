@@ -31,6 +31,11 @@ const utils = {
     }
     return str;
   },
+  generateKeyWinner: (rw_number, totalItemsArray) => {
+    const numbers = utils.generateNumbersArray(rw_number);
+    const ids = utils.generateWinningNumbers(totalItemsArray, numbers);
+    return ids;
+  },
   generateNumbersArray: (totalNumbers) => {
     const numbers = [];
     for (let i = 1; i <= totalNumbers; i++) {
@@ -38,9 +43,10 @@ const utils = {
     }
     return numbers;
   },
-  generateWinningNumbers: (numbers) => {
-    const totalNumbers = [1, 2, 3, 4, 5, 6, 7];
+  generateWinningNumbers: (numbers, totalItemsArray) => {
+    const totalNumbers = totalItemsArray;
     const drawnNumbers = [];
+    let sortedWinArray;
     totalNumbers?.forEach((num) => {
       const numbersToDrawFrom = numbers?.filter(
         (num) => !drawnNumbers?.includes(num)
@@ -51,9 +57,14 @@ const utils = {
       );
       drawnNumbers.push(newRandNum);
     });
-    if (drawnNumbers?.length >= 7) {
-      const sortedWinArray = utils.sortNumbers(drawnNumbers);
+    if (drawnNumbers?.length >= totalItemsArray.length) {
+      sortedWinArray = utils.sortNumbers(drawnNumbers);
     }
+    return sortedWinArray;
+  },
+  generateRandomNumber: (totalNumbers, totalNumbersArray) => {
+    const randomNumberIndex = Math.floor(Math.random() * totalNumbers + 1);
+    return totalNumbersArray[randomNumberIndex - 1];
   },
   sortNumbers: (drawnNumbers) => {
     const sortedWinArray = drawnNumbers?.sort((a, b) => a - b);
