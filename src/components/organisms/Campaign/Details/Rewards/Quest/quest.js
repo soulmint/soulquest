@@ -716,7 +716,7 @@ const Quest = (props) => {
     twReTweetTask = (
       <div className={`${reTweetTaskClasses.join(' ')} relative group`}>
         {twReTweetTaskIcon()}
-        <div className="z-20">
+        <div className="flex-1 z-20">
           {twReTweetTaskTitle()}
           {twReTweetTaskContent()}
         </div>
