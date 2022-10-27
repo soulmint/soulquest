@@ -47,27 +47,6 @@ export const IS_QUESTER_EXISTS = gql`
     }
   }
 `;
-export const isQuesterExists = async (campaign_id, user_created) => {
-  let rs = null;
-  const client = initializeApollo();
-  try {
-    const { data } = await client.query({
-      query: IS_QUESTER_EXISTS,
-      variables: { campaign_id, user_created },
-      fetchPolicy: 'no-cache'
-    });
-    if (data.quester && data.quester[0]) {
-      rs = data.quester[0];
-    }
-  } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(error);
-    }
-    return error;
-  }
-
-  return rs;
-};
 
 export const GET_TOTAL_QUESTER = gql`
   query getQuesters($filter: quester_filter, $search: String) {
@@ -135,6 +114,36 @@ export const GENERATE_WINNER = gql`
     }
   }
 `;
+
+export const UPDATE_CAMPAIGN = gql`
+  mutation update_campaign_item($id: ID!, $data: update_campaign_input!) {
+    update_campaign_item(id: $id, data: $data) {
+      id
+      title
+    }
+  }
+`;
+export const isQuesterExists = async (campaign_id, user_created) => {
+  let rs = null;
+  const client = initializeApollo();
+  try {
+    const { data } = await client.query({
+      query: IS_QUESTER_EXISTS,
+      variables: { campaign_id, user_created },
+      fetchPolicy: 'no-cache'
+    });
+    if (data.quester && data.quester[0]) {
+      rs = data.quester[0];
+    }
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(error);
+    }
+    return error;
+  }
+
+  return rs;
+};
 
 export const getNextQuesters = async (props) => {
   const { search, filter, limit, page, sort } = props;
@@ -215,12 +224,57 @@ export const getTotalItems = async (props) => {
 
   return rs;
 };
-export const FCFSGenerateWinner = async (props) => {
-  // const { ids, data } = props;
-  console.log('====================================');
-  console.log('FCFSGenerateWinner', props);
-  console.log('====================================');
-  return 'tesst';
+export const getAllQuesterApproved = async (props) => {
+  const { search, filter, limit, page, sort } = props;
+  const client = initializeApollo();
+  let rs;
+  try {
+    const { data, loading, error } = await client.query({
+      query: GET_QUESTERS,
+      variables: {
+        search,
+        filter,
+        limit,
+        page,
+        sort
+      },
+      fetchPolicy: 'no-cache'
+    });
+    rs = { data, loading, error };
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(error);
+    }
+
+    return error;
+  }
+
+  return rs;
+};
+
+export const generateWinner = async (props) => {
+  const { ids } = props;
+  const client = initializeApollo();
+  let rs;
+  try {
+    const { data, loading, error } = await client.mutate({
+      mutation: GENERATE_WINNER,
+      variables: {
+        ids,
+        data: { is_winner: true }
+      },
+      fetchPolicy: 'no-cache'
+    });
+    rs = { data, loading, error };
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(error);
+    }
+
+    return error;
+  }
+
+  return rs;
 };
 
 export default {
@@ -232,5 +286,7 @@ export default {
   getTotalItemsFunc: getTotalItems,
   getNextQuestersFunc: getNextQuesters,
   getFirstQuestersFunc: getFirstQuesters,
-  FCFSGenerateWinner
+  generateWinner,
+  UPDATE_CAMPAIGN,
+  getAllQuesterApproved
 };

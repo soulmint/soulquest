@@ -4,7 +4,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'next-i18next';
 import useThemes from 'src/hooks/useThemes';
 import { useQuesters } from 'src/hooks/Campaign/Rewards';
-import { useWinner } from 'src/hooks/Campaign/Rewards/Claimed';
 import defaultClasses from './questers.module.css';
 import { useStyle } from 'src/components/classify';
 import { ellipsify } from 'src/utils/strUtils';
@@ -12,7 +11,14 @@ import Avatar from 'boring-avatars';
 import { useSelector } from 'react-redux';
 
 const Questers = (props) => {
-  const { classes: propClasses, campaignId } = props;
+  const {
+    classes: propClasses,
+    campaignId,
+    rw_method,
+    winnered,
+    rw_number,
+    is_ended
+  } = props;
   const classes = useStyle(defaultClasses, propClasses);
   const { t } = useTranslation('campaign_details');
   const { rootClassName } = useThemes();
@@ -33,6 +39,10 @@ const Questers = (props) => {
     setInfiniteHasMore
   } = useQuesters({
     campaignId,
+    winnered,
+    is_ended,
+    rw_method,
+    rw_number,
     soulsUp
   });
 
