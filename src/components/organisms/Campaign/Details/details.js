@@ -41,17 +41,17 @@ const Details = (props) => {
       const now = Moment();
       let stateInfo =
         now > endDate ? (
-          <div className="shadow bg-red-300 text-slate-800 rounded-full py-1 px-3 text-sm font-bold mr-4">
+          <div className="shadow bg-red-300 text-slate-800 rounded-full mb-2 md:mb-0 py-1 px-3 text-sm font-bold mr-4">
             {t('Ended')}
           </div>
         ) : (
-          <div className="shadow bg-green-300 text-slate-800 rounded-full py-1 px-3 text-sm font-bold mr-4">
+          <div className="shadow bg-green-300 text-slate-800 rounded-full mb-2 md:mb-0 py-1 px-3 text-sm font-bold mr-4">
             {t('Ongoing')}
           </div>
         );
       const datesInfo =
         campaign.date_start || campaign.date_end ? (
-          <div className="shadow bg-slate-200 text-slate-800 rounded-full px-3 py-1 font-medium text-sm mr-4">
+          <div className="shadow bg-slate-200 text-slate-800 rounded-full mb-2 md:mb-0 px-3 py-1 font-medium text-sm mr-4">
             <span className={classes.dateStart}>
               {t('Start: ')}
               <span className="font-bold text-slate-800">
