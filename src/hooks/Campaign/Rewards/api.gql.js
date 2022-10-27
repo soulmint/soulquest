@@ -104,6 +104,37 @@ export const GET_QUESTERS = gql`
     }
   }
 `;
+export const GENERATE_WINNER = gql`
+  mutation update_quester_items(
+    $filter: quester_filter
+    $sort: [String]
+    $limit: Int
+    $offset: Int
+    $page: Int
+    $search: String
+    $ids: [ID]!
+    $data: update_quester_input!
+  ) {
+    update_quester_items(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      offset: $offset
+      page: $page
+      search: $search
+      ids: $ids
+      data: $data
+    ) {
+      id
+      campaign_id
+      date_created
+      user_created {
+        id
+        email
+      }
+    }
+  }
+`;
 
 export const getNextQuesters = async (props) => {
   const { search, filter, limit, page, sort } = props;
@@ -184,6 +215,13 @@ export const getTotalItems = async (props) => {
 
   return rs;
 };
+export const FCFSGenerateWinner = async (props) => {
+  // const { ids, data } = props;
+  console.log('====================================');
+  console.log('FCFSGenerateWinner', props);
+  console.log('====================================');
+  return 'tesst';
+};
 
 export default {
   createQuester: CREATE_QUESTER,
@@ -193,5 +231,6 @@ export default {
   isQuesterExistsFunc: isQuesterExists,
   getTotalItemsFunc: getTotalItems,
   getNextQuestersFunc: getNextQuesters,
-  getFirstQuestersFunc: getFirstQuesters
+  getFirstQuestersFunc: getFirstQuesters,
+  FCFSGenerateWinner
 };

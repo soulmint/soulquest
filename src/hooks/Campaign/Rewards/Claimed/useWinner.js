@@ -1,9 +1,12 @@
+import { useState, useCallback } from 'react';
 import { GET_CLAIMED, UPDATE_WINNER } from './api.gql';
 import { initializeApollo } from 'src/libs/apolloClient';
 import { useMutation } from '@apollo/client';
 
-export const getWinner = async (props) => {
-  const { campaign_id, rewards_method, wallet } = props;
+export default async (props) => {
+  const { campaign_id, rewards_method, wallet, is_ended } = props;
+  const [isWinner, setIsWinner] = useState(false);
+  const [claimed, setClaimed] = useState([]);
   if (!wallet) return null;
   const filter = {
     status: { _eq: 'approved' },
@@ -16,23 +19,24 @@ export const getWinner = async (props) => {
   if (rewards_method === 'fcfs') {
     variables.sort = ['date_created:asc'];
   }
-  const client = initializeApollo();
-  try {
-    const { data } = await client.query({
-      query: GET_CLAIMED,
-      variables,
-      fetchPolicy: 'no-cache'
-    });
-    if (data.quester && data.quester[0]) {
-      rs = data.quester[0];
-    }
-  } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(error);
-    }
-    return error;
-  }
 
-  return rs;
+  if (!is_ended) {
+    return {
+      isWinner
+    };
+  }
+  const handleFCFSGenerateWinner = useCallback(async () => {
+    console.log('====================================');
+    console.log('handleGenerateWinner');
+    console.log('====================================');
+    return { data: [], error: null };
+  }, []);
+  const handleGenerateLuckyDrawWinner = useCallback(async (props) => {
+    return { data: ['luckyDraw'], error: null };
+  }, []);
+
+  return {
+    handleFCFSGenerateWinner,
+    handleGenerateLuckyDrawWinner
+  };
 };
-export default getWinner;

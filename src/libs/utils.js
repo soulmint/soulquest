@@ -31,6 +31,11 @@ const utils = {
     }
     return str;
   },
+  generateKeyWinner: (rw_number) => {
+    const numbers = utils.generateNumbersArray(rw_number);
+    const ids = utils.generateWinningNumbers(numbers);
+    return ids;
+  },
   generateNumbersArray: (totalNumbers) => {
     const numbers = [];
     for (let i = 1; i <= totalNumbers; i++) {
@@ -54,6 +59,10 @@ const utils = {
     if (drawnNumbers?.length >= 7) {
       const sortedWinArray = utils.sortNumbers(drawnNumbers);
     }
+  },
+  generateRandomNumber: (totalNumbers, totalNumbersArray) => {
+    const randomNumberIndex = Math.floor(Math.random() * totalNumbers + 1);
+    return totalNumbersArray[randomNumberIndex - 1];
   },
   sortNumbers: (drawnNumbers) => {
     const sortedWinArray = drawnNumbers?.sort((a, b) => a - b);

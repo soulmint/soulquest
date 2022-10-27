@@ -7,7 +7,8 @@ import { CountDown } from 'src/components/organisms/CountDown';
 import { useSelector } from 'react-redux';
 import { FaClock, FaDice } from 'react-icons/fa';
 import Button from 'src/components/atoms/Button';
-import { getClaimed } from 'src/hooks/Campaign/Rewards/Claimed/useClaimed';
+import { getClaimed, useWinner } from 'src/hooks/Campaign/Rewards/Claimed';
+import utils from 'src/libs/utils';
 
 const Claim = (props) => {
   const {
@@ -19,27 +20,55 @@ const Claim = (props) => {
     reward_number,
     is_ended
   } = props;
+
   const classes = useStyle(defaultClasses, propClasses);
   const { t } = useTranslation('campaign_details');
   const userState = useSelector((state) => state.user);
   const [claimed, setClaimed] = React.useState(false);
   const [isWinner, setIsWinner] = React.useState(false);
+
+  const { handleFCFSGenerateWinner, handleGenerateLuckyDrawWinner } = useWinner(
+    {
+      campaign_id,
+      is_ended,
+      wallet: userState.wallet_address
+    }
+  );
   let icon = null;
-  useEffect(() => {
-    async function getClaimedData() {
-      const rs = await getClaimed({
-        campaign_id,
-        wallet: userState.wallet_address
-      });
-      if (rs && rs.is_claimed) {
-        setClaimed(true);
-      }
-      if (rs && rs.is_winner) {
-        setIsWinner(true);
+  useEffect(async () => {
+    const rs = await getClaimed({
+      campaign_id,
+      wallet: userState.wallet_address
+    });
+    if (rs && rs.is_claimed) {
+      setClaimed(true);
+    }
+    if (rs && rs.is_winner) {
+      setIsWinner(true);
+    }
+    if (is_ended && !isWinner) {
+      if (reward_method === 'fcfs') {
+        const { data, error } = await handleFCFSGenerateWinner();
+        console.log('====================================');
+        console.log(data, error);
+        console.log('====================================');
+      } else if (reward_method === 'lucky_draw') {
+        const ids = utils.generateKeyWinner(reward_number);
+        const { data, error } = await handleGenerateLuckyDrawWinner({
+          ids,
+          data: { is_winner: true }
+        });
       }
     }
-    getClaimedData();
-  }, [campaign_id, userState]);
+  }, [
+    campaign_id,
+    handleFCFSGenerateWinner,
+    handleGenerateLuckyDrawWinner,
+    isWinner,
+    is_ended,
+    reward_method,
+    userState
+  ]);
 
   //coming soon
   // let isWinner = true; //is soul and is winner

@@ -92,5 +92,6 @@ export const getClaimedFunc = async (props) => {
 };
 export default {
   GET_CLAIMED,
+  UPDATE_WINNER,
   getClaimedFunc
 };
