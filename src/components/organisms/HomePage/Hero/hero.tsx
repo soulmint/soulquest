@@ -5,10 +5,10 @@ const Hero = () => {
   return (
     <Fragment>
       <div className={`${classes.root} bg-teal-400 relative`}>
-        <div className="container max-w-screen-xl mx-auto py-12 lg:py-0 px-8 lg:px-4 z-10">
+        <div className="max-w-screen-xl mx-auto py-12 md:py-0 px-8 md:px-4 z-10">
           <div className="flex flex-wrap items-center">
-            <div className="basis-full lg:basis-7/12 text-center lg:text-left lg:pr-16">
-              <h1 className="text-4xl lg:text-5xl font-bold text-slate-800 !leading-tight mt-0 mb-4 lg:mb-6">
+            <div className="basis-full md:basis-7/12 text-center md:text-left md:pr-16">
+              <h1 className="text-4xl md:text-5xl font-bold text-slate-800 !leading-tight mt-0 mb-4 lg:mb-6">
                 <span className="block">
                   Reward distribution platform for <span>SoulBound</span> Tokens
                 </span>
@@ -24,6 +24,7 @@ const Hero = () => {
                   title="Create Campaign"
                   target="_blank"
                   className="bg-violet-600 hover:bg-violet-700 text-white inline-block rounded-xl py-3 px-6 text-lg font-medium tracking-wide shadow hover:shadow-xl border-2 border-transparent transition-all duration-300"
+                  rel="noreferrer"
                 >
                   Create a Quest
                 </a>
