@@ -32,9 +32,6 @@ const Claim = (props) => {
   const [claimed, setClaimed] = React.useState(false);
   const [isWinner, setIsWinner] = React.useState(false);
   const [claimedCount, setClaimedCount] = React.useState(0);
-  console.log('====================================');
-  console.log(userState);
-  console.log('====================================');
   let icon = null;
   useEffect(async () => {
     const rs = await getClaimed({
@@ -107,13 +104,10 @@ const Claim = (props) => {
   }
 
   const ownerGenerated = async () => {
-    console.log('====================================');
-    console.log('winnered', winnered);
-    console.log('====================================');
     if (!winnered && is_ended && reward_method) {
       await HandleGenerateWinner({
         campaignId: campaign_id,
-        rw_number: 2,
+        rw_number: reward_number,
         rw_method: reward_method,
         is_ended
       });

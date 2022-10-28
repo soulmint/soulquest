@@ -23,7 +23,7 @@ const Rewards = (props) => {
 
   const endDate = Moment(campaign.date_end);
   const now = Moment();
-  const isEnded = now > endDate ? true : true;
+  const isEnded = now > endDate ? true : false;
   const shortDesc = campaign.short_desc ? (
     <div
       className={classes.shortDesc}
