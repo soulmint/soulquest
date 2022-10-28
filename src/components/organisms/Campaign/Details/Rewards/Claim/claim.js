@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { bool, shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import defaultClasses from './claim.module.css';
@@ -7,7 +7,10 @@ import { CountDown } from 'src/components/organisms/CountDown';
 import { useSelector } from 'react-redux';
 import { FaClock, FaDice } from 'react-icons/fa';
 import Button from 'src/components/atoms/Button';
-import { getClaimed } from 'src/hooks/Campaign/Rewards/Claimed';
+import {
+  getClaimed,
+  getClaimedCount
+} from 'src/hooks/Campaign/Rewards/Claimed/useClaimed';
 import { HandleGenerateWinner } from 'src/hooks/Campaign/Rewards/useWinner';
 
 const Claim = (props) => {
@@ -28,7 +31,10 @@ const Claim = (props) => {
   const userState = useSelector((state) => state.user);
   const [claimed, setClaimed] = React.useState(false);
   const [isWinner, setIsWinner] = React.useState(false);
-
+  const [claimedCount, setClaimedCount] = React.useState(0);
+  console.log('====================================');
+  console.log(userState);
+  console.log('====================================');
   let icon = null;
   useEffect(async () => {
     const rs = await getClaimed({
@@ -40,6 +46,10 @@ const Claim = (props) => {
     }
     if (rs && rs.is_winner) {
       setIsWinner(true);
+    }
+    const rsCount = await getClaimedCount({ campaign_id });
+    if (rsCount) {
+      setClaimedCount(rsCount);
     }
   }, [campaign_id, reward_method, userState]);
 
@@ -109,8 +119,8 @@ const Claim = (props) => {
       });
     }
   };
-  const claimedButton =
-    userState.wallet_address === user_created ? (
+  const ownerbtn =
+    userState.wallet_address && !winnered ? (
       <Button
         type="button"
         priority="high"
@@ -119,6 +129,18 @@ const Claim = (props) => {
       >
         {t('Owner Generate Winner')}
       </Button>
+    ) : (
+      <Button
+        type="button"
+        priority="high"
+        classes={{ root_highPriority: classes.btnClaim }}
+      >
+        {t('Generated Winner')}
+      </Button>
+    );
+  const claimedButton =
+    userState.wallet_address !== user_created ? (
+      ownerbtn
     ) : (
       <Button
         type="button"
@@ -140,13 +162,12 @@ const Claim = (props) => {
       {t('Claimed rewards')}
     </Button>
   );
-  const claimCount = reward_number && is_ended ? 0 / { reward_number } : '';
   return (
     <div className="card mb-6">
       <div className="card-header flex justify-between">
         <h3 className="">
           {t('Claim your Rewards')}
-          {claimCount}
+          {` (${claimedCount}/${reward_number})`}
         </h3>
         {icon}
       </div>

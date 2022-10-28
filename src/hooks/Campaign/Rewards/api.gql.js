@@ -116,8 +116,8 @@ export const GENERATE_WINNER = gql`
 `;
 
 export const UPDATE_CAMPAIGN = gql`
-  mutation update_campaign_item($id: ID!, $data: update_campaign_input!) {
-    update_campaign_item(id: $id, data: $data) {
+  mutation update_campaign_item($id: ID!) {
+    update_campaign_item(id: $id, data: { run_winnered: true }) {
       id
       title
     }
@@ -256,9 +256,6 @@ export const generateWinner = async (props) => {
   const { ids } = props;
   const client = initializeApollo();
   let rs;
-  console.log('====================================');
-  console.log('ids', ids);
-  console.log('====================================');
   try {
     const { data, loading, error } = await client.mutate({
       mutation: GENERATE_WINNER,
@@ -287,8 +284,7 @@ export const updateCampaignWinner = async (props) => {
     const { data, loading, error } = await client.mutate({
       mutation: UPDATE_CAMPAIGN,
       variables: {
-        id: campaignId,
-        data: { run_winnered: true }
+        id: campaignId
       },
       fetchPolicy: 'no-cache'
     });

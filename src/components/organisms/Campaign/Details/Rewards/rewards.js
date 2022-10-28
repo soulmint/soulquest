@@ -47,7 +47,9 @@ const Rewards = (props) => {
   const quest = <Quest campaign={campaign} />;
 
   const questers = <Questers campaignId={campaign.id} />;
-
+  console.log('====================================');
+  console.log(campaign.run_winnered);
+  console.log('====================================');
   const claimInfo = (
     <Claim
       is_ended={isEnded}
