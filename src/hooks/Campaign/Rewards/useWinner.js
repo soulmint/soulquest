@@ -11,6 +11,13 @@ export const HandleGenerateWinner = async (props) => {
     filter,
     sort: ['date_created']
   });
+  const { data: winnered } = await API.getAllQuesterApproved({
+    filter: {
+      ...filter,
+      is_winner: { _eq: true }
+    },
+    sort: ['date_created']
+  });
   let dataWinner = [];
   const fcfsData = data.quester;
   const idarr = data.quester.map((item) => item.id);
@@ -30,8 +37,8 @@ export const HandleGenerateWinner = async (props) => {
   }
   if (
     is_ended &&
-    (dataWinner.length === parseInt(rw_number) ||
-      dataWinner.length === fcfsData.length)
+    dataWinner.length === parseInt(rw_number) &&
+    dataWinner.length > winnered.quester.length
   ) {
     const { data } = await API.generateWinner({
       ids: dataWinner
