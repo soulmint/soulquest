@@ -32,6 +32,7 @@ const Claim = (props) => {
   const [claimed, setClaimed] = React.useState(false);
   const [isWinner, setIsWinner] = React.useState(false);
   const [claimedCount, setClaimedCount] = React.useState(0);
+  const [generating, setGenerating] = React.useState(false);
   let icon = null;
   useEffect(async () => {
     const rs = await getClaimed({
@@ -49,6 +50,37 @@ const Claim = (props) => {
       setClaimedCount(rsCount);
     }
   }, [campaign_id, reward_method, userState]);
+
+  useEffect(() => {
+    async function ownerGenerated() {
+      let status = false;
+      if (!winnered && is_ended && reward_method) {
+        const data = await HandleGenerateWinner({
+          campaignId: campaign_id,
+          rw_number: reward_number,
+          rw_method: reward_method,
+          is_ended
+        });
+        status = data;
+      }
+      return status;
+    }
+    if (userState.wallet_address && user_created !== userState.wallet_address) {
+      if (!generating) {
+        ownerGenerated();
+        setGenerating(true);
+      }
+    }
+  }, [
+    campaign_id,
+    generating,
+    is_ended,
+    reward_method,
+    reward_number,
+    userState,
+    user_created,
+    winnered
+  ]);
 
   //coming soon
   // let isWinner = true; //is soul and is winner
@@ -103,50 +135,15 @@ const Claim = (props) => {
     }
   }
 
-  const ownerGenerated = async () => {
-    if (!winnered && is_ended && reward_method) {
-      await HandleGenerateWinner({
-        campaignId: campaign_id,
-        rw_number: reward_number,
-        rw_method: reward_method,
-        is_ended
-      });
-    }
-  };
-  const ownerbtn =
-    userState.wallet_address && !winnered ? (
-      <Button
-        type="button"
-        priority="high"
-        classes={{ root_highPriority: classes.btnClaim }}
-        onPress={() => ownerGenerated()}
-      >
-        {t('Owner Generate Winner')}
-      </Button>
-    ) : (
-      <Button
-        type="button"
-        priority="high"
-        classes={{ root_highPriority: classes.btnClaim }}
-      >
-        {t('Generated Winner')}
-      </Button>
-    );
-  const claimedButton =
-    userState.wallet_address !== user_created ? (
-      ownerbtn
-    ) : (
-      <Button
-        type="button"
-        priority="high"
-        classes={{ root_highPriority: classes.btnClaim }}
-        onPress={() => console.log('Claimed()')}
-      >
-        {t('Claim')}
-      </Button>
-    );
   const claimButton = !claimed ? (
-    claimedButton
+    <Button
+      type="button"
+      priority="high"
+      classes={{ root_highPriority: classes.btnClaim }}
+      onPress={() => console.log('Claimed()')}
+    >
+      {t('Claim')}
+    </Button>
   ) : (
     <Button
       type="button"

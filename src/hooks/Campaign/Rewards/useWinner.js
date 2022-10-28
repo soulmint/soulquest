@@ -1,5 +1,4 @@
 import API from './api.gql';
-import { initializeApollo } from 'src/libs/SystemApolloClient';
 import utils from 'src/libs/utils';
 export const HandleGenerateWinner = async (props) => {
   const { campaignId, rw_number, rw_method, is_ended } = props;
@@ -31,7 +30,8 @@ export const HandleGenerateWinner = async (props) => {
   }
   if (
     is_ended &&
-    (dataWinner.length === rw_number || dataWinner.length === fcfsData.length)
+    (dataWinner.length === parseInt(rw_number) ||
+      dataWinner.length === fcfsData.length)
   ) {
     const { data } = await API.generateWinner({
       ids: dataWinner

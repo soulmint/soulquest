@@ -934,7 +934,7 @@ const Quest = (props) => {
               type="text"
               id="pow_submit_url"
               name="pow_submit_url"
-              value={
+              defaultValue={
                 tasks.ck_pow_submit_url.status
                   ? tasks.ck_pow_submit_url.status
                   : null
