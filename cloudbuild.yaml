@@ -20,5 +20,3 @@ steps:
       - '--allow-unauthenticated'
 images:
   - asia.gcr.io/soulmint/soulquest
-options:
-  machineType: 'N1_HIGHCPU_8'
