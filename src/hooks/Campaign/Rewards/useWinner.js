@@ -37,7 +37,7 @@ const HandleGenerateWinner = async (props) => {
       ids: dataWinner
     });
     if (data) {
-      await updateCampaignWinner({ campaignId });
+      await API.updateCampaignWinner({ campaignId });
     }
   }
 

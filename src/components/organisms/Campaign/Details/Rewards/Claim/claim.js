@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { bool, shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import defaultClasses from './claim.module.css';
@@ -8,14 +8,17 @@ import { useSelector } from 'react-redux';
 import { FaClock, FaDice } from 'react-icons/fa';
 import Button from 'src/components/atoms/Button';
 import { getClaimed } from 'src/hooks/Campaign/Rewards/Claimed';
+import { HandleGenerateWinner } from 'src/hooks/Campaign/Rewards/useWinner';
 
 const Claim = (props) => {
   const {
     classes: propClasses,
     campaign_id,
     reward_method,
+    winnered,
     reward_token_volume,
     date_ends,
+    user_created,
     reward_number,
     is_ended
   } = props;
@@ -93,18 +96,41 @@ const Claim = (props) => {
     }
   }
 
-  const claim = () => {
-    console.log('Claim())');
+  const ownerGenerated = async () => {
+    console.log('====================================');
+    console.log('winnered', winnered);
+    console.log('====================================');
+    if (!winnered && is_ended && reward_method) {
+      await HandleGenerateWinner({
+        campaignId: campaign_id,
+        rw_number: 2,
+        rw_method: reward_method,
+        is_ended
+      });
+    }
   };
+  const claimedButton =
+    userState.wallet_address === user_created ? (
+      <Button
+        type="button"
+        priority="high"
+        classes={{ root_highPriority: classes.btnClaim }}
+        onPress={() => ownerGenerated()}
+      >
+        {t('Owner Generate Winner')}
+      </Button>
+    ) : (
+      <Button
+        type="button"
+        priority="high"
+        classes={{ root_highPriority: classes.btnClaim }}
+        onPress={() => console.log('Claimed()')}
+      >
+        {t('Claim')}
+      </Button>
+    );
   const claimButton = !claimed ? (
-    <Button
-      type="button"
-      priority="high"
-      classes={{ root_highPriority: classes.btnClaim }}
-      onPress={() => claim()}
-    >
-      {t('Claim')}
-    </Button>
+    claimedButton
   ) : (
     <Button
       type="button"

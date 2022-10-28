@@ -65,9 +65,6 @@ export default (props) => {
     setTotalItemsLoading(loading);
     setTotalItemsError(error);
   };
-  console.log('====================================');
-  console.log(rw_method);
-  console.log('====================================');
   useEffect(async () => {
     // Load total items
     await getTotalItems();
@@ -89,17 +86,6 @@ export default (props) => {
       }
     }
   }, [pageData, totalItems]);
-  useEffect(async () => {
-    if (!winnered && is_ended && rw_method) {
-      await HandleGenerateWinner({
-        campaignId,
-        rw_number: 2,
-        rw_method,
-        is_ended
-      });
-    }
-  }, [allItems, is_ended, rw_method]);
-
   //return data
   return {
     data: pageData ? pageData : null,

@@ -256,12 +256,39 @@ export const generateWinner = async (props) => {
   const { ids } = props;
   const client = initializeApollo();
   let rs;
+  console.log('====================================');
+  console.log('ids', ids);
+  console.log('====================================');
   try {
     const { data, loading, error } = await client.mutate({
       mutation: GENERATE_WINNER,
       variables: {
         ids,
         data: { is_winner: true }
+      },
+      fetchPolicy: 'no-cache'
+    });
+    rs = { data, loading, error };
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(error);
+    }
+
+    return error;
+  }
+
+  return rs;
+};
+export const updateCampaignWinner = async (props) => {
+  const { campaignId } = props;
+  const client = initializeApollo();
+  let rs;
+  try {
+    const { data, loading, error } = await client.mutate({
+      mutation: UPDATE_CAMPAIGN,
+      variables: {
+        id: campaignId,
+        data: { run_winnered: true }
       },
       fetchPolicy: 'no-cache'
     });
@@ -287,6 +314,6 @@ export default {
   getNextQuestersFunc: getNextQuesters,
   getFirstQuestersFunc: getFirstQuesters,
   generateWinner,
-  UPDATE_CAMPAIGN,
+  updateCampaignWinner,
   getAllQuesterApproved
 };
