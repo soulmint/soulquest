@@ -1,89 +1,86 @@
 import React, { useEffect } from 'react';
 import { bool, shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
-import defaultClasses from './claim.module.css';
-import { useStyle } from 'src/components/classify';
-import { CountDown } from 'src/components/organisms/CountDown';
 import { useSelector } from 'react-redux';
 import { FaClock, FaDice } from 'react-icons/fa';
+import defaultClasses from './claim.module.css';
+import { useStyle } from 'src/components/classify';
 import Button from 'src/components/atoms/Button';
+import { CountDown } from 'src/components/organisms/CountDown';
+
 import {
-  getClaimed,
-  getClaimedCount
-} from 'src/hooks/Campaign/Rewards/Claimed/useClaimed';
-import { HandleGenerateWinner } from 'src/hooks/Campaign/Rewards/useWinner';
+  getWinner,
+  getTotalWinnerClaimed,
+  generateWinners
+} from 'src/hooks/Campaign/Rewards/api.gql';
 
 const Claim = (props) => {
   const {
     classes: propClasses,
     campaign_id,
-    reward_method,
-    winnered,
-    reward_token_volume,
+    is_ended,
     date_ends,
     user_created,
     reward_number,
-    is_ended
+    reward_method,
+    winners_generated,
+    reward_token_volume
   } = props;
 
   const classes = useStyle(defaultClasses, propClasses);
   const { t } = useTranslation('campaign_details');
+
   const userState = useSelector((state) => state.user);
-  const [claimed, setClaimed] = React.useState(false);
+  const walletAdd = userState.wallet_address ? userState.wallet_address : null;
+
   const [isWinner, setIsWinner] = React.useState(false);
-  const [claimedCount, setClaimedCount] = React.useState(0);
-  const [generating, setGenerating] = React.useState(false);
+  const [isClaimed, setIsClaimed] = React.useState(false);
+  const [totalClaimed, setTotalClaimed] = React.useState(0);
+  //const [generatingWinners, setGeneratingWinners] = React.useState(false);
+
   let icon = null;
+
   useEffect(async () => {
-    const rs = await getClaimed({
-      campaign_id,
-      wallet: userState.wallet_address
-    });
-    if (rs && rs.is_claimed) {
-      setClaimed(true);
-    }
-    if (rs && rs.is_winner) {
-      setIsWinner(true);
-    }
-    const rsCount = await getClaimedCount({ campaign_id });
-    if (rsCount) {
-      setClaimedCount(rsCount);
-    }
-  }, [campaign_id, reward_method, userState]);
+    if (walletAdd) {
+      const winner = await getWinner({
+        campaign_id,
+        wallet: walletAdd
+      });
+      if (winner) {
+        if (winner.is_winner) {
+          setIsWinner(true);
+        }
+        if (winner.is_claimed) {
+          setIsClaimed(true);
+        }
+      }
+      //update total winners claimed
+      const totalClaimed = await getTotalWinnerClaimed({ campaign_id });
+      if (totalClaimed) {
+        setTotalClaimed(totalClaimed);
+      }
 
-  useEffect(() => {
-    async function ownerGenerated() {
-      let status = false;
-      if (!winnered && is_ended && reward_method) {
-        const data = await HandleGenerateWinner({
+      // generates winners if campaign was ended and has not generated winners yet and current user is campaign owner
+      if (
+        is_ended &&
+        reward_method &&
+        !winners_generated &&
+        userState.id === user_created.id
+      ) {
+        // setGeneratingWinners(true);
+
+        const total = await generateWinners({
           campaignId: campaign_id,
-          rw_number: reward_number,
           rw_method: reward_method,
-          is_ended
+          rw_number: reward_number
         });
-        status = data;
-      }
-      return status;
-    }
-    if (userState.wallet_address && user_created !== userState.wallet_address) {
-      if (!generating) {
-        ownerGenerated();
-        setGenerating(true);
-      }
-    }
-  }, [
-    campaign_id,
-    generating,
-    is_ended,
-    reward_method,
-    reward_number,
-    userState,
-    user_created,
-    winnered
-  ]);
+        console.log('Total Winners:', total);
 
-  //coming soon
-  // let isWinner = true; //is soul and is winner
+        // setGeneratingWinners(false);
+      }
+    }
+  }, [walletAdd]);
+
   if ((!reward_method || reward_method === 'fcfs') && !is_ended) {
     return null;
   }
@@ -135,12 +132,12 @@ const Claim = (props) => {
     }
   }
 
-  const claimButton = !claimed ? (
+  const claimButton = !isClaimed ? (
     <Button
       type="button"
       priority="high"
       classes={{ root_highPriority: classes.btnClaim }}
-      onPress={() => console.log('Claimed()')}
+      // onPress={() => console.log('Claimed()')}
     >
       {t('Claim')}
     </Button>
@@ -158,7 +155,7 @@ const Claim = (props) => {
       <div className="card-header flex justify-between">
         <h3 className="">
           {t('Claim your Rewards')}
-          {` (${claimedCount}/${reward_number})`}
+          {` (${totalClaimed}/${reward_number})`}
         </h3>
         {icon}
       </div>

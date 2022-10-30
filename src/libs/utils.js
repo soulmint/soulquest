@@ -30,45 +30,45 @@ const utils = {
       return str.substring(0, 250) + '...';
     }
     return str;
-  },
-  generateKeyWinner: (rw_number, totalItemsArray) => {
-    const numbers = utils.generateNumbersArray(rw_number);
-    const ids = utils.generateWinningNumbers(totalItemsArray, numbers);
-    return ids;
-  },
-  generateNumbersArray: (totalNumbers) => {
-    const numbers = [];
-    for (let i = 1; i <= totalNumbers; i++) {
-      numbers.push(i);
-    }
-    return numbers;
-  },
-  generateWinningNumbers: (numbers, totalItemsArray) => {
-    const totalNumbers = totalItemsArray;
-    const drawnNumbers = [];
-    let sortedWinArray;
-    totalNumbers?.forEach((num) => {
-      const numbersToDrawFrom = numbers?.filter(
-        (num) => !drawnNumbers?.includes(num)
-      );
-      const newRandNum = utils.generateRandomNumber(
-        numbersToDrawFrom.length,
-        numbersToDrawFrom
-      );
-      drawnNumbers.push(newRandNum);
-    });
-    if (drawnNumbers?.length >= totalItemsArray.length) {
-      sortedWinArray = utils.sortNumbers(drawnNumbers);
-    }
-    return sortedWinArray;
-  },
-  generateRandomNumber: (totalNumbers, totalNumbersArray) => {
-    const randomNumberIndex = Math.floor(Math.random() * totalNumbers + 1);
-    return totalNumbersArray[randomNumberIndex - 1];
-  },
-  sortNumbers: (drawnNumbers) => {
-    const sortedWinArray = drawnNumbers?.sort((a, b) => a - b);
-    return sortedWinArray;
   }
+  // generateWinnerIds: (rw_number, soulIds) => {
+  //   const numbers = utils.generateNumbersArray(rw_number);
+  //   const ids = utils.generateWinIds(numbers, soulIds);
+  //   return ids;
+  // },
+  // generateNumbersArray: (totalNumbers) => {
+  //   const numbers = [];
+  //   for (let i = 1; i <= totalNumbers; i++) {
+  //     numbers.push(i);
+  //   }
+  //   return numbers;
+  // },
+  // generateWinIds: (numbers, totalNumbers) => {
+  //   const drawnNumbers = [];
+  //   let sortedWinArray;
+  //
+  //   totalNumbers?.forEach((num) => {
+  //     const numbersToDrawFrom = numbers?.filter(
+  //       (num) => !drawnNumbers?.includes(num)
+  //     );
+  //     const newRandNum = utils.generateRandomNumber(
+  //       numbersToDrawFrom.length,
+  //       numbersToDrawFrom
+  //     );
+  //     drawnNumbers.push(newRandNum);
+  //   });
+  //   if (drawnNumbers?.length >= totalNumbers.length) {
+  //     sortedWinArray = utils.sortNumbers(drawnNumbers);
+  //   }
+  //   return sortedWinArray;
+  // },
+  // generateRandomNumber: (totalNumbers, totalNumbersArray) => {
+  //   const randomNumberIndex = Math.floor(Math.random() * totalNumbers + 1);
+  //   return totalNumbersArray[randomNumberIndex - 1];
+  // },
+  // sortNumbers: (drawnNumbers) => {
+  //   const sortedWinArray = drawnNumbers?.sort((a, b) => a - b);
+  //   return sortedWinArray;
+  // }
 };
 export default utils;

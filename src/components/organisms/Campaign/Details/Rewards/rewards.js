@@ -1,6 +1,5 @@
 import React from 'react';
-import { bool, shape, string } from 'prop-types';
-// import { useTranslation } from 'next-i18next';
+import { shape, string } from 'prop-types';
 import Moment from 'moment';
 import classes from './rewards.module.css';
 import Quest from './Quest';
@@ -10,7 +9,6 @@ import Summary from './Summary';
 import useThemes from 'src/hooks/useThemes';
 import Image from 'src/components/atoms/Image';
 import Screen from 'src/utils/responsive';
-// import Coupon from './Coupon';
 import Claim from './Claim';
 import Winners from './Winners';
 
@@ -19,11 +17,10 @@ const Rewards = (props) => {
 
   const { rootClassName } = useThemes();
 
-  // const { t } = useTranslation('campaign_details');
-
   const endDate = Moment(campaign.date_end);
   const now = Moment();
   const isEnded = now > endDate ? true : false;
+
   const shortDesc = campaign.short_desc ? (
     <div
       className={classes.shortDesc}
@@ -51,7 +48,7 @@ const Rewards = (props) => {
     <Claim
       is_ended={isEnded}
       campaign_id={campaign.id}
-      winnered={campaign.run_winnered}
+      winners_generated={campaign.winners_generated}
       user_created={campaign.user_created}
       reward_method={campaign.reward_method}
       reward_token_volume={campaign.reward_token_volume}
@@ -62,7 +59,7 @@ const Rewards = (props) => {
 
   const windersInfo = isEnded ? <Winners campaignId={campaign.id} /> : null;
 
-  // Build cover and thumb images
+  // Build cover image
   const assetsBaseUrl = process.env.MEDIA_BASE_URL;
   const coverOptions = 'fit=cover';
   const coverImage =
@@ -75,19 +72,6 @@ const Rewards = (props) => {
         alt={`cover_${campaign.title}`}
       />
     ) : null;
-
-  // const thumbOptions = 'fit=cover';
-  // const thumbImage =
-  //   campaign.thumb_image && campaign.thumb_image.id ? (
-  //     <Image
-  //       layout="fill"
-  //       className={`${classes.campaignThumb}`}
-  //       placeholder="blur"
-  //       src={`${assetsBaseUrl}/${campaign.thumb_image.id}?${thumbOptions}`}
-  //       alt={`cover_${campaign.title}`}
-  //     />
-  //   ) : null;
-  //const coupon = campaign.coupon ? <Coupon campaign={campaign} /> : null; //coming soon
 
   return (
     <div className={`${classes[rootClassName]}`}>

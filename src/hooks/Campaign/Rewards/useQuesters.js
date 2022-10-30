@@ -1,9 +1,8 @@
 import API from './api.gql';
 import { useState, useEffect } from 'react';
-import HandleGenerateWinner from './useWinner';
 
 export default (props) => {
-  const { campaignId, soulsUp, rw_method, is_ended, winnered, filters } = props;
+  const { campaignId, soulsUp, filters } = props;
 
   const { getTotalItemsFunc, getNextQuestersFunc, getFirstQuestersFunc } = API;
 

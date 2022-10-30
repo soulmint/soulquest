@@ -138,7 +138,7 @@ export const LOAD_CAMPAIGN_BY_ID = gql`
       store_name
       store_logo_url
       store_url
-      run_winnered
+      winners_generated
     }
   }
 `;

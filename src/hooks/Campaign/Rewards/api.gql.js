@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { initializeApollo } from '../../../libs/apolloClient';
+import { initializeApollo } from 'src/libs/apolloClient';
 
 export const CREATE_QUESTER = gql`
   mutation CreateQuester(
@@ -80,6 +80,7 @@ export const GET_QUESTERS = gql`
         id
         email
       }
+      is_winner
     }
   }
 `;
@@ -105,24 +106,25 @@ export const GENERATE_WINNER = gql`
       data: $data
     ) {
       id
-      campaign_id
-      date_created
-      user_created {
-        id
-        email
-      }
+      #      campaign_id
+      #      date_created
+      #      user_created {
+      #        id
+      #        email
+      #      }
     }
   }
 `;
 
 export const UPDATE_CAMPAIGN = gql`
   mutation update_campaign_item($id: ID!) {
-    update_campaign_item(id: $id, data: { run_winnered: true }) {
+    update_campaign_item(id: $id, data: { winners_generated: true }) {
       id
-      title
+      #      title
     }
   }
 `;
+
 export const isQuesterExists = async (campaign_id, user_created) => {
   let rs = null;
   const client = initializeApollo();
@@ -224,12 +226,13 @@ export const getTotalItems = async (props) => {
 
   return rs;
 };
-export const getAllQuesterApproved = async (props) => {
+export const getSouls = async (props) => {
   const { search, filter, limit, page, sort } = props;
   const client = initializeApollo();
-  let rs;
+  let rs = null;
+
   try {
-    const { data, loading, error } = await client.query({
+    const { data /*, loading, error */ } = await client.query({
       query: GET_QUESTERS,
       variables: {
         search,
@@ -240,7 +243,9 @@ export const getAllQuesterApproved = async (props) => {
       },
       fetchPolicy: 'no-cache'
     });
-    rs = { data, loading, error };
+    if (data && data.quester) {
+      rs = data.quester;
+    }
   } catch (error) {
     if (process.env.NODE_ENV !== 'production') {
       console.error(error);
@@ -252,12 +257,190 @@ export const getAllQuesterApproved = async (props) => {
   return rs;
 };
 
-export const generateWinner = async (props) => {
+export const GET_WINNER = gql`
+  query getQuesters(
+    $filter: quester_filter
+    $sort: [String]
+    $limit: Int
+    $offset: Int
+    $page: Int
+    $search: String
+  ) {
+    quester(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      offset: $offset
+      page: $page
+      search: $search
+    ) {
+      id
+      campaign_id
+      date_created
+      is_winner
+      is_claimed
+      user_created {
+        id
+        email
+      }
+    }
+  }
+`;
+export const getWinner = async (props) => {
+  const { campaign_id, wallet } = props;
+
+  if (!wallet) return null;
+
+  const filter = {
+    status: { _eq: 'approved' },
+    campaign_id: { _eq: campaign_id },
+    is_winner: { _eq: true },
+    user_created: { email: { _eq: wallet } }
+  };
+  let rs = null;
+  const client = initializeApollo();
+  try {
+    const { data } = await client.query({
+      query: GET_WINNER,
+      variables: { filter },
+      fetchPolicy: 'no-cache'
+    });
+    if (data.quester && data.quester[0]) {
+      rs = data.quester[0];
+    }
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(error);
+    }
+    return error;
+  }
+
+  return rs;
+};
+
+export const getTotalWinnerClaimed = async (props) => {
+  const { campaign_id } = props;
+
+  if (!campaign_id) return null;
+
+  const filter = {
+    status: { _eq: 'approved' },
+    campaign_id: { _eq: campaign_id },
+    is_winner: { _eq: true },
+    is_claimed: { _eq: true }
+  };
+  let rs = null;
+  const client = initializeApollo();
+  try {
+    const { data } = await client.query({
+      query: GET_WINNER,
+      variables: { filter },
+      fetchPolicy: 'no-cache'
+    });
+    if (data && data.quester) {
+      rs = data.quester.length;
+    }
+  } catch (error) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.error(error);
+    }
+    return error;
+  }
+
+  return rs;
+};
+
+export const generateWinners = async (props) => {
+  const { campaignId, rw_method, rw_number } = props;
+
+  const filter = {
+    status: { _eq: 'approved' },
+    campaign_id: { _eq: campaignId }
+  };
+  const souls = await getSouls({
+    filter,
+    sort: ['date_created']
+  });
+
+  let generatedWinners = [];
+  let soulIds = [];
+  if (souls) {
+    souls.map((soul) => {
+      if (soul && soul.is_winner) {
+        generatedWinners.push(soul);
+      }
+
+      soulIds.push(soul.id);
+    });
+  }
+
+  if (generatedWinners.length < parseInt(rw_number)) {
+    let winnerIds = [];
+    if (rw_method === 'fcfs') {
+      for (let i = 0; i < souls.length; i++) {
+        if (winnerIds.length === parseInt(rw_number)) break;
+
+        winnerIds.push(souls[i].id);
+      }
+    } else if (rw_method === 'lucky_draw') {
+      const drawIds = soulIds;
+      for (let i = 0; i < parseInt(rw_number); i++) {
+        const id = Math.floor(Math.random() * drawIds.length);
+        winnerIds.push(drawIds[id]);
+        drawIds.splice(id, 1);
+      }
+    }
+    if (winnerIds.length) {
+      const success = await updateWinners({
+        ids: winnerIds
+      });
+      if (success) {
+        await setWinnersGenerated({ campaignId });
+      }
+    }
+  }
+
+  return generatedWinners.length;
+};
+
+export const UPDATE_WINNER = gql`
+  mutation update_quester_items(
+    $filter: quester_filter
+    $sort: [String]
+    $limit: Int
+    $offset: Int
+    $page: Int
+    $search: String
+    $ids: [ID]!
+    $data: update_quester_input!
+  ) {
+    update_quester_items(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      offset: $offset
+      page: $page
+      search: $search
+      ids: $ids
+      data: $data
+    ) {
+      id
+      campaign_id
+      date_created
+      user_created {
+        id
+        email
+      }
+    }
+  }
+`;
+
+export const updateWinners = async (props) => {
   const { ids } = props;
   const client = initializeApollo();
-  let rs;
+  let rs = false;
   try {
-    const { data, loading, error } = await client.mutate({
+    const { data /*, loading, error*/ } = await client.mutate({
       mutation: GENERATE_WINNER,
       variables: {
         ids,
@@ -265,18 +448,18 @@ export const generateWinner = async (props) => {
       },
       fetchPolicy: 'no-cache'
     });
-    rs = { data, loading, error };
+    if (data) {
+      rs = true;
+    }
   } catch (error) {
     if (process.env.NODE_ENV !== 'production') {
       console.error(error);
     }
-
-    return error;
   }
 
   return rs;
 };
-export const updateCampaignWinner = async (props) => {
+export const setWinnersGenerated = async (props) => {
   const { campaignId } = props;
   const client = initializeApollo();
   let rs;
@@ -309,7 +492,8 @@ export default {
   getTotalItemsFunc: getTotalItems,
   getNextQuestersFunc: getNextQuesters,
   getFirstQuestersFunc: getFirstQuesters,
-  generateWinner,
-  updateCampaignWinner,
-  getAllQuesterApproved
+  getSouls,
+  generateWinners,
+  updateWinners,
+  setWinnersGenerated
 };

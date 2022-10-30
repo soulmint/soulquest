@@ -49,7 +49,7 @@ export const LOAD_CAMPAIGN_BY_SLUG = gql`
       reward_token_volume
       whitelist_spreadsheet_id
       whitelist_sheet_id
-      run_winnered
+      winners_generated
     }
   }
 `;
