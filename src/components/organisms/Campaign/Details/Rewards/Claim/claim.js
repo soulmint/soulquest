@@ -41,6 +41,11 @@ const Claim = (props) => {
   let icon = null;
 
   useEffect(async () => {
+    //update total winners claimed
+    const totalClaimed = await getTotalWinnerClaimed({ campaign_id });
+    if (totalClaimed) {
+      setTotalClaimed(totalClaimed);
+    }
     if (walletAdd) {
       const winner = await getWinner({
         campaign_id,
@@ -53,11 +58,6 @@ const Claim = (props) => {
         if (winner.is_claimed) {
           setIsClaimed(true);
         }
-      }
-      //update total winners claimed
-      const totalClaimed = await getTotalWinnerClaimed({ campaign_id });
-      if (totalClaimed) {
-        setTotalClaimed(totalClaimed);
       }
 
       // generates winners if campaign was ended and has not generated winners yet and current user is campaign owner
