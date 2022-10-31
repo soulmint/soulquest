@@ -39,7 +39,7 @@
 }
 
 .nftCollectionWrap {
-  composes: nftCollectionWrap from '../List/item.module.css';
+  /*composes: nftCollectionWrap from '../List/item.module.css';*/
   @apply flex items-center;
 }
 
@@ -52,9 +52,9 @@
 }
 
 .collectionName {
-  composes: collectionName from '../List/item.module.css';
+  /*composes: collectionName from '../List/item.module.css';*/
 }
 
 .contractAdd {
-  composes: contractAdd from '../List/item.module.css';
+  /*composes: contractAdd from '../List/item.module.css';*/
 }

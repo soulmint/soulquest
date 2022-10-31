@@ -40,10 +40,11 @@ const RelatedNftInfo = (props) => {
               </span>
             ) : null}
             {showCollectionLink ? (
-              <TextLink
+              /*<TextLink
                 className={classes.nftCollectionLink}
                 href={`/nft-collection-details/${nftCollection.nft_collection_id.slug}`}
-              >
+              >*/
+              <span>
                 <span
                   className={`${classes.collectionName} ${
                     classes[nftCollection.nft_collection_id.chain_name]
@@ -62,8 +63,9 @@ const RelatedNftInfo = (props) => {
                     )
                   </span>
                 ) : null}
-              </TextLink>
-            ) : null}
+              </span>
+            ) : /*</TextLink>*/
+            null}
           </div>
         );
 
