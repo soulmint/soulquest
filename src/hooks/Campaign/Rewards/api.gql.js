@@ -386,7 +386,7 @@ export const generateWinners = async (props) => {
       const drawIds = soulIds;
       for (let i = 0; i < parseInt(rw_number); i++) {
         const id = Math.floor(Math.random() * drawIds.length);
-        winnerIds.push(drawIds[id]);
+        drawIds[id] && winnerIds.push(drawIds[id]);
         drawIds.splice(id, 1);
       }
     }
