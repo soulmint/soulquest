@@ -155,7 +155,7 @@ const Claim = (props) => {
       <div className="card-header flex justify-between">
         <h3 className="">
           {t('Claim your Rewards')}
-          {` (${totalClaimed}/${reward_number})`}
+          {` (${totalClaimed}/${reward_number ? reward_number : 0})`}
         </h3>
         {icon}
       </div>
