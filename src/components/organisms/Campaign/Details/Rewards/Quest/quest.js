@@ -787,7 +787,7 @@ const Quest = (props) => {
     const nftOwnershipTaskContent = () => {
       return (
         <div className="flex items-center">
-          <h4 className="my-0 ml-1">{t('Holder')}:</h4>
+          <h4 className="my-0 mr-1">{t('Holder')}:</h4>
           {tasks.ck_nft_ownership.nftCollectionInfo}
         </div>
       );
