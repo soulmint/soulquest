@@ -54,7 +54,8 @@ const nextConfig = {
       "lh3.googleusercontent.com",
       "public.bnbstatic.com",
       "s2.coinmarketcap.com",
-      "dev.dhunt.io"
+      "dev.dhunt.io",
+      "admin.soulmint.net"
     ],
   }
 };
