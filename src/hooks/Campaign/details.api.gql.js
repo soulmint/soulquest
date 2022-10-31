@@ -70,7 +70,7 @@ export const GET_CAMPAIGN_BY_SLUG = gql`
       short_desc
       store_name
       date_created
-      thumb_image {
+      cover_image {
         id
         title
       }

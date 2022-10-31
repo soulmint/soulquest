@@ -13,8 +13,8 @@ const utils = {
     if (page == 'campaign-details' && data) {
       base.title = data.title;
       base.description = utils.htmlToString(data.short_desc);
-      base.image = `${process.env.MEDIA_BASE_URL}/${data.thumb_image.id}?format=jpg&width=500`;
-      base.img_title = data.thumb_image.title;
+      base.image = `${process.env.MEDIA_BASE_URL}/${data.cover_image.id}?format=jpg&width=500`;
+      base.img_title = data.cover_image.title;
       base.url = `${process.env.PUBLIC_URL}/${asPath}`;
       base.keywords = `${base.keywords}${
         data.tags ? ', ' + data.tags.map((tag) => tag.name).join(', ') : ''
