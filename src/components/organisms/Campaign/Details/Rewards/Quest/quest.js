@@ -21,11 +21,10 @@ import {
 
 import {
   twLogin,
-  getTwUserIdByUsermame,
   // getReTweets,
-  getFollowLookup,
-  getTweetLookup /* , */
-  // getFollow
+  getTweetLookup,
+  getTwUserIdByUsername,
+  isFollowing
 } from 'src/hooks/Campaign/Rewards/useTwitter';
 import ConnectWallet from 'src/components/organisms/User/ConnectWallet';
 import { StatusIcon } from 'src/components/organisms/Svg/SvgIcons';
@@ -192,21 +191,21 @@ const Quest = (props) => {
 
           setTwitterLoginState(true);
         }
-        // check twitter userid
-        if (tasks.ck_twitter_follow && !tasks.ck_twitter_follow.owner_id) {
-          const twOwnerIdKey = base64URLEncode(
-            tasks.ck_twitter_follow.username
-          );
-          let twOwnerId = storage.getItem(twOwnerIdKey);
-          if (!twOwnerId) {
-            twOwnerId = await getTwUserIdByUsermame({
-              screen_name: tasks.ck_twitter_follow.username
-            });
-            twOwnerId && storage.setItem(twOwnerIdKey, twOwnerId);
-            if (!twOwnerId) toast.warning('Invalid user username');
-          }
-          tasks.ck_twitter_follow.owner_id = twOwnerId;
+      }
+
+      // get twitter user id by username
+      if (tasks.ck_twitter_follow && !tasks.ck_twitter_follow.owner_id) {
+        const twOwnerIdKey = base64URLEncode(tasks.ck_twitter_follow.username);
+        let twOwnerId = storage.getItem(twOwnerIdKey);
+        if (!twOwnerId) {
+          twOwnerId = await getTwUserIdByUsername({
+            username: tasks.ck_twitter_follow.username
+          });
+          twOwnerId && storage.setItem(twOwnerIdKey, twOwnerId);
+
+          if (!twOwnerId) toast.warning('Invalid Twitter username');
         }
+        tasks.ck_twitter_follow.owner_id = twOwnerId;
       }
     }
   }, [router.isReady]);
@@ -524,11 +523,11 @@ const Quest = (props) => {
       setTwitterFollowState('loading');
 
       // checking twitter follow here...
-      const tw_follower_status = await getFollowLookup({
+      const isFollowed = await isFollowing({
         user_id: tasks.ck_twitter_login.uid,
         owner_id: tasks.ck_twitter_follow.owner_id
       });
-      if (tw_follower_status) {
+      if (isFollowed) {
         tasks.ck_twitter_follow.status = true;
         //trigger to re-render
         setTwitterFollowState(tasks.ck_twitter_follow.status);
@@ -537,7 +536,7 @@ const Quest = (props) => {
         //trigger to re-render
         setTwitterFollowState(tasks.ck_twitter_follow.status);
         toast.error(
-          t('You have not completed this task yet.  Please try again later!')
+          t('You have not completed this task yet. Please try again later!')
         );
       }
 
