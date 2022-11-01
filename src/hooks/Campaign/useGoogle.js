@@ -3,11 +3,11 @@ const isWhitelisted = async (props) => {
   let isWhitelisted = false;
 
   await fetch(
-    `/api/google/user?task=is_whitelisted&spreadsheet_id=${spreadsheet_id}&sheet_id=${sheet_id}&wallet_add=${wallet_address}`
+    `/api/ck-whitelist/${wallet_address}?spreadsheet_id=${spreadsheet_id}&sheet_id=${sheet_id}`
   )
     .then((res) => res.json())
-    .then((data) => {
-      isWhitelisted = data && data.result?.is_whitelisted;
+    .then((res) => {
+      isWhitelisted = res?.is_whitelisted;
     });
 
   return isWhitelisted;
