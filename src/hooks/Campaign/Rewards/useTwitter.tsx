@@ -1,7 +1,7 @@
 import Router from 'next/router';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
-const TwitterLogin = (props: any) => {
+const twLogin = (props: any) => {
   let { reference_url } = props;
   const lastChar = reference_url.substr(reference_url.length - 1);
   if (lastChar === '#') {
@@ -34,9 +34,8 @@ const getFollow = async (props: any) => {
     });
   return checked;
 };
-const getTwitterUserIdByUsermame = async (props: any) => {
+const getTwUserIdByUsermame = async (props: any) => {
   const { screen_name } = props;
-  if (!screen_name) return toast.warning('Invalid user screen_name');
   let id = 0;
   await fetch('/api/twitter/user?task=getid&screen_name=' + screen_name)
     .then((res) => res.json())
@@ -126,10 +125,10 @@ const getTweetLookup = async (props: any) => {
   return checked;
 };
 export {
-  TwitterLogin,
+  twLogin,
   getFollow,
   getTweetLookup,
-  getTwitterUserIdByUsermame,
+  getTwUserIdByUsermame,
   getReTweets,
   getFollowLookup
 };

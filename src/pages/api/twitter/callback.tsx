@@ -26,10 +26,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       const StateDecode = JSON.parse(base64URLDecode(state as string));
       const csrf = StateDecode.csrfToken;
       const referenceUrl = StateDecode.reference_url;
+      const urlDecode = encodeURIComponent(referenceUrl);
       if (csrf !== csrfToken) {
-        res.redirect(
-          decodeURIComponent(referenceUrl as string) + '?error=' + error
-        );
+        res.redirect(urlDecode + '?error=' + error);
       }
       const twToken = await twitterAuthClient.requestAccessToken(
         code as string
@@ -47,12 +46,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.redirect(redirectUrl);
         res.end();
       } else {
-        res.redirect(decodeURIComponent(referenceUrl as string));
+        res.redirect(urlDecode);
       }
       if (error) {
-        res.redirect(
-          decodeURIComponent(referenceUrl as string) + '?error=' + error
-        );
+        res.redirect(urlDecode + '?error=' + error);
       }
     } else {
       res.redirect('/?error=' + error);

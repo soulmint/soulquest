@@ -20,8 +20,8 @@ import {
 } from 'react-icons/fa';
 
 import {
-  TwitterLogin,
-  getTwitterUserIdByUsermame,
+  twLogin,
+  getTwUserIdByUsermame,
   // getReTweets,
   getFollowLookup,
   getTweetLookup /* , */
@@ -194,19 +194,18 @@ const Quest = (props) => {
         }
         // check twitter userid
         if (tasks.ck_twitter_follow && !tasks.ck_twitter_follow.owner_id) {
-          let tw_owner_id = storage.getItem(
-            base64URLEncode(tasks.ck_twitter_follow.username)
+          const twOwnerIdKey = base64URLEncode(
+            tasks.ck_twitter_follow.username
           );
-          if (!tw_owner_id) {
-            tw_owner_id = await getTwitterUserIdByUsermame({
+          let twOwnerId = storage.getItem(twOwnerIdKey);
+          if (!twOwnerId) {
+            twOwnerId = await getTwUserIdByUsermame({
               screen_name: tasks.ck_twitter_follow.username
             });
-            storage.setItem(
-              base64URLEncode(tasks.ck_twitter_follow.username),
-              tw_owner_id
-            );
+            twOwnerId && storage.setItem(twOwnerIdKey, twOwnerId);
+            if (!twOwnerId) toast.warning('Invalid user username');
           }
-          tasks.ck_twitter_follow.owner_id = tw_owner_id;
+          tasks.ck_twitter_follow.owner_id = twOwnerId;
         }
       }
     }
@@ -366,7 +365,8 @@ const Quest = (props) => {
       );
     };
     const twLoginTaskContent = () => {
-      return !tasks.ck_twitter_login.status ? (
+      return !tasks.ck_twitter_login.status ||
+        !tasks.ck_twitter_login.screen_name ? (
         <>
           <Button
             id={`btn-twitter-login`}
@@ -397,7 +397,7 @@ const Quest = (props) => {
       await handleUpdateSubmittedTasks('ck_twitter_login', false);
 
       // status will update after login process success
-      await TwitterLogin({ reference_url: router.asPath });
+      await twLogin({ reference_url: router.asPath });
     };
 
     const twLoginTaskClasses = [classes.questItem, classes.twitterLoginTask];
