@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { twitterAppClient } from 'src/libs/twitterAppClient';
+import { initTwitterAppClient } from 'src/libs/twitterClient';
 
 // import nextCookies from "next-cookies";
 // import {base64URLDecode, base64URLEncode} from "src/utils/strUtils";
@@ -51,6 +51,9 @@ export default async function handler(
           }
           rs.tw_token = (refreshToken) ? base64URLEncode(JSON.stringify(refreshToken)) : '';
         }*/
+
+        //init twitter app client
+        const twitterAppClient = initTwitterAppClient();
 
         // get list users followed by user id
         const users = twitterAppClient.users.usersIdFollowing(

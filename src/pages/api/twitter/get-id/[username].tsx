@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { twitterAppClient } from 'src/libs/twitterAppClient';
+import { initTwitterAppClient } from 'src/libs/twitterClient';
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,6 +17,9 @@ export default async function handler(
   switch (method) {
     case 'GET':
       if (username) {
+        //init twitter app client
+        const twitterAppClient = initTwitterAppClient();
+
         // get user by username
         const user = await twitterAppClient.users.findUserByUsername(
           username as string,
