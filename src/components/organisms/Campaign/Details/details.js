@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
 import Rewards from './Rewards';
@@ -41,13 +41,9 @@ const Details = (props) => {
       const now = Moment();
       let stateInfo =
         now > endDate ? (
-          <div className="shadow bg-red-300 text-slate-800 rounded-full mb-2 md:mb-0 py-1 px-3 text-sm font-bold mr-4">
-            {t('Ended')}
-          </div>
+          <div className={`${classes.ended}`}>{t('Ended')}</div>
         ) : (
-          <div className="shadow bg-green-300 text-slate-800 rounded-full mb-2 md:mb-0 py-1 px-3 text-sm font-bold mr-4">
-            {t('Ongoing')}
-          </div>
+          <div className={`${classes.onGoing}`}>{t('Ongoing')}</div>
         );
       const datesInfo =
         campaign.date_start || campaign.date_end ? (
@@ -72,12 +68,12 @@ const Details = (props) => {
         let rs = null;
         if (campaign.whitelist_spreadsheet_id && campaign.whitelist_sheet_id) {
           rs = !userState.is_whitelisted ? (
-            <span className={`${classes.whitelistLock} flex items-center shadow bg-red-300 text-slate-800 rounded-full px-3 py-1 font-bold text-sm`}>
+            <span className={`${classes.whitelistLock}`}>
               {' '}
               <FaLock /> <span className="ml-1">{t('Whitelist')}</span>
             </span>
           ) : (
-            <span className={`${classes.whitelistLockOpen} flex items-center shadow bg-green-600 text-white rounded-full px-3 py-1 font-bold text-sm`}>
+            <span className={`${classes.whitelistLockOpen}`}>
               {' '}
               <FaLockOpen /> <span className="ml-1">{t('Whitelist')}</span>
             </span>
