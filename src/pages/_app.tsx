@@ -20,6 +20,8 @@ const Providers = dynamic(() => import('../utils/providers'));
 import { getTokenState } from '../hooks/User/useUser';
 import { useDispatch } from 'react-redux';
 import { setId, setToken, logOut } from 'src/store/user/operations';
+import BrowserPersistence from 'src/utils/simplePersistence';
+const storage = new BrowserPersistence();
 
 const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
   const dispatch = useDispatch();
@@ -38,6 +40,14 @@ const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
           setId(dispatch, session.user_id);
           //set user token for user's state
           setToken(dispatch, session.access_token);
+        }
+      } else {
+        const accessToken = storage.getItem('access_token');
+        if (accessToken) {
+          const { needRefresh } = getTokenState(accessToken);
+          if (needRefresh) {
+            logOut(dispatch);
+          }
         }
       }
     } catch (e) {
