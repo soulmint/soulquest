@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getCsrfToken } from 'next-auth/react';
 import { initTwitterAppClient } from 'src/libs/twitterClient';
 
 export default async function handler(
@@ -7,8 +8,13 @@ export default async function handler(
 ) {
   const {
     method,
-    query: { username }
+    query: { username, csrf }
   } = req;
+
+  const _csrf = await getCsrfToken({ req });
+  if (csrf !== _csrf) {
+    return res.status(401).send('You are not authorized to call this API');
+  }
 
   const rs = {
     id: ''

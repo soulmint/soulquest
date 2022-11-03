@@ -1,4 +1,5 @@
 import Router from 'next/router';
+import { getCsrfToken } from 'next-auth/react';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 
@@ -17,7 +18,10 @@ const twLogin = (props: any) => {
 const isFollowing = async (props: any) => {
   const { user_id, owner_id } = props;
   let rs = false;
-  await fetch(`/api/twitter/ck-followings/${user_id}?owner_id=${owner_id}`)
+  const csrf = await getCsrfToken();
+  await fetch(
+    `/api/twitter/ck-followings/${user_id}?owner_id=${owner_id}&csrf=${csrf}`
+  )
     .then((res) => res.json())
     .then((response) => {
       /*if (response.tw_token) {
@@ -36,7 +40,8 @@ const isFollowing = async (props: any) => {
 const getTwUserIdByUsername = async (props: any) => {
   const { username } = props;
   let id = 0;
-  await fetch(`/api/twitter/get-id/${username}`)
+  const csrf = await getCsrfToken();
+  await fetch(`/api/twitter/get-id/${username}?csrf=${csrf}`)
     .then((res) => res.json())
     .then((response) => {
       /*if (response.tw_token) {

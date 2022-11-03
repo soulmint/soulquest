@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getCsrfToken } from 'next-auth/react';
 import { initTwitterAppClient } from 'src/libs/twitterClient';
 
 // import nextCookies from "next-cookies";
@@ -11,8 +12,13 @@ export default async function handler(
 ) {
   const {
     method,
-    query: { user_id, owner_id }
+    query: { user_id, owner_id, csrf }
   } = req;
+
+  const _csrf = await getCsrfToken({ req });
+  if (csrf !== _csrf) {
+    return res.status(401).send('You are not authorized to call this API');
+  }
 
   const rs = {
     is_following: false,
