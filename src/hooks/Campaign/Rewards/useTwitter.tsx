@@ -8,7 +8,6 @@ import {
 } from 'src/libs/twitterClient';
 import { base64URLEncode, base64URLDecode } from 'src/utils/strUtils';
 import BrowserPersistence from 'src/utils/simplePersistence';
-import { getCsrfToken } from 'next-auth/react';
 
 const twLogin = async (props: any) => {
   const { reference_url } = props;
