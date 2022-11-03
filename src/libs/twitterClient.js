@@ -1,11 +1,13 @@
 import { Client, auth } from 'twitter-api-sdk';
+import Cookies from 'js-cookie';
+import { base64URLEncode } from 'src/utils/strUtils';
 let authClient, userClient, appClient;
 
-const createAuthClient = () => {
+const createAuthClient = (tw_token) => {
   return new auth.OAuth2User({
     client_id: process.env.TWITTER_ID,
     client_secret: process.env.TWITTER_SECRET,
-    callback: process.env.NEXTAUTH_URL + '/api/twitter/callback',
+    callback: process.env.PUBLIC_URL + '/api/twitter/login-callback',
     scopes: [
       'users.read',
       'offline.access',
@@ -15,12 +17,31 @@ const createAuthClient = () => {
       'like.read',
       'follows.read',
       'follows.write'
-    ]
+    ],
+    token: tw_token ? tw_token : undefined
   });
 };
+const getTwToken = () => {
+  const tokenRaw = Cookies.get('tw_token');
+  let token;
+  if (tokenRaw) {
+    token = JSON.parse(base64URLEncode(tokenRaw));
+  }
 
-const createUserClient = () => {
-  return new Client(authClient ?? createAuthClient());
+  return token;
+};
+const setTwToken = (token) => {
+  Cookies.set('tw_token', base64URLEncode(JSON.stringify(token)));
+};
+const createUserClient = (tw_token) => {
+  const _authClient = authClient ?? createAuthClient(tw_token);
+  if (_authClient.isAccessTokenExpired()) {
+    const token = _authClient.refreshAccessToken();
+    if (token) {
+      Cookies.set('tw_token', base64URLEncode(JSON.stringify(token)));
+    }
+  }
+  return new Client(_authClient);
 };
 
 const createAppClient = () => {
@@ -37,8 +58,8 @@ const initTwitterAuthClient = () => {
   return authClient;
 };
 
-const initTwitterUserClient = () => {
-  const _client = userClient ?? createUserClient();
+const initTwitterUserClient = (tw_token) => {
+  const _client = userClient ?? createUserClient(tw_token);
   if (!userClient) userClient = _client;
 
   return userClient;
@@ -50,5 +71,12 @@ const initTwitterAppClient = () => {
 
   return appClient;
 };
-
-export { initTwitterAuthClient, initTwitterUserClient, initTwitterAppClient };
+initTwitterAuthClient();
+initTwitterAppClient();
+export {
+  initTwitterAuthClient,
+  initTwitterUserClient,
+  initTwitterAppClient,
+  getTwToken,
+  setTwToken
+};

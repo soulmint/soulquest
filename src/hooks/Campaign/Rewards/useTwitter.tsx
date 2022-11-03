@@ -1,8 +1,41 @@
 import Router from 'next/router';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import {
+  initTwitterAppClient,
+  initTwitterAuthClient
+} from 'src/libs/twitterClient';
+import { base64URLEncode, base64URLDecode } from 'src/utils/strUtils';
+import BrowserPersistence from 'src/utils/simplePersistence';
+import { getCsrfToken } from 'next-auth/react';
 
-const twLogin = (props: any) => {
+const twLogin = async (props: any) => {
+  const { reference_url } = props;
+  // const lastChar = reference_url.substr(reference_url.length - 1);
+  // if (lastChar === '#') {
+  //   reference_url = reference_url.slice(0, -1);
+  // }
+  console.log('====================================');
+  console.log('reference_url', reference_url);
+  console.log('====================================');
+  const csrfToken = await getCsrfToken();
+  const stateParam = base64URLEncode(
+    JSON.stringify({ csrfToken, reference_url })
+  );
+  const twitterAuthClient = initTwitterAuthClient();
+  console.log(twitterAuthClient);
+  let authUrl = twitterAuthClient.generateAuthURL({
+    state: `${stateParam}`,
+    code_challenge_method: 's256'
+  });
+  if (!authUrl.includes('client_id')) {
+    authUrl += `&client_id=${process.env.TWITTER_ID}`;
+  }
+
+  console.log('authUrl', authUrl);
+  Router.push(authUrl);
+};
+const twLogin_b = (props: any) => {
   let { reference_url } = props;
   const lastChar = reference_url.substr(reference_url.length - 1);
   if (lastChar === '#') {
@@ -12,6 +45,24 @@ const twLogin = (props: any) => {
     '/api/twitter/callback?action=login&reference_url=' +
       encodeURIComponent(reference_url)
   );
+};
+const twUserInfo = async () => {
+  await fetch('/api/twitter/userInfo?task=info')
+    .then((result) => {
+      return result.json();
+    })
+    .then((data) => {
+      console.log('====================================');
+      console.log(data);
+      console.log('====================================');
+    })
+    .catch((err) => {
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(err);
+      }
+      toast.warning('Something went wrong');
+    });
+  return true;
 };
 
 const isFollowing = async (props: any) => {
@@ -129,6 +180,7 @@ const getTweetLookup = async (props: any) => {
 
 export {
   twLogin,
+  twUserInfo,
   getFollow,
   getTweetLookup,
   getReTweets,
