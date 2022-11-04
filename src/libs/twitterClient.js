@@ -1,6 +1,4 @@
 import { Client, auth } from 'twitter-api-sdk';
-import Cookies from 'js-cookie';
-import { base64URLEncode } from 'src/utils/strUtils';
 
 let authClient, userClient, appClient;
 
@@ -29,16 +27,6 @@ const createAuthClient = (token) => {
 
 const createUserClient = (token) => {
   let _authClient = authClient ?? createAuthClient(token);
-
-  if (token && _authClient.isAccessTokenExpired()) {
-    //coming soon
-    const token = _authClient.refreshAccessToken();
-    if (token) {
-      _authClient = createAuthClient(token);
-      Cookies.set('tw_token', base64URLEncode(JSON.stringify(token)));
-    }
-  }
-
   return new Client(_authClient);
 };
 

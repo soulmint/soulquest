@@ -105,7 +105,11 @@ const Quest = (props) => {
 
         // save tw token to cookie
         if (twToken) {
-          Cookies.set('tw_token', base64URLEncode(JSON.stringify(twToken)));
+          Cookies.set(
+            'tw_token',
+            base64URLEncode(JSON.stringify(twToken)),
+            { expires: 1.5 / 24 } //1.5 hours
+          );
         }
 
         // get user info to sync twitter social link

@@ -1,7 +1,7 @@
 import { getCsrfToken } from 'next-auth/react';
 import Router from 'next/router';
-// import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { base64URLDecode } from 'src/utils/strUtils';
 
 const twLogin = async (props: any) => {
   const { ref_url } = props;
@@ -23,6 +23,18 @@ const getToken = async (code: string) => {
     .then((response) => {
       rs = response?.token;
     });
+
+  return rs;
+};
+
+const isTokenExpired = (twToken: any) => {
+  let rs = true;
+  if (twToken) {
+    const token = JSON.parse(base64URLDecode(twToken));
+    if (token && Date.now() < token.expires_at) {
+      rs = false;
+    }
+  }
 
   return rs;
 };
@@ -136,6 +148,7 @@ const isReTweeted = async (props: any) => {
 export {
   twLogin,
   getToken,
+  isTokenExpired,
   getAuthenticatedUser,
   isFollowing,
   isReTweeted,
