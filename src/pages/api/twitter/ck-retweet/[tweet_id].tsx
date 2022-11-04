@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getCsrfToken } from 'next-auth/react';
 import nextCookies from 'next-cookies';
 import {
-  // initTwitterAppClient,
+  //initTwitterAppClient,
   initTwitterUserClient
 } from 'src/libs/twitterClient';
 import { base64URLDecode } from 'src/utils/strUtils';
@@ -13,7 +13,7 @@ export default async function handler(
 ) {
   const {
     method,
-    query: { user_id, owner_id, csrf }
+    query: { tweet_id, user_id, csrf }
   } = req;
 
   const _csrf = await getCsrfToken({ req });
@@ -22,29 +22,29 @@ export default async function handler(
   }
 
   const rs = {
-    is_following: false
+    is_re_tweeted: false
   };
 
   try {
     switch (method) {
       case 'GET':
-        if (user_id && owner_id) {
+        if (tweet_id && user_id) {
           // Method 1: check by twitter User client (for a better quota of requests limit)
           const twToken = nextCookies({ req }).tw_token;
           const token = twToken ? JSON.parse(base64URLDecode(twToken)) : {};
           const twitterUserClient = initTwitterUserClient(token);
-          const users = twitterUserClient.users.usersIdFollowing(
-            user_id as string,
+          const users = twitterUserClient.users.tweetsIdRetweetingUsers(
+            tweet_id as string,
             {
               'user.fields': ['id']
             }
           );
 
-          // Method 2: Check by twitter App client
-          // init twitter app client
-          /*const twitterAppClient = initTwitterAppClient();
+          /*//Method 2: check via twitter app client
+          //init twitter app client
+          const twitterAppClient = initTwitterAppClient();
           // get list users followed by user id
-          const users = twitterAppClient.users.usersIdFollowing(
+          const users = twitterAppClient.users.tweetsIdRetweetingUsers(
             user_id as string,
             {
               'user.fields': ['id']
@@ -54,12 +54,12 @@ export default async function handler(
           for await (const page of users) {
             if (!page.data) break;
             for (const user of page.data) {
-              if (user.id === owner_id) {
-                rs.is_following = true;
+              if (user.id === user_id) {
+                rs.is_re_tweeted = true;
                 break;
               }
             }
-            if (rs.is_following) break;
+            if (rs.is_re_tweeted) break;
           }
         }
 

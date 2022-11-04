@@ -1,10 +1,11 @@
 import { Client, auth } from 'twitter-api-sdk';
 import Cookies from 'js-cookie';
 import { base64URLEncode } from 'src/utils/strUtils';
+
 let authClient, userClient, appClient;
 
-const createAuthClient = (tw_token) => {
-  return new auth.OAuth2User({
+const createAuthClient = (token) => {
+  const options = {
     client_id: process.env.TWITTER_ID,
     client_secret: process.env.TWITTER_SECRET,
     callback: process.env.PUBLIC_URL + '/api/twitter/login-callback',
@@ -17,30 +18,27 @@ const createAuthClient = (tw_token) => {
       'like.read',
       'follows.read',
       'follows.write'
-    ],
-    token: tw_token ? tw_token : undefined
-  });
-};
-const getTwToken = () => {
-  const tokenRaw = Cookies.get('tw_token');
-  let token;
-  if (tokenRaw) {
-    token = JSON.parse(base64URLEncode(tokenRaw));
+    ]
+  };
+  if (token) {
+    options.token = token;
   }
 
-  return token;
+  return new auth.OAuth2User(options);
 };
-const setTwToken = (token) => {
-  Cookies.set('tw_token', base64URLEncode(JSON.stringify(token)));
-};
-const createUserClient = (tw_token) => {
-  const _authClient = authClient ?? createAuthClient(tw_token);
-  if (_authClient.isAccessTokenExpired()) {
+
+const createUserClient = (token) => {
+  let _authClient = authClient ?? createAuthClient(token);
+
+  if (token && _authClient.isAccessTokenExpired()) {
+    //coming soon
     const token = _authClient.refreshAccessToken();
     if (token) {
+      _authClient = createAuthClient(token);
       Cookies.set('tw_token', base64URLEncode(JSON.stringify(token)));
     }
   }
+
   return new Client(_authClient);
 };
 
@@ -58,8 +56,16 @@ const initTwitterAuthClient = () => {
   return authClient;
 };
 
-const initTwitterUserClient = (tw_token) => {
-  const _client = userClient ?? createUserClient(tw_token);
+const initTwitterAuthUrl = (csrf, state) => {
+  return authClient.generateAuthURL({
+    state,
+    code_challenge_method: 'plain',
+    code_challenge: csrf
+  });
+};
+
+const initTwitterUserClient = (token) => {
+  const _client = userClient ?? createUserClient(token);
   if (!userClient) userClient = _client;
 
   return userClient;
@@ -71,12 +77,10 @@ const initTwitterAppClient = () => {
 
   return appClient;
 };
-initTwitterAuthClient();
-initTwitterAppClient();
+
 export {
   initTwitterAuthClient,
+  initTwitterAuthUrl,
   initTwitterUserClient,
-  initTwitterAppClient,
-  getTwToken,
-  setTwToken
+  initTwitterAppClient
 };

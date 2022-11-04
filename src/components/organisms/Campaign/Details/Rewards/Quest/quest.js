@@ -2,12 +2,16 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { shape, string } from 'prop-types';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 import Moment from 'moment';
 import { toast } from 'react-toastify';
+import ReactTooltip from 'react-tooltip';
 import defaultClasses from './quest.module.css';
 import { useStyle } from 'src/components/classify';
 import Button from 'src/components/atoms/Button';
 import TextLink from 'src/components/atoms/TextLink';
+import ConnectWallet from 'src/components/organisms/User/ConnectWallet';
+import { StatusIcon } from 'src/components/organisms/Svg/SvgIcons';
 import BrowserPersistence from 'src/utils/simplePersistence';
 import {
   FaWallet,
@@ -18,29 +22,20 @@ import {
   FaAngleRight,
   FaLink
 } from 'react-icons/fa';
-
 import {
   twLogin,
-  // getReTweets,
-  getTweetLookup,
-  getTwUserIdByUsername,
-  isFollowing
+  getToken,
+  getAuthenticatedUser,
+  getUserIdByUsername,
+  isFollowing,
+  isReTweeted
 } from 'src/hooks/Campaign/Rewards/useTwitter';
-import ConnectWallet from 'src/components/organisms/User/ConnectWallet';
-import { StatusIcon } from 'src/components/organisms/Svg/SvgIcons';
-import {
-  base64URLDecode,
-  base64URLEncode,
-  ellipsify,
-  validURL
-} from 'src/utils/strUtils';
+import { base64URLEncode, ellipsify, validURL } from 'src/utils/strUtils';
 import {
   checkExistsSocialLink,
   saveSocialLink
 } from 'src/hooks/User/useSocial';
 import { isQuesterExists } from 'src/hooks/Campaign/Rewards/api.gql';
-import Cookies from 'js-cookie';
-import ReactTooltip from 'react-tooltip';
 import { useQuest } from 'src/hooks/Campaign/Rewards';
 
 const Quest = (props) => {
@@ -63,7 +58,6 @@ const Quest = (props) => {
     localQuesterIdKey,
     localQuesterTasksKey,
     localTwSocialLinkKey,
-    twSocialLinkedTtl,
     userState,
     tasks,
     isFinishedTasks,
@@ -97,6 +91,97 @@ const Quest = (props) => {
 
   useEffect(async () => {
     if (add && !isSoul) {
+      tasks.ck_connect_wallet.status = true;
+
+      twSocialLinked = storage.getItem(localTwSocialLinkKey);
+
+      // handle after twitter login case
+      if (router.query.tw_code) {
+        // clean tw social link from local storage
+        storage.removeItem(localTwSocialLinkKey);
+
+        // get twitter token by code
+        const twToken = await getToken(router.query.tw_code);
+
+        // save tw token to cookie
+        if (twToken) {
+          Cookies.set('tw_token', base64URLEncode(JSON.stringify(twToken)));
+        }
+
+        // get user info to sync twitter social link
+        const authenticatedUser = await getAuthenticatedUser();
+        if (authenticatedUser && authenticatedUser.id) {
+          // check exits social link from off chain DB
+          const found = await checkExistsSocialLink(
+            { _eq: 'twitter' },
+            { email: { _eq: userState.wallet_address } }
+          );
+          if (!found) {
+            //add new
+            twSocialLinked = await saveSocialLink({
+              name: 'twitter',
+              uid: authenticatedUser.id,
+              username: authenticatedUser.username
+            });
+          } else {
+            twSocialLinked = found;
+          }
+
+          // update twitter social link to local storage for other contexts
+          if (twSocialLinked) {
+            storage.setItem(localTwSocialLinkKey, twSocialLinked);
+          }
+
+          // Refresh current page
+          router.push('/campaign-details/' + router.query.slug[0]);
+        }
+      } else {
+        if (twSocialLinked === undefined) {
+          // check exits social link from off chain DB
+          const twSocialLinked = await checkExistsSocialLink(
+            { _eq: 'twitter' },
+            { email: { _eq: userState.wallet_address } }
+          );
+          if (twSocialLinked) {
+            storage.setItem(localTwSocialLinkKey, twSocialLinked);
+          }
+        }
+      }
+
+      //if has tw social linked
+      if (twSocialLinked) {
+        //check twitter login
+        if (tasks.ck_twitter_login) {
+          tasks.ck_twitter_login.status = true;
+          tasks.ck_twitter_login.uid = twSocialLinked.uid;
+          tasks.ck_twitter_login.screen_name = twSocialLinked.username;
+
+          // update submitted tasks to local storage
+          await handleUpdateSubmittedTasks('ck_twitter_login', true);
+
+          setTwitterLoginState(true);
+        }
+      }
+
+      // get twitter user id by username
+      if (tasks.ck_twitter_follow && !tasks.ck_twitter_follow.owner_id) {
+        const twOwnerIdKey = base64URLEncode(tasks.ck_twitter_follow.username);
+        let twOwnerId = storage.getItem(twOwnerIdKey);
+        if (!twOwnerId) {
+          twOwnerId = await getUserIdByUsername({
+            username: tasks.ck_twitter_follow.username
+          });
+          twOwnerId && storage.setItem(twOwnerIdKey, twOwnerId);
+
+          if (!twOwnerId) toast.warning('Invalid Twitter username');
+        }
+        tasks.ck_twitter_follow.owner_id = twOwnerId;
+      }
+    }
+  }, [router.isReady]);
+
+  useEffect(async () => {
+    if (add && !isSoul) {
       // Check current User has do tasks
       const quester = await isQuesterExists(
         { _eq: campaignId },
@@ -122,93 +207,6 @@ const Quest = (props) => {
       }
     }
   }, [router.isReady, add, twitterLoginState]);
-
-  useEffect(async () => {
-    if (add && !isSoul) {
-      tasks.ck_connect_wallet.status = true;
-
-      // After twitter login case
-      twSocialLinked = storage.getItem(localTwSocialLinkKey);
-      if (router.query.user) {
-        const { user } = router.query;
-        const UserDecode = JSON.parse(base64URLDecode(user));
-        const { id, username, tw_token } = UserDecode;
-        const uid = id;
-        if (tw_token) {
-          Cookies.set('tw_token', tw_token, {
-            expires: 30,
-            path: '/',
-            sameSite: 'lax'
-          });
-        }
-        if (twSocialLinked === undefined && uid) {
-          //add new
-          twSocialLinked = await saveSocialLink({
-            name: 'twitter',
-            username,
-            uid
-          });
-          if (twSocialLinked) {
-            //saving to local storage for other contexts
-            storage.setItem(
-              localTwSocialLinkKey,
-              twSocialLinked,
-              twSocialLinkedTtl
-            );
-          }
-          // Refresh page - coming soon
-          //router.push('/campaign-details/' + router.query.slug[0]);
-        }
-      } else {
-        twSocialLinked = storage.getItem(localTwSocialLinkKey);
-        if (twSocialLinked === undefined) {
-          // check exits social link from off chain DB
-          const twSocialLinked = await checkExistsSocialLink(
-            { _eq: 'twitter' },
-            { email: { _eq: userState.wallet_address } }
-          );
-          if (twSocialLinked) {
-            storage.setItem(
-              localTwSocialLinkKey,
-              twSocialLinked,
-              twSocialLinkedTtl
-            );
-          }
-        }
-      }
-
-      //if has tw social linked
-      if (twSocialLinked) {
-        //check twitter login
-        const tw_token = Cookies.get('tw_token');
-        if (tasks.ck_twitter_login && tw_token) {
-          tasks.ck_twitter_login.status = true;
-          tasks.ck_twitter_login.uid = twSocialLinked.uid;
-          tasks.ck_twitter_login.screen_name = twSocialLinked.username;
-
-          // update submitted tasks to local storage
-          await handleUpdateSubmittedTasks('ck_twitter_login', true);
-
-          setTwitterLoginState(true);
-        }
-      }
-
-      // get twitter user id by username
-      if (tasks.ck_twitter_follow && !tasks.ck_twitter_follow.owner_id) {
-        const twOwnerIdKey = base64URLEncode(tasks.ck_twitter_follow.username);
-        let twOwnerId = storage.getItem(twOwnerIdKey);
-        if (!twOwnerId) {
-          twOwnerId = await getTwUserIdByUsername({
-            username: tasks.ck_twitter_follow.username
-          });
-          twOwnerId && storage.setItem(twOwnerIdKey, twOwnerId);
-
-          if (!twOwnerId) toast.warning('Invalid Twitter username');
-        }
-        tasks.ck_twitter_follow.owner_id = twOwnerId;
-      }
-    }
-  }, [router.isReady]);
 
   let walletConnect = userState.wallet_address ? (
     <span className="flex items-center flex-row text-sm font-bold text-slate-500">
@@ -396,7 +394,7 @@ const Quest = (props) => {
       await handleUpdateSubmittedTasks('ck_twitter_login', false);
 
       // status will update after login process success
-      await twLogin({ reference_url: router.asPath });
+      await twLogin({ ref_url: router.asPath });
     };
 
     const twLoginTaskClasses = [classes.questItem, classes.twitterLoginTask];
@@ -522,7 +520,7 @@ const Quest = (props) => {
       }
       setTwitterFollowState('loading');
 
-      // checking twitter follow here...
+      // checking twitter follow
       const isFollowed = await isFollowing({
         user_id: tasks.ck_twitter_login.uid,
         owner_id: tasks.ck_twitter_follow.owner_id
@@ -652,7 +650,7 @@ const Quest = (props) => {
                 priority="high"
                 classes={{ root_highPriority: classes.btnVerify }}
                 type="button"
-                onPress={() => handleCheckTwitterReTweet()}
+                onPress={() => handleCheckReTweet()}
               />
               <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
                 {t('Verify')}&nbsp;
@@ -665,7 +663,7 @@ const Quest = (props) => {
         </span>
       );
     };
-    const handleCheckTwitterReTweet = async () => {
+    const handleCheckReTweet = async () => {
       if (userState.wallet_address === undefined) {
         return toast.warning(
           t('You must connect your wallet before do this task!')
@@ -682,11 +680,11 @@ const Quest = (props) => {
       setTwitterReTweetState('loading');
 
       twSocialLinked = storage.getItem(localTwSocialLinkKey);
-      const tw_tweet_status = await getTweetLookup({
+      const _isReTweeted = await isReTweeted({
         user_id: twSocialLinked.uid,
         tweet_id: tasks.ck_twitter_retweet.tweet_id
       });
-      if (tw_tweet_status) {
+      if (_isReTweeted) {
         tasks.ck_twitter_retweet.status = true;
         //trigger to re-render
         setTwitterReTweetState(tasks.ck_twitter_retweet.status);

@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import BrowserPersistence from 'src/utils/simplePersistence';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 import { base64URLEncode } from 'src/utils/strUtils';
-import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { setSoulsUp } from 'src/store/user/operations';
 
@@ -36,7 +35,6 @@ export default (props) => {
   const localQuesterTasksKey = `${add}_${campaign.id}_quester_tasks`;
 
   const localTwSocialLinkKey = `${add}_twSocialLinked`;
-  const twSocialLinkedTtl = 24 * 60 * 60; // 1days
 
   let submittedTasks = storage.getItem(localQuesterTasksKey);
 
@@ -54,21 +52,17 @@ export default (props) => {
   // Add twitter login task
   if (campaign.twitter_tweet || campaign.twitter_username) {
     const twSocialLinked = storage.getItem(localTwSocialLinkKey);
-    const tw_token = Cookies.get('tw_token');
-
     const twLoginStatus =
       submittedTasks && submittedTasks.ck_twitter_login !== undefined
         ? submittedTasks.ck_twitter_login
         : null;
+
     tasks.ck_twitter_login = {
       id: ++taskTotal,
       status: twLoginStatus,
-      uid:
-        twLoginStatus && twSocialLinked && tw_token ? twSocialLinked.uid : null,
+      uid: twLoginStatus && twSocialLinked ? twSocialLinked.uid : null,
       screen_name:
-        twLoginStatus && twSocialLinked && tw_token
-          ? twSocialLinked.username
-          : null,
+        twLoginStatus && twSocialLinked ? twSocialLinked.username : null,
       msg:
         twLoginStatus === false
           ? t('You have not finished this task yet!')
@@ -348,7 +342,6 @@ export default (props) => {
     localQuesterIdKey,
     localQuesterTasksKey,
     localTwSocialLinkKey,
-    twSocialLinkedTtl,
     userState,
     tasks,
     isFinishedTasks,
