@@ -424,7 +424,7 @@ const Quest = (props) => {
                 priority="high"
                 classes={{ root_highPriority: classes.btnVerify }}
                 type="button"
-                onPress={() => handleCheckTwitterFollow()}
+                onPress={() => handleCheckFollowings()}
               />
               <span className="flex items-center flex-row text-sm font-bold text-slate-500 group-hover:text-slate-600 transition-color duration-300">
                 {t('Verify')}&nbsp;
@@ -497,7 +497,7 @@ const Quest = (props) => {
           <TextLink
             target="_blank"
             title={t('Go to this Twitter channel.')}
-            href={`https://twitter.com/${tasks.ck_twitter_follow.username}`}
+            href={`https://twitter.com/intent/follow?screen_name=${tasks.ck_twitter_follow.username}`}
             className="border-b border-dotted hover:border-solid border-b-sky-500 hover:border-b-sky-600 text-sky-500 font-semibold"
           >
             @{tasks.ck_twitter_follow.username}
@@ -507,12 +507,13 @@ const Quest = (props) => {
         </span>
       );
     };
-    const handleCheckTwitterFollow = async () => {
+    const handleCheckFollowings = async () => {
       if (userState.wallet_address === undefined) {
         return toast.warning(
           t('You must connect your wallet before do this task!')
         );
       }
+
       if (!tasks.ck_twitter_login.uid) {
         return toast.warning(t('You must login Twitter before do this task!'));
       }
@@ -529,14 +530,9 @@ const Quest = (props) => {
         user_id: tasks.ck_twitter_login.uid,
         owner_id: tasks.ck_twitter_follow.owner_id
       });
-      if (isFollowed) {
-        tasks.ck_twitter_follow.status = true;
-        //trigger to re-render
-        setTwitterFollowState(tasks.ck_twitter_follow.status);
-      } else {
-        tasks.ck_twitter_follow.status = false;
-        //trigger to re-render
-        setTwitterFollowState(tasks.ck_twitter_follow.status);
+      tasks.ck_twitter_follow.status = isFollowed;
+
+      if (!isFollowed) {
         toast.error(
           t('You have not completed this task yet. Please try again later!')
         );
@@ -547,6 +543,9 @@ const Quest = (props) => {
         'ck_twitter_follow',
         tasks.ck_twitter_follow.status
       );
+
+      //trigger to re-render
+      setTwitterFollowState(tasks.ck_twitter_follow.status);
     };
 
     let twFollowTaskClasses = [classes.questItem, classes.twFollowTask];
@@ -634,7 +633,7 @@ const Quest = (props) => {
           <TextLink
             target="_blank"
             title={t('Open this tweet.')}
-            href={`${tasks.ck_twitter_retweet.tweet_url}`}
+            href={`https://twitter.com/intent/retweet?tweet_id=${tasks.ck_twitter_retweet.tweet_id}`}
             className="border-b border-dotted hover:border-solid border-b-sky-500 hover:border-b-sky-600 text-sky-500 font-semibold"
           >
             {t('this tweet')}
@@ -681,6 +680,7 @@ const Quest = (props) => {
       if (!tasks.ck_twitter_retweet.tweet_id) {
         return toast.warning(t('Invalid tweet id!'));
       }
+
       setTwitterReTweetState('loading');
 
       twSocialLinked = storage.getItem(localTwSocialLinkKey);
@@ -688,14 +688,9 @@ const Quest = (props) => {
         user_id: twSocialLinked.uid,
         tweet_id: tasks.ck_twitter_retweet.tweet_id
       });
-      if (_isReTweeted) {
-        tasks.ck_twitter_retweet.status = true;
-        //trigger to re-render
-        setTwitterReTweetState(tasks.ck_twitter_retweet.status);
-      } else {
-        tasks.ck_twitter_retweet.status = false;
-        //trigger to re-render
-        setTwitterReTweetState(tasks.ck_twitter_retweet.status);
+      tasks.ck_twitter_retweet.status = _isReTweeted;
+
+      if (!_isReTweeted) {
         toast.error(
           t('You have not completed this task yet. Please try again later!')
         );
@@ -706,6 +701,9 @@ const Quest = (props) => {
         'ck_twitter_retweet',
         tasks.ck_twitter_retweet.status
       );
+
+      //trigger to re-render
+      setTwitterReTweetState(tasks.ck_twitter_retweet.status);
     };
     let reTweetTaskClasses = [classes.questItem, classes.twitterRetweetTask];
     reTweetTaskClasses.push(
