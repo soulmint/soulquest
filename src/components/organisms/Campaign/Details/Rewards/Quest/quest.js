@@ -108,7 +108,7 @@ const Quest = (props) => {
           Cookies.set(
             'tw_token',
             base64URLEncode(JSON.stringify(twToken)),
-            { expires: 1.5 / 24 } //1.5 hours
+            { expires: 1 / 12 } //2 hours
           );
         }
 
@@ -137,7 +137,7 @@ const Quest = (props) => {
           }
 
           // Refresh current page
-          router.push('/campaign-details/' + router.query.slug[0]);
+          //router.push('/campaign-details/' + router.query.slug[0]);
         }
       } else {
         if (twSocialLinked === undefined) {

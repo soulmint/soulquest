@@ -1,5 +1,6 @@
 import { getCsrfToken } from 'next-auth/react';
 import Router from 'next/router';
+import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import { base64URLDecode } from 'src/utils/strUtils';
 
@@ -27,17 +28,32 @@ const getToken = async (code: string) => {
   return rs;
 };
 
-const isTokenExpired = (twToken: any) => {
+const isTokenExpired = () => {
   let rs = true;
+  const twToken = Cookies.get('tw_token');
   if (twToken) {
     const token = JSON.parse(base64URLDecode(twToken));
-    if (token && Date.now() < token.expires_at) {
+    if (token.expires_at && Date.now() < token.expires_at) {
       rs = false;
     }
   }
 
   return rs;
 };
+
+/*const refreshToken = async () => {
+  let newToken = null;
+  const csrf = await getCsrfToken();
+  fetch(`/api/twitter/refresh-token?csrf=${csrf}`)
+      .then((res) => res.json())
+      .then((response) => {
+        newToken = response?.token;
+      });
+  if (newToken) {
+    // update tw token to cookie
+    Cookies.set('tw_token', newToken,{ expires: 1/12 }); //2 hours
+  }
+}*/
 
 const getAuthenticatedUser = async () => {
   let rs = false;
@@ -149,6 +165,7 @@ export {
   twLogin,
   getToken,
   isTokenExpired,
+  // refreshToken,
   getAuthenticatedUser,
   isFollowing,
   isReTweeted,

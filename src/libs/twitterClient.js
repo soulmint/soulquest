@@ -2,7 +2,7 @@ import { Client, auth } from 'twitter-api-sdk';
 
 let authClient, userClient, appClient;
 
-const createAuthClient = (token) => {
+const _createAuthClient = (token) => {
   const options = {
     client_id: process.env.TWITTER_ID,
     client_secret: process.env.TWITTER_SECRET,
@@ -25,20 +25,8 @@ const createAuthClient = (token) => {
   return new auth.OAuth2User(options);
 };
 
-const createUserClient = (token) => {
-  let _authClient = authClient ?? createAuthClient(token);
-  return new Client(_authClient);
-};
-
-const createAppClient = () => {
-  const _appClient = new Client(process.env.TWITTER_BEARER_TOKEN);
-
-  return _appClient;
-};
-
-const initTwitterAuthClient = () => {
-  const _authClient = authClient ?? createAuthClient();
-  // Create the Twitter Client once in the client
+const initTwitterAuthClient = (token) => {
+  const _authClient = authClient ?? _createAuthClient(token);
   if (!authClient) authClient = _authClient;
 
   return authClient;
@@ -52,15 +40,26 @@ const initTwitterAuthUrl = (csrf, state) => {
   });
 };
 
+const _createUserClient = (token) => {
+  let _authClient = authClient ?? _createAuthClient(token);
+  return new Client(_authClient);
+};
+
 const initTwitterUserClient = (token) => {
-  const _client = userClient ?? createUserClient(token);
+  const _client = userClient ?? _createUserClient(token);
   if (!userClient) userClient = _client;
 
   return userClient;
 };
 
+const _createAppClient = () => {
+  const _appClient = new Client(process.env.TWITTER_BEARER_TOKEN);
+
+  return _appClient;
+};
+
 const initTwitterAppClient = () => {
-  const _appClient = appClient ?? createAppClient();
+  const _appClient = appClient ?? _createAppClient();
   if (!appClient) appClient = _appClient;
 
   return appClient;

@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import BrowserPersistence from 'src/utils/simplePersistence';
 import RelatedNftInfo from 'src/components/organisms/Campaign/RelatedNftInfo';
 import { base64URLEncode } from 'src/utils/strUtils';
-import Cookies from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { setSoulsUp } from 'src/store/user/operations';
 import { isTokenExpired } from 'src/hooks/Campaign/Rewards/useTwitter';
@@ -32,11 +31,11 @@ export default (props) => {
   const tasks = {};
   let taskTotal = 0;
 
+  const localTwSocialLinkKey = `${add}_twSocialLinked`;
+
   const localQuesterIdKey = `${add}_${campaign.id}_quester_id`;
   const localQuesterStateKey = `${add}_${campaign.id}_quester_state`;
   const localQuesterTasksKey = `${add}_${campaign.id}_quester_tasks`;
-
-  const localTwSocialLinkKey = `${add}_twSocialLinked`;
 
   let submittedTasks = storage.getItem(localQuesterTasksKey);
 
@@ -54,10 +53,9 @@ export default (props) => {
   // Add twitter login task
   if (campaign.twitter_tweet || campaign.twitter_username) {
     const twSocialLinked = storage.getItem(localTwSocialLinkKey);
-    const isTwTokenExpired = isTokenExpired(Cookies.get('tw_token'));
-
+    const twTokenExpired = isTokenExpired();
     const twLoginStatus =
-      submittedTasks && submittedTasks.ck_twitter_login && !isTwTokenExpired
+      submittedTasks && submittedTasks.ck_twitter_login && !twTokenExpired
         ? submittedTasks.ck_twitter_login
         : null;
 
