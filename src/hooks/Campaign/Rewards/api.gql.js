@@ -364,6 +364,7 @@ export const generateWinners = async (props) => {
 
   let generatedWinners = [];
   let soulIds = [];
+  let totalWins = 0;
   if (souls) {
     souls.map((soul) => {
       if (soul && soul.is_winner) {
@@ -374,6 +375,7 @@ export const generateWinners = async (props) => {
     });
   }
 
+  totalWins = generatedWinners.length;
   if (generatedWinners.length < parseInt(rw_number)) {
     let winnerIds = [];
     if (rw_method === 'fcfs') {
@@ -396,44 +398,13 @@ export const generateWinners = async (props) => {
       });
       if (success) {
         await setWinnersGenerated({ campaignId });
+        totalWins += winnerIds.length;
       }
     }
   }
 
-  return generatedWinners.length;
+  return totalWins;
 };
-
-export const UPDATE_WINNER = gql`
-  mutation update_quester_items(
-    $filter: quester_filter
-    $sort: [String]
-    $limit: Int
-    $offset: Int
-    $page: Int
-    $search: String
-    $ids: [ID]!
-    $data: update_quester_input!
-  ) {
-    update_quester_items(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      offset: $offset
-      page: $page
-      search: $search
-      ids: $ids
-      data: $data
-    ) {
-      id
-      campaign_id
-      date_created
-      user_created {
-        id
-        email
-      }
-    }
-  }
-`;
 
 export const updateWinners = async (props) => {
   const { ids } = props;
@@ -459,6 +430,7 @@ export const updateWinners = async (props) => {
 
   return rs;
 };
+
 export const setWinnersGenerated = async (props) => {
   const { campaignId } = props;
   const client = initializeApollo();

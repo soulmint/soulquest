@@ -6,6 +6,7 @@ import { FaClock, FaDice } from 'react-icons/fa';
 import defaultClasses from './claim.module.css';
 import { useStyle } from 'src/components/classify';
 import Button from 'src/components/atoms/Button';
+import { toast } from 'react-toastify';
 import { CountDown } from 'src/components/organisms/CountDown';
 
 import {
@@ -74,7 +75,8 @@ const Claim = (props) => {
           rw_method: reward_method,
           rw_number: reward_number
         });
-        console.log('Total Winners:', total);
+
+        toast.info(`${t('Total Winners:')} ${total}`);
 
         // setGeneratingWinners(false);
       }
