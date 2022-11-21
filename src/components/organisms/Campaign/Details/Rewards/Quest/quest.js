@@ -37,6 +37,8 @@ import {
 } from 'src/hooks/User/useSocial';
 import { isQuesterExists } from 'src/hooks/Campaign/Rewards/api.gql';
 import { useQuest } from 'src/hooks/Campaign/Rewards';
+import BigNumber from 'bignumber.js';
+const WalletClient = require('aptos-wallet-api/src/wallet-client');
 
 const Quest = (props) => {
   const { classes: propClasses, campaign } = props;
@@ -229,9 +231,39 @@ const Quest = (props) => {
       afterIcon={<FaAngleRight className="text-lg ml-1" />}
     />
   );
+  const updateAPTBalance = async (add, CONDITION) => {
+    const NODE_URL =
+      process.env.NODE_ENV !== 'production'
+        ? 'https://fullnode.testnet.aptoslabs.com/v1'
+        : 'https://fullnode.mainnet.aptoslabs.com/v1';
+    const FAUCET_URL = 'https://faucet.devnet.aptoslabs.com';
+
+    const walletClient = new WalletClient(NODE_URL, FAUCET_URL);
+
+    const balance = await walletClient.balance(add).then();
+    const aptosCoinType = `0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>`;
+    const aptosMojoConinType = `0x881ac202b1f1e6ad4efcff7a1d0579411533f2502417a19211cfc49751ddb5f4::coin::MOJO`;
+    if (balance.success) {
+      const balances = balance?.balances;
+      balances.map((token) => {
+        if (
+          token.coin === aptosCoinType &&
+          BigNumber(token.value) / 100000000 >= CONDITION
+        ) {
+          console.log(token);
+        }
+      });
+    }
+
+    return balance;
+  };
   const connectWalletStatus = () => {
     let rs = null;
     if (userState.wallet_address) {
+      if (userState.is_aptos_wallet) {
+        updateAPTBalance(userState.wallet_address, 6).then();
+      }
+
       // If has specific whitelist
       if (
         campaign.whitelist_spreadsheet_id &&
@@ -1115,7 +1147,9 @@ const Quest = (props) => {
 
       const opAdd = document.getElementById(inputId);
 
-      const status = opAdd.contains('0x') ? true : false;
+      console.log(opAdd.value);
+
+      const status = opAdd.value.includes('0x') ? true : false;
 
       // update state
       tasks.ck_op_address.status = status;

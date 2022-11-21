@@ -3,15 +3,15 @@ import { Web3Provider } from 'src/libs/web3-context';
 
 import {
   WalletProvider,
-  AptosWalletAdapter,
-  FewchaWalletAdapter,
-  Coin98WalletAdapter
+  AptosWalletAdapter
+  // FewchaWalletAdapter,
+  // Coin98WalletAdapter
   // MartianWalletAdapter,
 } from '@manahippo/aptos-wallet-adapter';
 const wallets = () => [
-  new AptosWalletAdapter(),
-  new FewchaWalletAdapter(),
-  new Coin98WalletAdapter()
+  new AptosWalletAdapter()
+  // new FewchaWalletAdapter(),
+  // new Coin98WalletAdapter()
   // new MartianWalletAdapter()
 ];
 

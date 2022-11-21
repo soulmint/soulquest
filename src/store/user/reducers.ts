@@ -28,10 +28,16 @@ const getIsWhitelisted = () => {
   return is_whitelisted ? is_whitelisted : false;
 };
 
+const getIsAptosWallet = () => {
+  const rs = storage.getItem('is_aptos_wallet');
+  return rs ? rs : false;
+};
+
 export const initialState: UserState = {
   id: getId(),
   token: getToken(),
   wallet_address: getWalletAddress(),
+  is_aptos_wallet: getIsAptosWallet(),
   souls_up: getSoulsUp(),
   is_whitelisted: getIsWhitelisted()
 };
@@ -65,6 +71,11 @@ const reducer = (
       return {
         ...state,
         is_whitelisted: action.payload
+      };
+    case UserActionType.setIsAptosWallet:
+      return {
+        ...state,
+        is_aptos_wallet: action.payload
       };
     case UserActionType.logOut:
       return {

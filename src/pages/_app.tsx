@@ -29,12 +29,12 @@ const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
   useEffect(() => {
     try {
       if (session?.error === 'RefreshAccessTokenError') {
-        logOut(dispatch);
+        logOut(dispatch).then();
       }
       if (session && session.access_token) {
         const { needRefresh } = getTokenState(session.access_token);
         if (needRefresh) {
-          logOut(dispatch);
+          logOut(dispatch).then();
         } else {
           //set user id for user's state
           setId(dispatch, session.user_id);
@@ -46,7 +46,7 @@ const MyApp = function MyApp({ Component, pageProps: pageProps }: AppProps) {
         if (accessToken) {
           const { needRefresh } = getTokenState(accessToken);
           if (needRefresh) {
-            logOut(dispatch);
+            logOut(dispatch).then();
           }
         }
       }

@@ -70,6 +70,7 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
       let signedMessage = `${process.env.CONNECT_WALLET_WELCOME_MSG}\n\nAddress:\n${accounts[0]}\n\nNonce:\n${nonce}`;
       // eslint-disable-next-line prefer-const
       signedMessage = await signer.signMessage(signedMessage);
+
       await signIn('credentials', {
         message: nonce,
         redirect: false,

@@ -1,11 +1,12 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 // import { signIn } from 'next-auth/react';
 import Button from 'src/components/atoms/Button';
 import { useEscapeKey } from 'src/hooks/useEscapeKey';
 import { FaWallet } from 'react-icons/fa';
 import { useWallet } from '@manahippo/aptos-wallet-adapter';
-import { setWalletAddress } from 'src/store/user/operations';
+import { setWalletAddress, setIsAptosWallet } from 'src/store/user/operations';
 import { useDispatch } from 'react-redux';
+import { signIn } from 'next-auth/react';
 
 const Modal = (props: any) => {
   const { classes, beforeIcon, afterIcon, connectWallet } = props;
@@ -53,7 +54,7 @@ const Modal = (props: any) => {
               currentWallet.adapter.name === option.name &&
               connecting
                 ? 'connecting...'
-                : option.name}
+                : `${option.name} wallet`}
             </span>
           </Button>
         </div>
@@ -69,18 +70,38 @@ const Modal = (props: any) => {
     }
   };
   const disconnectAptos = async () => {
-    await disconnectAptosWallet();
+    try {
+      await disconnectAptosWallet();
+    } catch (e) {
+      console.error(e);
+    }
   };
   /*const aptosIcon = (
     <span className={``}>
       <img src="/icons/aptos.png" width={`32px`} alt="aptos" />
     </span>
   );*/
+  const nextAuthSignIn = async (add: string) => {
+    await signIn('credentials', {
+      isAptosWallet: true,
+      redirect: false,
+      address: add
+    });
+  };
+  useEffect(() => {
+    if (connected && account) {
+      const add = account?.address?.toString();
+      if (add) {
+        nextAuthSignIn(add).then();
+        //set user's wallet address
+        setWalletAddress(dispatch, add);
+        setIsAptosWallet(dispatch, true);
+      }
+    }
+  }, [connected]);
+
   let aptosChild;
   if (connected && account) {
-    //set user's wallet address
-    setWalletAddress(dispatch, account?.address?.toString());
-
     aptosChild = (
       <Fragment>
         <div className="">
@@ -112,6 +133,7 @@ const Modal = (props: any) => {
   // const facebookSigner = async () => {
   //   await signIn('facebook');
   // };
+
   return (
     <Fragment>
       <Button

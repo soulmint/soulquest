@@ -1,14 +1,15 @@
 import { UserActionType } from './types';
 import { signOut } from 'next-auth/react';
-import BrowserPersistence from '../../utils/simplePersistence';
+import BrowserPersistence from 'src/utils/simplePersistence';
 
 const storage = new BrowserPersistence();
 
+//Note: ttl equals ttl of the access_token from backend (directus)
+const ttl = process.env.JWT_ACCESS_TOKEN_TTL
+  ? parseInt(process.env.JWT_ACCESS_TOKEN_TTL)
+  : 15 * 60 * 60;
+
 export const setTokenAction = (token: any) => {
-  //Note: ttl equals ttl of the access_token from backend (directus)
-  const ttl = process.env.JWT_ACCESS_TOKEN_TTL
-    ? parseInt(process.env.JWT_ACCESS_TOKEN_TTL)
-    : 15 * 60 * 60;
   //saving to local for init state
   storage.setItem('access_token', token, ttl);
 
@@ -20,7 +21,7 @@ export const setTokenAction = (token: any) => {
 
 export const setIdAction = (userId: any) => {
   //saving to local for init state
-  storage.setItem('user_id', userId);
+  storage.setItem('user_id', userId, ttl);
 
   return {
     type: UserActionType.setId,
@@ -30,7 +31,7 @@ export const setIdAction = (userId: any) => {
 
 export const setWalletAddressAction = (add: any) => {
   //saving to local for init state
-  storage.setItem('wallet_address', add);
+  storage.setItem('wallet_address', add, ttl);
 
   return {
     type: UserActionType.setWalletAddress,
@@ -40,7 +41,7 @@ export const setWalletAddressAction = (add: any) => {
 
 export const setSoulsUpAction = (value: boolean) => {
   //saving to local for init state
-  storage.setItem('souls_up', value);
+  storage.setItem('souls_up', value, ttl);
 
   return {
     type: UserActionType.setSoulsUp,
@@ -50,10 +51,20 @@ export const setSoulsUpAction = (value: boolean) => {
 
 export const setIsWhitelistedAction = (value: boolean) => {
   //saving to local for init state
-  storage.setItem('is_whitelisted', value);
+  storage.setItem('is_whitelisted', value, ttl);
 
   return {
     type: UserActionType.setIsWhitelisted,
+    payload: value
+  };
+};
+
+export const setIsAptosWalletAction = (value: boolean) => {
+  //saving to local for init state
+  storage.setItem('is_aptos_wallet', value, ttl);
+
+  return {
+    type: UserActionType.setIsAptosWallet,
     payload: value
   };
 };
@@ -65,11 +76,10 @@ export const logOut = () => {
   storage.removeItem('wallet_address');
   storage.removeItem('souls_up');
   storage.removeItem('is_whitelisted');
+  storage.removeItem('is_aptos_wallet');
 
   // next-auth > logout
-  setTimeout(function () {
-    signOut();
-  }, 1000);
+  signOut().then();
 
   return {
     type: UserActionType.logOut,

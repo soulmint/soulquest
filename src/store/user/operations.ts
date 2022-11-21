@@ -55,6 +55,19 @@ export const setIsWhitelisted = (
   }
 };
 
+export const setIsAptosWallet = (
+  dispatch: Dispatch<UserAction>,
+  value: boolean
+) => {
+  try {
+    dispatch(actions.setIsAptosWalletAction(value));
+  } catch (e) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(e);
+    }
+  }
+};
+
 export const logOut = async (dispatch: Dispatch<UserAction>) => {
   try {
     dispatch(actions.logOut());

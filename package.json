@@ -26,6 +26,7 @@
     "@uppy/tus": "^2.4.2",
     "@walletconnect/web3-provider": "^1.7.7",
     "@web3auth/web3auth": "^1.2.0",
+    "aptos-wallet-api": "^0.1.5",
     "bignumber.js": "^9.0.2",
     "boring-avatars": "^1.7.0",
     "buffer": "^6.0.3",

@@ -200,14 +200,20 @@ export default (props) => {
       const questerId = storage.getItem(localQuesterIdKey);
       const questerState = storage.getItem(localQuesterStateKey);
       if (questerState !== 'approved') {
-        await saveQuester({
-          variables: {
-            id: questerId !== undefined ? parseInt(questerId) : null,
-            campaign_id: campaign.id,
-            tasks: JSON.stringify(submittedTasks),
-            status: 'pending'
+        try {
+          await saveQuester({
+            variables: {
+              id: questerId !== undefined ? parseInt(questerId) : null,
+              campaign_id: campaign.id,
+              tasks: JSON.stringify(submittedTasks),
+              status: 'pending'
+            }
+          });
+        } catch (e) {
+          if (process.env.NODE_ENV !== 'production') {
+            console.error(e);
           }
-        });
+        }
       }
     },
     [localQuesterTasksKey]

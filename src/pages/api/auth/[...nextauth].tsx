@@ -1,9 +1,9 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
+// import GoogleProvider from 'next-auth/providers/google';
 // import GithubProvider from 'next-auth/providers/github';
 // import FacebookProvider from 'next-auth/providers/facebook';
-import TwitterProvider from 'next-auth/providers/twitter';
+// import TwitterProvider from 'next-auth/providers/twitter';
 
 import {
   isExistsUser,
@@ -22,38 +22,37 @@ export default async function auth(
   res: NextApiResponse<any>
 ) {
   const providers = [
-    GoogleProvider({
-      clientId: `${process.env.GOOGLE_ID}`,
-      clientSecret: `${process.env.GOOGLE_SECRET}`,
-      checks: 'none'
-    }),
-    TwitterProvider({
-      clientId: `${process.env.TWITTER_CONSUMER_KEY}`,
-      clientSecret: `${process.env.TWITTER_CONSUMER_SECRET}`
-    }),
+    // GoogleProvider({
+    //   clientId: `${process.env.GOOGLE_ID}`,
+    //   clientSecret: `${process.env.GOOGLE_SECRET}`,
+    //   checks: 'none'
+    // }),
+    // TwitterProvider({
+    //   clientId: `${process.env.TWITTER_CONSUMER_KEY}`,
+    //   clientSecret: `${process.env.TWITTER_CONSUMER_SECRET}`
+    // }),
     CredentialsProvider({
       name: 'SOULMINT',
       credentials: {},
       authorize: async (credentials: any) => {
         try {
-          const nonce = '0x' + credentials?.csrfToken;
-          let message = process.env.CONNECT_WALLET_WELCOME_MSG;
-          message = `${message}\n\nAddress:\n${credentials?.address}\n\nNonce:\n${nonce}`;
+          const isAptosWallet = credentials?.isAptosWallet || false;
+          let address = credentials?.address;
 
-          const address = utils.verifyMessage(
-            message,
-            credentials?.signedMessage
-          );
-
-          if (address.toLowerCase() != credentials?.address?.toLowerCase()) {
-            return null;
+          if (!isAptosWallet) {
+            const nonce = '0x' + credentials?.csrfToken;
+            let message = process.env.CONNECT_WALLET_WELCOME_MSG;
+            message = `${message}\n\nAddress:\n${credentials?.address}\n\nNonce:\n${nonce}`;
+            address = utils.verifyMessage(message, credentials?.signedMessage);
+            if (address.toLowerCase() != credentials?.address?.toLowerCase()) {
+              return null;
+            }
           }
 
           const user = {
             email: address,
             name: address
           };
-          // console.log('authorize user', user);
           return user;
         } catch (e) {
           return null;
@@ -77,47 +76,53 @@ export default async function auth(
       strategy: 'jwt', // Seconds - How long until an idle session expires and is no longer valid.
       maxAge: process.env.JWT_ACCESS_TOKEN_TTL
         ? parseInt(process.env.JWT_ACCESS_TOKEN_TTL)
-        : 15 * 60 * 60
+        : 15 * 60
     },
     secret: process.env.NEXTAUTH_SECRET,
 
     callbacks: {
-      async signIn({ user, account, profile, email, credentials }) {
+      async signIn({
+        user
+        // account,
+        // profile,
+        // email,
+        // credentials
+      }) {
         const emailUser = user?.email || '';
-        if (
-          account?.provider === 'credentials' &&
-          email &&
-          profile &&
-          credentials
-        ) {
-          // console.log('wallet connected');
+        if (emailUser) {
+          try {
+            const checkUser = await isExistsUser(emailUser);
+            if (!checkUser.id) {
+              const createdUser = await createUser({
+                email: user.email,
+                password: process.env.SM_USER_PASSWORD,
+                role: {
+                  id: process.env.SM_USER_ROLE_ID,
+                  name: 'SoulMint Users',
+                  app_access: true,
+                  icon: 'supervised_user_circle',
+                  admin_access: false,
+                  enforce_tfa: false
+                },
+                provider: 'default',
+                status: 'active'
+              });
+              checkUser.id = createdUser.id;
+            }
+            //connect to directus create user & get access token
+            const directusToken = await authLogin({
+              email: user.email,
+              password: process.env.SM_USER_PASSWORD
+            });
+            user.access_token = directusToken.auth_login.access_token;
+            user.refresh_token = directusToken.auth_login.refresh_token;
+            user.id = checkUser.id;
+          } catch (e) {
+            if (process.env.NODE_ENV !== 'production') {
+              console.log('SYNC USER ERROR:', e);
+            }
+          }
         }
-        const checkUser = await isExistsUser(emailUser);
-        if (!checkUser?.id) {
-          const CreateUser = await createUser({
-            email: user.email,
-            password: process.env.SM_USER_PASSWORD,
-            role: {
-              id: process.env.SM_USER_ROLE_ID,
-              name: 'Soulmint Users',
-              app_access: true,
-              icon: 'supervised_user_circle',
-              admin_access: false,
-              enforce_tfa: false
-            },
-            provider: 'default',
-            status: 'active'
-          });
-          checkUser.id = CreateUser.id;
-        }
-        //connect to directus create user & get access token
-        const directusToken = await authLogin({
-          email: user.email,
-          password: process.env.SM_USER_PASSWORD
-        });
-        user.access_token = directusToken.auth_login.access_token;
-        user.refresh_token = directusToken.auth_login.refresh_token;
-        user.id = checkUser.id;
 
         return true;
       },
@@ -128,8 +133,13 @@ export default async function auth(
         else if (new URL(url).origin === baseUrl) return url;
         return baseUrl;
       },
-      async jwt({ token, user, account, profile }) {
-        if (account?.provider === 'twitter') {
+      async jwt({
+        token,
+        user,
+        account
+        // profile
+      }) {
+        /*if (account?.provider === 'twitter') {
           if (profile) {
             token['twUserProfile'] = {
               userId: profile.id ? profile.id : null,
@@ -148,7 +158,7 @@ export default async function auth(
               authSecret: account.oauth_token_secret
             };
           }
-        }
+        }*/
 
         // Persist the OAuth access_token to the token right after signin
         if (account && user) {
@@ -177,12 +187,14 @@ export default async function auth(
         /*
         session.provider = token.provider;
         session.credentials = token.credentials;*/
+
         session.user_id = token.user_id;
         session.access_token = token.access_token;
         if (token.twUserProfile) {
           session.twUserProfile = token.twUserProfile;
         }
-        session.error = token.error;
+
+        if (token.error) session.error = token.error;
 
         return session;
       }
