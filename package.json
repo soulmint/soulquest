@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.5.0",
+    "@manahippo/aptos-wallet-adapter": "^1.0.2",
     "@moralisweb3/evm-utils": "^2.6.4",
     "@reach/tabs": "^0.17.0",
     "@tinymce/tinymce-react": "^4.1.0",

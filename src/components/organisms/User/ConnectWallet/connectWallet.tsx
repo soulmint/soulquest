@@ -8,9 +8,9 @@ import { ethers } from 'ethers';
 import { ellipsify } from '../../../../utils/strUtils';
 import { useTranslation } from 'next-i18next';
 import providerOptions from './providers';
-// import { Modal } from './../Modal';
+import { Modal } from './../Modal';
 import DropDownMenu from './../DropdownMenu';
-import Button from 'src/components/atoms/Button';
+// import Button from 'src/components/atoms/Button';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 // import { FaWallet } from 'react-icons/fa';
@@ -29,13 +29,13 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
 ) => {
   const dispatch = useDispatch();
 
-  const { classes, beforeIcon, afterIcon } = props;
+  // const { classes, beforeIcon, afterIcon } = props;
 
   const { t } = useTranslation('common');
 
   const userState = useSelector((state) => state.user);
 
-  const connect = async () => {
+  const connectWallet = async () => {
     try {
       const web3Modal = new Web3Modal({
         cacheProvider: false,
@@ -99,9 +99,8 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
       />
     </div>
   ) : (
-    <>
-      {/* <Modal connect={connect} /> */}
-      <Button
+    <Modal connectWallet={connectWallet} {...props} />
+    /*<Button
         type="button"
         priority="high"
         classes={
@@ -109,13 +108,12 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
             ? { root_highPriority: classes.root_highPriority }
             : null
         }
-        onPress={() => connect()}
+        onPress={() => connectWallet()}
       >
         {beforeIcon}
         {t('Connect wallet')}
         {afterIcon}
-      </Button>
-    </>
+      </Button>*/
   );
 
   return <Fragment>{child}</Fragment>;

@@ -8,9 +8,7 @@ import ConnectWallet from '../User/ConnectWallet';
 import { useTranslation } from 'next-i18next';
 import { DEFAULT_LINKS } from './menuItems';
 import useThemes from '../../../hooks/useThemes';
-import {
-  FaWallet
-} from 'react-icons/fa';
+import { FaWallet } from 'react-icons/fa';
 // import ToggleTheme from '../ToggleTheme';
 const Header = (props) => {
   const { links } = props;
@@ -62,13 +60,13 @@ const Header = (props) => {
 
   const [menuRootClassName, setMenuRootClassName] = useState('offCanvasHide');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const toggleOffCanvasMenu = () => {
-    if (menuRootClassName === 'offCanvasHide') {
-      setMenuRootClassName('offCanvasShow');
-    } else {
-      setMenuRootClassName('offCanvasHide');
-    }
-  };
+  // const toggleOffCanvasMenu = () => {
+  //   if (menuRootClassName === 'offCanvasHide') {
+  //     setMenuRootClassName('offCanvasShow');
+  //   } else {
+  //     setMenuRootClassName('offCanvasHide');
+  //   }
+  // };
 
   return (
     <header className={`${classes[rootClassName]}`}>

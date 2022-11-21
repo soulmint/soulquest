@@ -1,26 +1,111 @@
 import React, { Fragment } from 'react';
-import { signIn } from 'next-auth/react';
-import Button from '../../../atoms/Button';
+// import { signIn } from 'next-auth/react';
+import Button from 'src/components/atoms/Button';
 import { useEscapeKey } from 'src/hooks/useEscapeKey';
+import { FaWallet } from 'react-icons/fa';
+import { useWallet } from '@manahippo/aptos-wallet-adapter';
+import { setWalletAddress } from 'src/store/user/operations';
+import { useDispatch } from 'react-redux';
 
-const Modal = (props: { connect: any }) => {
-  const { connect } = props;
+const Modal = (props: any) => {
+  const { classes, beforeIcon, afterIcon, connectWallet } = props;
+
   const [showModal, setShowModal] = React.useState(false);
+
   const escEvent = () => {
     setShowModal(false);
   };
   useEscapeKey(escEvent);
 
-  const WalletConnectLogin = () => {
+  const dispatch = useDispatch();
+
+  const handleConnectWallet = () => {
     setShowModal(false);
-    connect();
+    connectWallet();
   };
-  const googleSigner = async () => {
-    await signIn('google');
+
+  const {
+    connect: connectAptosWallet,
+    disconnect: disconnectAptosWallet,
+    account,
+    wallets,
+    connecting,
+    connected,
+    disconnecting,
+    wallet: currentWallet
+    // signAndSubmitTransaction,
+    // signMessage
+  } = useWallet();
+  const renderAptosWalletConnectors = () => {
+    return wallets.map((wallet) => {
+      const option = wallet.adapter;
+      return (
+        <div key={option.name} className={`mr-2 mt-2 inline-block`}>
+          <Button onPress={() => connectAptos(option.name)}>
+            <span
+              className={`mr-2`}
+              title={`Connect with ${option.name} wallet`}
+            >
+              <img width={`16px`} height={`16px`} src={option.icon} />
+            </span>
+            <span className={``} title={`Connect with ${option.name} wallet`}>
+              {currentWallet &&
+              currentWallet.adapter.name === option.name &&
+              connecting
+                ? 'connecting...'
+                : option.name}
+            </span>
+          </Button>
+        </div>
+      );
+    });
   };
-  const twitterSigner = async () => {
-    await signIn('twitter');
+  const connectAptos = async (walletName: any) => {
+    try {
+      setShowModal(false);
+      await connectAptosWallet(walletName);
+    } catch (e) {
+      console.error(e);
+    }
   };
+  const disconnectAptos = async () => {
+    await disconnectAptosWallet();
+  };
+  /*const aptosIcon = (
+    <span className={``}>
+      <img src="/icons/aptos.png" width={`32px`} alt="aptos" />
+    </span>
+  );*/
+  let aptosChild;
+  if (connected && account) {
+    //set user's wallet address
+    setWalletAddress(dispatch, account?.address?.toString());
+
+    aptosChild = (
+      <Fragment>
+        <div className="">
+          <strong>CurrentWallet:</strong>
+          {currentWallet?.adapter?.name}
+        </div>
+        <div>
+          <strong>Address:</strong>
+          {account?.address?.toString()}
+        </div>
+        <Button onPress={() => disconnectAptos()}>
+          {disconnecting ? 'disconnecting...' : 'Disconnect'}
+        </Button>
+      </Fragment>
+    );
+  } else {
+    aptosChild = <div>{renderAptosWalletConnectors()}</div>;
+  }
+
+  // const googleSigner = async () => {
+  //   await signIn('google');
+  // };
+  // const twitterSigner = async () => {
+  //   await signIn('twitter');
+  // };
   // const gitSigner = async () => {
   //   await signIn('github');
   // };
@@ -34,9 +119,17 @@ const Modal = (props: { connect: any }) => {
         priority="high"
         type="button"
         data-modal-toggle="crypto-modal"
+        classes={
+          classes && classes.root_highPriority
+            ? { root_highPriority: classes.root_highPriority }
+            : null
+        }
       >
-        Connect wallet
+        {beforeIcon}
+        <span>Connect wallet</span>
+        {afterIcon}
       </Button>
+
       {showModal && (
         <div
           id="crypto-modal"
@@ -66,16 +159,18 @@ const Modal = (props: { connect: any }) => {
               </button>
               <div className="py-4 px-6 rounded-t border-b dark:border-gray-600">
                 <h3 className="text-base font-semibold text-gray-900 lg:text-xl dark:text-white my-0">
-                  Authentication
+                  Connect wallet
                 </h3>
               </div>
               <div className="p-6">
                 <p className="text-sm font-normal text-gray-500 dark:text-gray-400 m-0">
-                  Connect with one of our available wallet providers or create a
-                  new one.
+                  Connect with one of our available wallet providers
+                  {/* or create a
+                  new one*/}
+                  .
                 </p>
                 <ul className="my-4 space-y-3 list-none m-0 p-0">
-                  <li>
+                  {/*<li>
                     <a
                       onClick={() => googleSigner()}
                       href="#"
@@ -91,8 +186,8 @@ const Modal = (props: { connect: any }) => {
                         Sign-in with Google
                       </span>
                     </a>
-                  </li>
-                  <li>
+                  </li>*/}
+                  {/*<li>
                     <a
                       onClick={() => twitterSigner()}
                       href="#"
@@ -105,7 +200,7 @@ const Modal = (props: { connect: any }) => {
                         Sign-in with Twitter
                       </span>
                     </a>
-                  </li>
+                  </li>*/}
                   {/* <li>
                     <a
                       onClick={() => facebookSigner()}
@@ -140,13 +235,16 @@ const Modal = (props: { connect: any }) => {
                       </span>
                     </a>
                   </li> */}
-                  <li className="text-center my-0 py-0">Or</li>
+                  {/*<li className="text-center my-0 py-0">Or</li>*/}
                   <li>
                     <a
-                      onClick={WalletConnectLogin}
+                      onClick={handleConnectWallet}
                       href="#"
                       className="bg-gray-50 dark:bg-gray-600 border border-gray-300 hover:border-violet-600 shadow flex items-center p-3 text-base font-bold text-gray-900 rounded-lg hover:bg-gray-100 group hover:shadow-md dark:hover:bg-gray-500 dark:text-white"
                     >
+                      <span className={`w-10`}>
+                        <FaWallet />
+                      </span>
                       <span className="flex-1 ml-3 whitespace-nowrap">
                         WalletConnect
                       </span>
@@ -155,6 +253,8 @@ const Modal = (props: { connect: any }) => {
                       </span>
                     </a>
                   </li>
+                  <li className="text-center my-0 py-0">- Or -</li>
+                  <li>{aptosChild}</li>
                 </ul>
                 <div>
                   <a

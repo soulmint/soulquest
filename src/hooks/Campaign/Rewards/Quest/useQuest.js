@@ -158,6 +158,20 @@ export default (props) => {
     };
   }
 
+  // Add Require OP Wallet Add task
+  if (campaign.require_op_add) {
+    const opAddStatus =
+      submittedTasks && submittedTasks.ck_op_address !== undefined
+        ? submittedTasks.ck_op_address
+        : null;
+    tasks.ck_op_address = {
+      id: ++taskTotal,
+      note: campaign.op_add_note,
+      status: opAddStatus,
+      msg: opAddStatus === false ? t('Invalid Optimistic Address!') : null
+    };
+  }
+
   const isFinishedTasks = useCallback(() => {
     let rs = true;
     const keys = Object.keys(tasks);

@@ -7,13 +7,14 @@ import defaultClasses from './dropDownMenu.module.css';
 import { logOut } from 'src/store/user/operations';
 import Avatar from 'boring-avatars';
 import TextLink from 'src/components/atoms/TextLink';
-import {
-  FaPowerOff
-} from 'react-icons/fa';
+import { FaPowerOff } from 'react-icons/fa';
+import { useWallet } from '@manahippo/aptos-wallet-adapter';
+
 interface DropDownMenuProps {
   name?: string;
   classes?: object;
 }
+
 const DropDownMenu: FunctionComponent<DropDownMenuProps> = (props) => {
   const { name } = props;
   const classes = useStyle(defaultClasses, props.classes);
@@ -21,8 +22,16 @@ const DropDownMenu: FunctionComponent<DropDownMenuProps> = (props) => {
   const { isDark } = useThemes();
   const rootClass = isDark ? classes.rootDark : classes.root;
   const dispatch = useDispatch();
+
+  const { disconnect: disconnectAptosWallet } = useWallet();
+
   const disConnect = async () => {
-    await logOut(dispatch);
+    try {
+      await disconnectAptosWallet();
+      await logOut(dispatch);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

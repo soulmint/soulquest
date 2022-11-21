@@ -88,6 +88,9 @@ const Quest = (props) => {
   const [powUrlState, setPOWSubmitUrlState] = useState(
     tasks.ck_pow_submit_url ? tasks.ck_pow_submit_url.status : null
   );
+  const [opAddState, setOPAddState] = useState(
+    tasks.ck_op_address ? tasks.ck_op_address.status : null
+  );
 
   useEffect(async () => {
     if (add && !isSoul) {
@@ -727,7 +730,7 @@ const Quest = (props) => {
   let nftOwnershipTask = null;
   if (tasks.ck_nft_ownership) {
     const nftOwnershipTaskIcon = () => {
-      let rs = null;
+      let rs;
       if (tasks.ck_nft_ownership.status) {
         rs = (
           <div
@@ -974,7 +977,7 @@ const Quest = (props) => {
       tasks.ck_pow_submit_url.status = status;
 
       //trigger to re-render
-      setNftOwnershipState(tasks.ck_pow_submit_url.status);
+      setPOWSubmitUrlState(tasks.ck_pow_submit_url.status);
 
       // update submitted tasks to local storage
       await handleUpdateSubmittedTasks(
@@ -989,7 +992,7 @@ const Quest = (props) => {
 
     let powUrlTaskClasses = [classes.questItem, classes.powUrlTask];
     powUrlTaskClasses.push(
-      twitterReTweetState === 'loading' ? classes.taskLoading : null
+      powUrlState === 'loading' ? classes.taskLoading : null
     );
     if (isEnded) {
       powUrlTaskClasses.push(classes.disabled);
@@ -1002,6 +1005,150 @@ const Quest = (props) => {
           {powUrlTaskContent()}
         </div>
         {powUrlStatus()}
+      </div>
+    );
+  }
+
+  let opAddTask = null;
+  if (tasks.ck_op_address) {
+    const optimismIcon = (
+      <span className={`${classes.opAddIcon}`}>
+        <img src="/icons/optimism.png" alt="optimism" />
+      </span>
+    );
+    const opAddTaskIcon = () => {
+      let rs;
+      if (tasks.ck_op_address.status) {
+        rs = (
+          <div
+            className={`${classes.questItemIcon} bg-green-300 text-slate-800`}
+          >
+            {optimismIcon}
+          </div>
+        );
+      } else if (tasks.ck_op_address.status === false) {
+        rs = (
+          <div className={`${classes.questItemIcon} text-white`}>
+            <span data-tip data-for="opAddError" className={`z-40`}>
+              {StatusIcon(40, 40, '#FCA5A5')}
+            </span>
+            <ReactTooltip
+              id="opAddError"
+              type="error"
+              backgroundColor={'#dc2626'}
+            >
+              <span>{tasks.ck_op_address.msg}</span>
+            </ReactTooltip>
+          </div>
+        );
+      } else {
+        rs = (
+          <div className={`${classes.questItemIcon} bg-cyan-400 text-white`}>
+            {optimismIcon}
+          </div>
+        );
+      }
+
+      return rs;
+    };
+    const opAddTaskTitle = () => {
+      let rs;
+      const titleClasses = [classes.taskIndex];
+      if (tasks.ck_op_address.status) {
+        titleClasses.push(classes.taskSuccess);
+      } else if (tasks.ck_op_address.status === false) {
+        titleClasses.push(classes.taskError);
+      }
+      rs = (
+        <span>
+          <span className={titleClasses.join(' ')}>
+            {t('Task')} {tasks.ck_op_address.id}
+          </span>
+        </span>
+      );
+
+      return rs;
+    };
+    const opAddTaskContent = () => {
+      return (
+        <Fragment>
+          <div className="flex flex-wrap flex-col md:flex-row md:items-center">
+            <span className={`${classes.taskTitle} mr-2`}>
+              {t('OP Address')}:
+            </span>
+            <input
+              autoComplete="off"
+              className={classes.opAddInput}
+              type="text"
+              id="op_add"
+              name="op_add"
+              defaultValue={
+                tasks.ck_op_address.status ? tasks.ck_op_address.status : null
+              }
+              onBlur={() => handleCheckOPAdd('op_add')}
+              placeholder={tasks.ck_op_address.note}
+            />
+          </div>
+          <span className={`${classes.taskTip}`}>
+            {tasks.ck_op_address.note}
+          </span>
+        </Fragment>
+      );
+    };
+    const opAddStatus = () => {
+      return tasks.ck_op_address.status ? (
+        <span className="flex items-center flex-row text-sm font-bold text-slate-400 ml-auto">
+          <span className={`flex items-center ml-auto`}>
+            {t('Under review')}
+          </span>
+        </span>
+      ) : null;
+    };
+    const handleCheckOPAdd = async (inputId) => {
+      if (userState.wallet_address === undefined) {
+        return toast.warning(
+          t('You must connect your wallet before do this task!')
+        );
+      }
+
+      setOPAddState('loading');
+
+      const opAdd = document.getElementById(inputId);
+
+      const status = opAdd.contains('0x') ? true : false;
+
+      // update state
+      tasks.ck_op_address.status = status;
+
+      //trigger to re-render
+      setOPAddState(tasks.ck_op_address.status);
+
+      // update submitted tasks to local storage
+      await handleUpdateSubmittedTasks(
+        'ck_op_address',
+        status ? opAdd.value : false
+      );
+
+      if (!tasks.ck_op_address.status) {
+        toast.error(t('Invalid OP Address!'));
+      }
+    };
+
+    let opAddTaskClasses = [classes.questItem, classes.opAddTask];
+    opAddTaskClasses.push(
+      opAddState === 'loading' ? classes.taskLoading : null
+    );
+    if (isEnded) {
+      opAddTaskClasses.push(classes.disabled);
+    }
+    opAddTask = (
+      <div className={`${opAddTaskClasses.join(' ')} relative group`}>
+        {opAddTaskIcon()}
+        <div className="flex-1 z-20">
+          {opAddTaskTitle()}
+          {opAddTaskContent()}
+        </div>
+        {opAddStatus()}
       </div>
     );
   }
@@ -1078,6 +1225,7 @@ const Quest = (props) => {
         {twReTweetTask}
         {nftOwnershipTask}
         {powUrlTask}
+        {opAddTask}
         {btnClaimReward}
       </div>
     </Fragment>

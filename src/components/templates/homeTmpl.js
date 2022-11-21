@@ -2,8 +2,8 @@
 import React, { Fragment } from 'react';
 import MainTmpl from './_mainTmpl';
 import List from '../organisms/Campaign/List';
-import { Hero, HowItWork, Features, News } from '../organisms/HomePage';
-import Head from 'next/head';
+import { Hero, HowItWork, Features /*, News*/ } from '../organisms/HomePage';
+// import Head from 'next/head';
 import HeadCustom from '../organisms/Head';
 
 const HomeTmpl = (props) => {
