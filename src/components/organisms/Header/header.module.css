@@ -8,6 +8,10 @@
   @apply bg-gray-900 border-b-gray-800;
 }
 
+.offBackdropFilter {
+  @apply backdrop-filter-none;
+}
+
 .logoContainer {
   @apply w-16 absolute top-4 md:top-auto md:relative;
 }

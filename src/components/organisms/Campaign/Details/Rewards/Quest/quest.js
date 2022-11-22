@@ -231,6 +231,7 @@ const Quest = (props) => {
       afterIcon={<FaAngleRight className="text-lg ml-1" />}
     />
   );
+
   const updateAPTBalance = async (add, CONDITION) => {
     const NODE_URL =
       process.env.NODE_ENV !== 'production'
@@ -241,13 +242,13 @@ const Quest = (props) => {
     const walletClient = new WalletClient(NODE_URL, FAUCET_URL);
 
     const balance = await walletClient.balance(add).then();
-    const aptosCoinType = `0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>`;
-    const aptosMojoConinType = `0x881ac202b1f1e6ad4efcff7a1d0579411533f2502417a19211cfc49751ddb5f4::coin::MOJO`;
+    // const coinType = `0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>`;
+    const coinType = `0x881ac202b1f1e6ad4efcff7a1d0579411533f2502417a19211cfc49751ddb5f4::coin::MOJO`;
     if (balance.success) {
       const balances = balance?.balances;
       balances.map((token) => {
         if (
-          token.coin === aptosCoinType &&
+          token.coin === coinType &&
           BigNumber(token.value) / 100000000 >= CONDITION
         ) {
           console.log(token);
@@ -257,6 +258,7 @@ const Quest = (props) => {
 
     return balance;
   };
+
   const connectWalletStatus = () => {
     let rs = null;
     if (userState.wallet_address) {
