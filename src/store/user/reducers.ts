@@ -24,8 +24,7 @@ const getSoulsUp = () => {
 };
 
 const getIsWhitelisted = () => {
-  const is_whitelisted = storage.getItem('is_whitelisted');
-  return is_whitelisted ? is_whitelisted : false;
+  return storage.getItem('is_whitelisted');
 };
 
 const getIsAptosWallet = () => {

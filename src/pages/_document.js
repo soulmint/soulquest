@@ -5,6 +5,7 @@ import Document, {
   NextScript,
   DocumentContext
 } from 'next/document';
+import React from "react";
 
 class SoulMintDocument extends Document {
   static async getInitialProps(ctx) {
@@ -34,6 +35,17 @@ class SoulMintDocument extends Document {
           <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
           <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="manifest" href="/manifest.json" />
+
+          <link rel="preconnect" href="//fonts.googleapis.com" />
+          <link
+            rel="preconnect"
+            href="//fonts.gstatic.com"
+            crossOrigin="true"
+          />
+          <link
+            href="//fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />

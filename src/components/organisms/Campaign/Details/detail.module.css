@@ -59,19 +59,3 @@
 .dateEnd {
   @apply pl-2;
 }
-
-.whitelistInfo {
-  @apply flex flex-wrap items-center justify-start pl-2;
-}
-
-.whitelistInfo span {
-  @apply pl-2;
-}
-
-.whitelistLock {
-	@apply flex items-center shadow bg-red-300 text-slate-800 rounded-full px-3 py-1 font-bold text-sm;
-}
-
-.whitelistLockOpen {
-	@apply flex items-center shadow bg-green-600 text-white rounded-full px-3 py-1 font-bold text-sm;
-}

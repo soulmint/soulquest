@@ -38,6 +38,9 @@ import {
 import { isQuesterExists } from 'src/hooks/Campaign/Rewards/api.gql';
 import { useQuest } from 'src/hooks/Campaign/Rewards';
 import BigNumber from 'bignumber.js';
+import { isWhitelisted } from '../../../../../../hooks/Campaign/useGoogle';
+import { setIsWhitelisted } from '../../../../../../store/user/operations';
+import { useDispatch } from 'react-redux';
 const WalletClient = require('aptos-wallet-api/src/wallet-client');
 
 const Quest = (props) => {
@@ -49,12 +52,16 @@ const Quest = (props) => {
   const { t } = useTranslation('campaign_details');
   const storage = new BrowserPersistence();
 
+  const dispatch = useDispatch();
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let twSocialLinked = null;
 
   const endDate = Moment(campaign.date_end);
   const now = Moment();
   const isEnded = now > endDate ? true : false;
+
+  const APTOS_BALANCE_REQUIRED_AMOUNT = 5;
 
   const {
     localQuesterIdKey,
@@ -94,9 +101,49 @@ const Quest = (props) => {
     tasks.ck_op_address ? tasks.ck_op_address.status : null
   );
 
+  const updateConnectWalletTask = async (value) => {
+    await handleUpdateSubmittedTasks('ck_connect_wallet', value);
+  };
+
+  const checkWhitelist = async (address) => {
+    const rs = await isWhitelisted({
+      spreadsheet_id: campaign.whitelist_spreadsheet_id,
+      sheet_id: campaign.whitelist_sheet_id,
+      wallet_address: address
+    });
+    // Update user state
+    setIsWhitelisted(dispatch, rs);
+  };
+
+  useEffect(() => {
+    if (add) {
+      setIsWhitelisted(dispatch, true);
+
+      // If has specific whitelist addresses from a Google sheet
+      if (
+        campaign &&
+        campaign.whitelist_spreadsheet_id &&
+        campaign.whitelist_sheet_id
+      ) {
+        checkWhitelist(add).then();
+      }
+      // If has specific check aptos wallet's balance
+      if (campaign && campaign.require_op_add) {
+        checkAPTBalance(
+          userState.wallet_address,
+          APTOS_BALANCE_REQUIRED_AMOUNT
+        ).then();
+      }
+
+      tasks.ck_connect_wallet.status = userState.is_whitelisted ? true : false;
+
+      updateConnectWalletTask(tasks.ck_connect_wallet.status).then();
+    }
+  }, [router.isReady, add]);
+
   useEffect(async () => {
     if (add && !isSoul) {
-      tasks.ck_connect_wallet.status = true;
+      // tasks.ck_connect_wallet.status = true;
 
       twSocialLinked = storage.getItem(localTwSocialLinkKey);
 
@@ -217,7 +264,7 @@ const Quest = (props) => {
     }
   }, [router.isReady, add, twitterLoginState]);
 
-  let walletConnect = userState.wallet_address ? (
+  let walletConnectInfo = userState.wallet_address ? (
     <span className="flex items-center flex-row text-sm font-bold text-slate-500">
       {ellipsify({
         str: userState.wallet_address,
@@ -232,58 +279,64 @@ const Quest = (props) => {
     />
   );
 
-  const updateAPTBalance = async (add, CONDITION) => {
-    const NODE_URL =
-      process.env.NODE_ENV !== 'production'
-        ? 'https://fullnode.testnet.aptoslabs.com/v1'
-        : 'https://fullnode.mainnet.aptoslabs.com/v1';
-    const FAUCET_URL = 'https://faucet.devnet.aptoslabs.com';
+  const checkAPTBalance = async (add, CONDITION) => {
+    let rs = false;
 
-    const walletClient = new WalletClient(NODE_URL, FAUCET_URL);
+    if (userState.is_aptos_wallet) {
+      const NODE_URL =
+        process.env.NODE_ENV !== 'production'
+          ? 'https://fullnode.testnet.aptoslabs.com/v1'
+          : 'https://fullnode.mainnet.aptoslabs.com/v1';
+      const FAUCET_URL = 'https://faucet.devnet.aptoslabs.com';
+      const walletClient = new WalletClient(NODE_URL, FAUCET_URL);
+      const balance = await walletClient.balance(add).then();
+      // const coinType = `0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>`;
+      const coinType = `0x881ac202b1f1e6ad4efcff7a1d0579411533f2502417a19211cfc49751ddb5f4::coin::MOJO`;
 
-    const balance = await walletClient.balance(add).then();
-    // const coinType = `0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>`;
-    const coinType = `0x881ac202b1f1e6ad4efcff7a1d0579411533f2502417a19211cfc49751ddb5f4::coin::MOJO`;
-    if (balance.success) {
-      const balances = balance?.balances;
-      balances.map((token) => {
-        if (
-          token.coin === coinType &&
-          BigNumber(token.value) / 100000000 >= CONDITION
-        ) {
-          console.log(token);
+      if (balance.success) {
+        const balances = balance?.balances;
+        for (const token of balances) {
+          if (
+            token.coin === coinType &&
+            BigNumber(token.value) / 100000000 >= CONDITION
+          ) {
+            rs = true;
+            break;
+          }
         }
-      });
+      }
     }
 
-    return balance;
+    setIsWhitelisted(dispatch, rs);
   };
 
   const connectWalletStatus = () => {
-    let rs = null;
+    let rs;
     if (userState.wallet_address) {
-      if (userState.is_aptos_wallet) {
-        updateAPTBalance(userState.wallet_address, 6).then();
-      }
-
-      // If has specific whitelist
-      if (
-        campaign.whitelist_spreadsheet_id &&
-        campaign.whitelist_sheet_id &&
-        !userState.is_whitelisted
-      ) {
-        //has not whitelist case
+      if (tasks.ck_connect_wallet.status === false) {
+        let msg;
+        if (campaign && campaign.require_op_add) {
+          if (!userState.is_aptos_wallet) {
+            msg = t(
+              `Your wallet was not met. You must connect with Petra wallet and make sure you have at least ${APTOS_BALANCE_REQUIRED_AMOUNT} MOJO coin in balance.`
+            );
+          } else {
+            msg = t(
+              `Your wallet was not met. Please make sure you have at least ${APTOS_BALANCE_REQUIRED_AMOUNT} MOJO coin in balance.`
+            );
+          }
+        }
         rs = (
           <div className={`${classes.questItemIcon} text-slate-800`}>
-            <span data-tip data-for="whitelistError">
+            <span data-tip data-for="connectWalletError">
               {StatusIcon(40, 40, '#FCA5A5')}
             </span>
             <ReactTooltip
-              id="whitelistError"
+              id="connectWalletError"
               type="error"
               backgroundColor={'#dc2626'}
             >
-              <span>{t('You have not whitelisted yet.')}</span>
+              <span>{msg}</span>
             </ReactTooltip>
           </div>
         );
@@ -307,16 +360,12 @@ const Quest = (props) => {
     return rs;
   };
   const connectWalletTitle = () => {
-    let rs = null;
+    let rs;
     const titleClasses = [classes.taskIndex];
-    if (userState.wallet_address) {
-      if (
-        campaign.whitelist_spreadsheet_id &&
-        campaign.whitelist_sheet_id &&
-        !userState.is_whitelisted
-      ) {
+    if (add) {
+      if (tasks.ck_connect_wallet.status === false) {
         titleClasses.push(classes.taskError);
-      } else {
+      } else if (tasks.ck_connect_wallet.status === true) {
         titleClasses.push(classes.taskSuccess);
       }
     }
@@ -339,7 +388,7 @@ const Quest = (props) => {
       {connectWalletStatus()}
       <div className="flex items-center justify-between flex-1">
         {connectWalletTitle()}
-        {walletConnect}
+        {walletConnectInfo}
       </div>
     </div>
   );
@@ -599,7 +648,7 @@ const Quest = (props) => {
         } relative group`}
       >
         {twFollowTaskIcon()}
-        <div className="z-20">
+        <div className="z-10">
           {twFollowTaskTitle()}
           {twFollowTaskContent()}
         </div>
@@ -752,7 +801,7 @@ const Quest = (props) => {
     twReTweetTask = (
       <div className={`${reTweetTaskClasses.join(' ')} relative group`}>
         {twReTweetTaskIcon()}
-        <div className="flex-1 z-20">
+        <div className="flex-1 z-10">
           {twReTweetTaskTitle()}
           {twReTweetTaskContent()}
         </div>
@@ -893,7 +942,7 @@ const Quest = (props) => {
     nftOwnershipTask = (
       <div className={`${nftTaskClasses.join(' ')} relative group`}>
         {nftOwnershipTaskIcon()}
-        <div className="z-20">
+        <div className="z-10">
           {nftOwnershipTaskTitle()}
           {nftOwnershipTaskContent()}
         </div>
@@ -1034,7 +1083,7 @@ const Quest = (props) => {
     powUrlTask = (
       <div className={`${powUrlTaskClasses.join(' ')} relative group`}>
         {powUrlTaskIcon()}
-        <div className="flex-1 z-20">
+        <div className="flex-1 z-10">
           {powUrlTaskTitle()}
           {powUrlTaskContent()}
         </div>
@@ -1149,15 +1198,10 @@ const Quest = (props) => {
 
       const opAdd = document.getElementById(inputId);
 
-      console.log(opAdd.value);
-
       const status = opAdd.value.includes('0x') ? true : false;
 
       // update state
       tasks.ck_op_address.status = status;
-
-      //trigger to re-render
-      setOPAddState(tasks.ck_op_address.status);
 
       // update submitted tasks to local storage
       await handleUpdateSubmittedTasks(
@@ -1166,8 +1210,11 @@ const Quest = (props) => {
       );
 
       if (!tasks.ck_op_address.status) {
-        toast.error(t('Invalid OP Address!'));
+        toast.error(t('Invalid wallet address!'));
       }
+
+      //trigger to re-render
+      setOPAddState(tasks.ck_op_address.status);
     };
 
     let opAddTaskClasses = [classes.questItem, classes.opAddTask];
@@ -1180,7 +1227,7 @@ const Quest = (props) => {
     opAddTask = (
       <div className={`${opAddTaskClasses.join(' ')} relative group`}>
         {opAddTaskIcon()}
-        <div className="flex-1 z-20">
+        <div className="flex-1 z-10">
           {opAddTaskTitle()}
           {opAddTaskContent()}
         </div>
@@ -1191,22 +1238,14 @@ const Quest = (props) => {
 
   const checkCanSubmit = () => {
     let rs = false;
-    if (userState.wallet_address) {
-      // if has specific whitelist
-      if (campaign.whitelist_spreadsheet_id && campaign.whitelist_sheet_id) {
-        if (
-          userState.is_whitelisted &&
-          !isEnded &&
-          isFinishedTasks() &&
-          !isSoul
-        ) {
-          rs = true;
-        }
-      } else {
-        if (!isEnded && !isSoul && isFinishedTasks()) {
-          rs = true;
-        }
-      }
+    if (
+      userState.wallet_address &&
+      userState.is_whitelisted &&
+      isFinishedTasks() &&
+      !isSoul &&
+      !isEnded
+    ) {
+      rs = true;
     }
 
     return rs;

@@ -2,10 +2,10 @@ import React from 'react';
 import { useTranslation } from 'next-i18next';
 import Moment from 'moment';
 import Rewards from './Rewards';
+import Whitelist from './Whitelist';
 import useThemes from '../../../../hooks/useThemes';
 import { useDetails } from '../../../../hooks/Campaign';
 import classes from './detail.module.css';
-import { FaLock, FaLockOpen } from 'react-icons/fa';
 
 const Details = (props) => {
   const { slug } = props;
@@ -16,7 +16,7 @@ const Details = (props) => {
 
   Moment.locale('en');
 
-  const { loading, data, error, userState } = useDetails({
+  const { loading, data, error } = useDetails({
     slug: { _eq: slug } ?? ''
   });
 
@@ -64,26 +64,6 @@ const Details = (props) => {
           </div>
         ) : null;
 
-      const getWhitelistInfo = () => {
-        let rs = null;
-        if (campaign.whitelist_spreadsheet_id && campaign.whitelist_sheet_id) {
-          rs = !userState.is_whitelisted ? (
-            <span className={`${classes.whitelistLock}`}>
-              {' '}
-              <FaLock /> <span className="ml-1">{t('Whitelist')}</span>
-            </span>
-          ) : (
-            <span className={`${classes.whitelistLockOpen}`}>
-              {' '}
-              <FaLockOpen /> <span className="ml-1">{t('Whitelist')}</span>
-            </span>
-          );
-        }
-
-        return rs;
-      };
-      const whitelistInfo = getWhitelistInfo();
-
       const pageTitleInfo = pageTitle ? (
         <h1 className={`${classes.pageTitle}`}>{campaign.title}</h1>
       ) : null;
@@ -92,7 +72,7 @@ const Details = (props) => {
         <div className={`${classes.campaignMeta}`}>
           {stateInfo}
           {datesInfo}
-          {whitelistInfo}
+          <Whitelist campaign={campaign} />
         </div>
       );
 

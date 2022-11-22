@@ -61,7 +61,10 @@ const Modal = (props: any) => {
             >
               <img width={`16px`} height={`16px`} src={option.icon} />
             </span>
-            <span className={``} title={`Connect with ${option.name} wallet`}>
+            <span
+              className={`ml-4`}
+              title={`Connect with ${option.name} wallet`}
+            >
               {currentWallet &&
               currentWallet.adapter.name === option.name &&
               connecting
@@ -279,7 +282,7 @@ const Modal = (props: any) => {
                       <span className={`w-10`}>
                         <FaWallet />
                       </span>
-                      <span className="flex-1 ml-3 whitespace-nowrap">
+                      <span className="flex-1 ml-1 whitespace-nowrap">
                         WalletConnect
                       </span>
                       <span className="inline-flex items-center justify-center px-2 py-0.5 ml-3 text-xs font-medium text-gray-500 bg-gray-200 rounded dark:bg-gray-700 dark:text-gray-400">

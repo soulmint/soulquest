@@ -45,9 +45,14 @@ export default (props) => {
   );
 
   // Add connect wallet task
+  const connectWalletStatus =
+    submittedTasks && submittedTasks.ck_connect_wallet !== undefined
+      ? submittedTasks.ck_connect_wallet
+      : null;
   tasks.ck_connect_wallet = {
     id: ++taskTotal,
-    status: add ? true : false
+    status: connectWalletStatus,
+    msg: !userState.is_whitelisted ? t('You have not whitelisted yet.') : null
   };
 
   // Add twitter login task

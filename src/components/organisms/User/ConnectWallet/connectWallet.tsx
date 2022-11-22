@@ -10,10 +10,8 @@ import { useTranslation } from 'next-i18next';
 import providerOptions from './providers';
 import { Modal } from './../Modal';
 import DropDownMenu from './../DropdownMenu';
-// import Button from 'src/components/atoms/Button';
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
-// import { FaWallet } from 'react-icons/fa';
 
 export type ConnectWalletProps = {
   name?: string;
@@ -29,8 +27,6 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
 ) => {
   const dispatch = useDispatch();
 
-  // const { classes, beforeIcon, afterIcon } = props;
-
   const { t } = useTranslation('common');
 
   const userState = useSelector((state) => state.user);
@@ -38,10 +34,12 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
   const connectWallet = async () => {
     try {
       const web3Modal = new Web3Modal({
+        network: 'mainnet', // optional
         cacheProvider: false,
-        providerOptions,
-        theme: 'dark'
+        providerOptions
+        // theme: 'dark'
       });
+
       const provider = await web3Modal.connect();
       provider.enable();
       const web3 = new Web3(provider);
@@ -53,13 +51,8 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
         throw new Error('No account');
       }
 
-      // const chainId = await web3.eth.getChainId();
-      // const bscChainId = parseInt(process.env.BSC_CHAIN_ID as string);
-      // if (chainId !== bscChainId) {
-      //   // TODO: enhance message.
-      //   alert('Invalid bsc chain id. Need to switch to bsc testnet');
-      //   throw new Error('Invalid bsc chain id. Need to switch to bsc testnet');
-      // }
+      /*const chainId = await web3.eth.getChainId();
+      console.log(chainId);*/
 
       const signer = pp.getSigner();
       /* let balance = await signer.getBalance();
@@ -84,8 +77,10 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
     } catch (e) {
       if (process.env.NODE_ENV !== 'production') {
         console.error(e);
+        toast.error(e);
+      } else {
+        toast.warning(t('Something went wrong. Please try again later!'));
       }
-      toast.warning(t('You must connect your wallet.'));
     }
   };
 
@@ -101,20 +96,6 @@ const ConnectWallet: FunctionComponent<ConnectWalletProps> = (
     </div>
   ) : (
     <Modal connectWallet={connectWallet} {...props} />
-    /*<Button
-        type="button"
-        priority="high"
-        classes={
-          classes && classes.root_highPriority
-            ? { root_highPriority: classes.root_highPriority }
-            : null
-        }
-        onPress={() => connectWallet()}
-      >
-        {beforeIcon}
-        {t('Connect wallet')}
-        {afterIcon}
-      </Button>*/
   );
 
   return <Fragment>{child}</Fragment>;
