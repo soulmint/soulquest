@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 // import { signIn } from 'next-auth/react';
 import Button from 'src/components/atoms/Button';
 import { useEscapeKey } from 'src/hooks/useEscapeKey';
@@ -9,14 +9,21 @@ import { useDispatch } from 'react-redux';
 import { signIn } from 'next-auth/react';
 
 const Modal = (props: any) => {
-  const {
-    modalOpened,
-    setModalOpened,
-    classes,
-    beforeIcon,
-    afterIcon,
-    connectWallet
-  } = props;
+  const { classes, beforeIcon, afterIcon, connectWallet } = props;
+
+  const [modalOpened, setModalOpened] = useState(false);
+
+  useEffect(() => {
+    if (modalOpened) {
+      document
+        .getElementsByTagName('header')[0]
+        .classList.add('disable-backdrop-filter');
+    } else {
+      document
+        .getElementsByTagName('header')[0]
+        .classList.remove('disable-backdrop-filter');
+    }
+  }, [modalOpened]);
 
   const escEvent = () => {
     setModalOpened(false);

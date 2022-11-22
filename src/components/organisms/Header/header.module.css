@@ -8,8 +8,8 @@
   @apply bg-gray-900 border-b-gray-800;
 }
 
-.offBackdropFilter {
-  @apply backdrop-filter-none;
+.root:global(.disable-backdrop-filter) {
+  backdrop-filter:none;
 }
 
 .logoContainer {

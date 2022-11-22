@@ -19,8 +19,6 @@ const Header = (props) => {
 
   const router = useRouter();
 
-  const [modalOpened, setModalOpened] = useState(false);
-
   const menuItems = Array.from(links, ([groupKey, linkProps]) => {
     const linkElements = Array.from(linkProps, ([text, pathInfo]) => {
       let path = pathInfo;
@@ -71,9 +69,6 @@ const Header = (props) => {
   // };
 
   const headerClasses = [classes[rootClassName]];
-  if (modalOpened) {
-    headerClasses.push(classes.offBackdropFilter);
-  }
   return (
     <header className={`${headerClasses.join(' ')}`}>
       <div className="container max-w-screen-xl mx-auto flex justify-between items-center px-4">
@@ -93,8 +88,6 @@ const Header = (props) => {
           <ConnectWallet
             beforeIcon={<FaWallet className="mr-2" />}
             classes={{ root_highPriority: classes.btnConnectWallet }}
-            modalOpened={modalOpened}
-            setModalOpened={setModalOpened}
           />
           {/* <button
             data-collapse-toggle="navbar-default"
